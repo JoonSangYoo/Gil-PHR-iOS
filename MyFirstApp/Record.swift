@@ -39,7 +39,7 @@ class Record: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //ㅁㄴㅇㅇㄴㅇㅁㅇㄴㅁㅇㅁㄴㅇㄴㅇㄴㅁㄴㅁadsasㄴㅇ
+        //ㅁㄴㅇㅇㄴㅇㅁㅇㄴㅁㅇㅁㄴㅇㄴㅇㄴㅇ
         img.contentMode = .scaleAspectFit
         let image = Barcode.fromString(string: "11657673")
         img.image = image
