@@ -8,51 +8,28 @@
 
 import UIKit
 
-class Record: UIViewController {
+class Record: UITabBarController {
     
-    
-    @IBOutlet weak var img: UIImageView!
-    
-    struct ItemTrackingRequest {
-        var trackingNumbers: [String]
-        
-        init(trackingNumbers: String...) {
-            self.trackingNumbers = trackingNumbers
-        }
-        
-        func xmlString() -> String {
-            var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-            xml += "<request>"
-            xml += "<protocol>login</protocol>"
-            xml += "<userid>wnstkd13</userid>"
-            xml += "<pwd>test5782</pwd>"
-            xml += "</request>"
-            
-      //      for number in self.trackingNumbers {
-//                xml += "<TrackingNumber>\(number)</TrackingNumber>"
-        //    }
-            
-            
-            return xml
-        }
-    }
+
+    @IBOutlet weak var RecordTab: UITabBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //ㅁㄴㅇㅇㄴㅇㅁㅇㄴㅁㅇㅁㄴㅇㄴㅇㄴㅇasdjkjdjkdkjdkjdjkdjk
-        img.contentMode = .scaleAspectFit
-        let image = Barcode.fromString(string: "11657673")
-        img.image = image
+        let screenSize: CGRect = UIScreen.main.bounds
+        RecordTab.frame = CGRect(x: 0, y: screenSize.height * 0.25, width: self.RecordTab.frame.width, height: self.RecordTab.frame.height)
         
+        let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
+        let appearance = UITabBarItem.appearance()
 
-        // Do any additional setup after loading the view, typically from a nib.
-        var request = URLRequest(url: URL(string: "https://ucare.gilhospital.com/phr2/gateway.aspx")!)
-        //let postString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><request><protocol>login</protocol><userid>nayana</userid><pwd>test5782</pwd></request>"
+        appearance.setTitleTextAttributes([NSFontAttributeName:UIFont.boldSystemFont(ofSize: 16), NSForegroundColorAttributeName: UIColor.gray], for: .normal)
+        appearance.setTitleTextAttributes([NSFontAttributeName:UIFont.boldSystemFont(ofSize: 16), NSForegroundColorAttributeName: primaryColor], for: .selected)
         
-        let postString = ItemTrackingRequest(trackingNumbers: "SMT0000000628").xmlString()
+        let tabBar = RecordTab
+        tabBar?.selectionIndicatorImage = UIImage().createSelectionIndicator(color: primaryColor, size: CGSize(width: (tabBar?.frame.width)!/CGFloat((tabBar?.items!.count)!), height: (tabBar?.frame.height)!), lineWidth: 4.0)
         
-        request.httpMethod = "POST"
-        request.httpBody = postString.data(using: .utf8)
+        tabBar?.layer.borderWidth = 0.50
+        tabBar?.layer.borderColor = UIColor.gray.cgColor
+        tabBar?.clipsToBounds = true
 }
     
     override func didReceiveMemoryWarning() {
