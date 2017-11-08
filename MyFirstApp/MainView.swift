@@ -352,7 +352,6 @@ class MainView : UIViewController{
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideInfo"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
             navigationItem.rightBarButtonItem?.tintColor = UIColor.white
             
-            
         }else{
             performSegue(withIdentifier: "segInfo", sender: nil)
         }
