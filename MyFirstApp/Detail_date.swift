@@ -20,6 +20,11 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         formatter.dateFormat = "yyyy/MM/dd"
         return formatter
     }()
+    fileprivate let formatter_second: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        return formatter
+    }()
     
     var parser = XMLParser()        // 파서 객체
     var currentElement = ""       // 현재 Element
@@ -58,9 +63,52 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     
     //날짜 선택
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print("calendar did select date \(self.formatter.string(from: date))")
+        print("calendar did select date \(self.formatter_second.string(from: date))")
         if monthPosition == .previous || monthPosition == .next {
             calendar.setCurrentPage(date, animated: true)
+        }
+        let xml_deptcd: String = deptlist[reserve_index-1].deptcd.replacingOccurrences(of: "\n  ", with: "")
+        let xml_docno: String = doctorlist[doctor_index].docno.replacingOccurrences(of: "\n", with: "")
+        
+        var time_postString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+        time_postString += "<request>"
+        time_postString += "<protocol>reservetime</protocol>"
+        time_postString += "<userid>\(UserDefault.load(key: UserDefaultKey.UD_id))</userid>"
+        time_postString += "<keycd>\(UserDefault.load(key: UserDefaultKey.UD_Key))</keycd>"
+        time_postString += "<deptcd>\(xml_deptcd)</deptcd>"
+        time_postString += "<docno>\(xml_docno)</docno>"
+        time_postString += "<yyyymmdd>"+self.formatter_second.string(from: date)+"</yyyymmdd>"
+        time_postString += "</request>"
+        
+        
+        HttpClient.requestXML(Xml: time_postString){ responseString in
+            let dataXML = responseString.data(using: .utf8)
+            
+            self.parser = XMLParser(data: dataXML!)
+            self.parser.delegate = self
+            
+            let success:Bool = self.parser.parse()
+            if success {
+                print("parse success!")
+                
+                if self.st == "100"{        // 리스폰스 스테이터스가gfd 100(성공)일때
+                    DispatchQueue.main.async{
+                        self.calendar.dataSource = self
+                        self.calendar.delegate = self
+                        self.calendar.reloadData()
+                    }
+                }
+                else if self.st == "202"{
+                    DispatchQueue.main.async{
+                    }
+                }
+                else{         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
+                    DispatchQueue.main.async{
+                    }
+                }
+            } else{
+                print("parse failure!")
+            }
         }
     }
     
@@ -90,6 +138,8 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
             st = attributeDict["status"]!
             //datesWithEvent = Array<String>()
         }
+        
+        
     }
     
     // string array add
@@ -237,7 +287,8 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         
         func xmlString() -> String {
             let xml_deptcd: String = deptlist[reserve_index-1].deptcd.replacingOccurrences(of: "\n  ", with: "")
-            let xml_docnm: String = doctorlist[doctor_index].docno
+            let xml_docnm: String = doctorlist[doctor_index].docno.replacingOccurrences(of: "\n", with: "")
+            print("asdfasdfasdf" + xml_docnm)
             /////2017.11.09
             var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             xml += "<request>"

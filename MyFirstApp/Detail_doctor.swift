@@ -61,7 +61,6 @@ import UIKit
                         self.DoctorTB.delegate = self
                         self.DoctorTB.reloadData()
                         self.DoctorTB.tableFooterView = UIView()
-                        
                     }
                     
                 }
