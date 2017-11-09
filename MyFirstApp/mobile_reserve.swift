@@ -11,48 +11,18 @@ import UIKit
 
 var deptlist = [Reslist]() // 진료과 목록 조회
 var recentItem = [recentlist]() //최근 진료기록
-
-
-var check = "1"     //test
 var reserve_index = 0
-
-extension String {
-    func tindex(from: Int) -> Index {
-        return self.index(startIndex, offsetBy: from)
-    }
-    
-    func tsubstring(from: Int) -> String {
-        guard from < self.characters.count else { return "" }
-        let fromIndex = index(from: from)
-        return substring(from: fromIndex)
-    }
-    
-    func tsubstring(to: Int) -> String {
-        guard to < self.characters.count else { return "" }
-        let toIndex = index(from: to)
-        return substring(to: toIndex)
-    }
-    
-    func tsubstring(with r: Range<Int>) -> String {
-        let startIndex = index(from: r.lowerBound)
-        let endIndex = index(from: r.upperBound)
-        return substring(with: startIndex..<endIndex)
-    }
-}
+var plag_mobileres = 0
 
 class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate{
-    
-    let ResTag = TagNumList.meTag
-    
     @IBOutlet weak var resTable: UITableView!
-    
+    var check = "1"
     var parser = XMLParser()        // 파서 객체
     var test = "1"
     var currentElement = ""       // 현재 Element
     var rec202 = ""               //최근 진료 '내용없음'
-    
-    
-    
+    var pre_userid = ""           // 로그아웃 후 재로그인할경우 최근 진료목록
+    var postString = ""
     //진료과 조회
     var depts = String()        // 진료과들
     var dept = String()          // 진료과
@@ -60,33 +30,27 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     var deptnm = String()       // 진료과명
     var deptdesc = String()     //진료과 설명
     
-    
-    //UserDefault.save(key: UserDefaultKey.UD_Key, value: self.loginData[0])
-    //UserDefault.save(key: UserDefaultKey.UD_Ptntno, value: self.loginData[2])
     //최근 진료 기록
-    var redeptcd = String() //w
-    var date = String()     //진료일
-    var docno = String()        //의사코드
-    var docnm = String()        //의사명
-    var esp = String()       // 특진 구분
-    var main = String()        //진료분야
+    var lastdeptcd = ""  //진료과코드
+    var lastdeptnm = ""   //wlsfyrhkaud
+    var lastdate = ""     //진료일
+    var lastdocno = ""    //의사코드
+    var lastdocnm = ""        //의사명
+    var lastesp = ""      // 특진 구분
+    var lastmain = ""        //진료분야
     
     var st = ""                 // 스테이터스 값 변수
     
     var deptnmLabel: UILabel!               //진료과 명
     var deptdesctextview: UITextView!
-    
     var firstLabel : UILabel!
     var secondLabel : UILabel!
     
-    
     struct xmlWriter {             // xml 작성을 위한 구조체
         var prtc: String
-        
         init(prtc: String) {
             self.prtc = prtc
         }
-        
         func xmlString() -> String {
             var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             xml += "<request>"
@@ -99,24 +63,23 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     }
     
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        recentItem = [recentlist]()
+    func http_request(request_code: String){
         
-        let postString = xmlWriter(prtc: "reendept").xmlString()
-        let secondpostString = xmlWriter(prtc: "lastopd").xmlString()
-        
-        HttpClient.requestXML(Xml: secondpostString){
+        if(request_code == "deptlist_search"){
+            postString = xmlWriter(prtc: "reendept").xmlString()
+        }
+        else if(request_code == "lastopd_search"){
+            plag_mobileres=1
+            postString = xmlWriter(prtc: "lastopd").xmlString()
+        }
+        HttpClient.requestXML(Xml: postString){
             responseString in
             let dataXML = responseString.data(using: .utf8)
-            
             self.parser = XMLParser(data: dataXML!)
             self.parser.delegate = self
             
-            let success:Bool = self.parser.parse()
             
+            let success:Bool = self.parser.parse()
             if success {
                 print("parse success!")
                 
@@ -129,47 +92,35 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
                         self.resTable.tableFooterView = UIView()
                         self.resTable.isHidden = false
                     }
-                }
-                else if self.st=="202"{         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
+                } else if(self.st=="202" && request_code == "lastopd_search"){         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
                     DispatchQueue.main.async{
                         self.rec202 = "ok"
                     }
                 }
-            }
-            else{
-                print("parse failure!")
-            }
-        }
-        
-        
-        HttpClient.requestXML(Xml: postString){
-            responseString in
-            let dataXML = responseString.data(using: .utf8)
-            
-            self.parser = XMLParser(data: dataXML!)
-            self.parser.delegate = self
-            
-            let success:Bool = self.parser.parse()
-            if success {
-                print("parse success!")
-                
-                if self.st == "100"{        // 리스폰스 스테이터스가 100(성공)일때
-                    // DispatchQueue.main.async -> ui가 대기상태에서 특정 조건에서 화면전환시 멈추는 현상을 없애기 위한 명령어(비동기제어)
+                else{
                     DispatchQueue.main.async{
-                        self.resTable.dataSource = self
-                        self.resTable.delegate = self
-                        self.resTable.reloadData()
-                        self.resTable.tableFooterView = UIView()
-                        self.resTable.isHidden = false
-                    }
-                } else{         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
-                    DispatchQueue.main.async{
-                       
                     }
                 }
             } else{
                 print("parse failure!")
             }
+        }
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        http_request(request_code: "lastopd_search")
+        
+        if(deptlist.count==0){
+            http_request(request_code: "deptlist_search")
+        }
+        else{
+            self.resTable.dataSource = self
+            self.resTable.delegate = self
+            self.resTable.reloadData()
+            self.resTable.tableFooterView = UIView()
+            self.resTable.isHidden = false
         }
         
         resTable.rowHeight = UITableViewAutomaticDimension
@@ -193,100 +144,126 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:])
     {
         currentElement = elementName
-       
-            if (elementName == "response") {
-                st = attributeDict["status"]!
-                
-                date = String()
-                deptcd = String()
-                deptnm = String()
-                docno = String()
-                docnm = String()
-                esp = String()
-                main = String()
-                
-                
-            }
+        if (elementName == "response"){
+            st = attributeDict["status"]!
+        }
+        if(elementName == "date"){
+            lastdate = String()
+        }
+        if(elementName == "deptcd"){
+            lastdeptcd = String()
+        }
+        if(elementName == "deptnm"){
+            lastdeptnm = String()
+        }
+        if(elementName == "docno"){
+            lastdocno = String()
+        }
+        if(elementName == "docnm"){
+            lastdocnm = String()
+        }
+        if(elementName == "esp"){
+            lastesp = String()
+        }
+        if(elementName == "main"){
+            lastmain = String()
+        }
         
-       
-            if (elementName == "dept") {
-                deptcd = String()
-                deptnm = String()
-                deptdesc = String()
-            }
-        
+        if (elementName == "dept") {
+            deptcd = String()
+            deptnm = String()
+            deptdesc = String()
+        }
     }
-    
+    // 현재 테그에 담겨있는 문자열 전달
+    public func parser(_ parser: XMLParser, foundCharacters string: String)
+    {
+        switch currentElement
+        {
+        case "date":
+            if(plag_mobileres == 1){
+                lastdate = lastdate + string
+            }
+        case "deptcd":
+            deptcd = deptcd + string
+            if(plag_mobileres == 1){
+                lastdeptcd = lastdeptcd + string
+            }
+        case "deptnm":
+            deptnm = deptnm + string
+            if(plag_mobileres == 1){
+                lastdeptnm = lastdeptnm + string
+            }
+        case "docno":
+            if(plag_mobileres == 1){
+                lastdocno = lastdocno + string
+            }
+        case "docnm":
+            if(plag_mobileres == 1){
+                lastdocnm = lastdocnm + string
+            }
+        case "esp":
+            if(plag_mobileres == 1){
+                lastesp = lastesp + string
+            }
+        case "main":
+            if(plag_mobileres == 1){
+                lastmain = lastmain + string
+            }
+        case "deptdesc":
+            deptdesc = deptdesc + string
+        default:break
+        }
+    }
     // XML 파서가 종료 테그를 만나면 호출됨
     public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?)
     {
         
         if (elementName == "dept") {
             let listItem = Reslist()
-            
             listItem.deptcd = deptcd
             listItem.deptnm = deptnm
             listItem.deptdesc = deptdesc
             
             deptlist.append(listItem)
-            check = "1"
-        }
-        else if(elementName == "response"){
-            let recItem = recentlist()
-            if(check=="1"){
-                
-                recItem.date = date
-                recItem.deptcd = deptcd
-                recItem.deptnm = deptnm
-                recItem.docno = docno
-                recItem.docnm = docnm
-                recItem.esp = esp
-                recItem.main = main
-                
-                recentItem.append(recItem)
-                check = "2"
-            }
         }
     }
-
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return deptlist.count
+        return 31
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReservCell")!
         
+        deptnmLabel = cell.viewWithTag(31) as! UILabel
+        deptdesctextview = cell.viewWithTag(32) as! UITextView
+        
         //최근 진료 기록으로 예약
         if indexPath.row == 0 {
-            deptnmLabel = cell.viewWithTag(31) as! UILabel
-            deptdesctextview = cell.viewWithTag(32) as! UITextView
-            if(rec202 == "ok"){
+            if(lastdate == ""){
                 deptnmLabel.text = "최근 진료내역으로 예약"
                 deptdesctextview.text = "진료일 : 내역 없음 \n진료과 : 내역 없음\n"
                 
             }
             else{
-                
-                let recitem = recentItem[0]
-                let repdate: String = recitem.date.replacingOccurrences(of: "\n  ", with: "")
-                let repdeptnm: String = recitem.deptnm.replacingOccurrences(of: "\n  ", with: "")
-                let repdocnm: String = recitem.docnm.replacingOccurrences(of: "\n  ", with: "")
-                
+                let repdate: String = lastdate.replacingOccurrences(of: "\n  ", with: "")
+                let repdeptnm: String = lastdeptnm.replacingOccurrences(of: "\n  ", with: "")
+                let repdocnm: String = lastdocnm.replacingOccurrences(of: "\n  ", with: "")
                 
                 deptnmLabel.text = "최근 진료내역으로 예약"
                 deptdesctextview.text = "진료일 : \(weekdayForm(dateString: repdate)) \n진료과 : \(repdeptnm)  \(repdocnm) 교수\n"
-                print(check)
             }
+            
         }
         else {
-            deptnmLabel = cell.viewWithTag(31) as! UILabel
-            deptdesctextview = cell.viewWithTag(32) as! UITextView
             let listItem = deptlist[indexPath.row - 1]
+            
             deptnmLabel.text = listItem.deptnm
             deptnmLabel.textColor = UIColor.black
             if(indexPath.row == 18)//외과
@@ -299,7 +276,6 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             deptdesctextview.textColor = UIColor.black
             
             self.deptdesctextview.addGestureRecognizer(UITapGestureRecognizer(target: self, action:  #selector (self.checkAction(sender: ))))
-            print(check)
         }
         
         cell.selectionStyle = .none
@@ -334,35 +310,12 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         }
         else{
             performSegue(withIdentifier: "Detail_doctor" , sender: self)
+            
+            
         }
     }
     
-    // 현재 테그에 담겨있는 문자열 전달
-    public func parser(_ parser: XMLParser, foundCharacters string: String)
-    {
-        
-        switch currentElement {
-        case "date":
-            date = date + string
-        case "docnm":
-            docnm = docnm + string
-        case "docno":
-            docno = docno + string
-        case "esp":
-            esp = esp + string
-        case "main":
-            main = main + string
-        case "deptcd":
-            deptcd = deptcd + string
-        case "deptnm":
-            deptnm = deptnm + string
-        case "deptdesc":
-            deptdesc = deptdesc + string
-        default:break
-            
-        }
-        
-    }
+    
     
     func weekdayForm(dateString: String) -> String {
         let df: DateFormatter = DateFormatter()
@@ -405,3 +358,34 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         }
     }
 }
+
+extension String {
+    func tindex(from: Int) -> Index {
+        return self.index(startIndex, offsetBy: from)
+    }
+    
+    func tsubstring(from: Int) -> String {
+        guard from < self.characters.count else { return "" }
+        let fromIndex = index(from: from)
+        return substring(from: fromIndex)
+    }
+    
+    func tsubstring(to: Int) -> String {
+        guard to < self.characters.count else { return "" }
+        let toIndex = index(from: to)
+        return substring(to: toIndex)
+    }
+    
+    func tsubstring(with r: Range<Int>) -> String {
+        let startIndex = index(from: r.lowerBound)
+        let endIndex = index(from: r.upperBound)
+        return substring(with: startIndex..<endIndex)
+    }
+}
+
+
+
+
+
+
+
