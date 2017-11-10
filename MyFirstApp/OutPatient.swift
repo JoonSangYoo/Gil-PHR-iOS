@@ -34,10 +34,8 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     var deptDocNameLabel: UILabel!
     var opdDateLabel: UILabel!
     
-    var button: DLRadioButton!
-    var otherButton: DLRadioButton!
-    
     var otherButtons : [DLRadioButton] = []
+
 
     let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
     
@@ -200,72 +198,54 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "opCell", for: indexPath) as? opCell{
+
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "opCell", for: indexPath) as? OPcell{
+           
+            let listItem = listItems[indexPath.row]
+
+
+            cell.deptDocNameLabel.text = listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM
+            cell.deptDocNameLabel.textColor = UIColor.black
             
-        }
+            cell.opdDateLabel.text = weekdayForm(dateString: listItem.opdDate.replacingOccurrences(of: "\n      ", with: ""))
+            cell.opdDateLabel.textColor = UIColor.black
+            
+            cell.radioButton.tag = indexPath.row
 
-        
-        deptDocNameLabel = self.view.viewWithTag(rcTag + 1) as? UILabel
-        opdDateLabel = self.view.viewWithTag(rcTag + 2) as? UILabel
-        
+            
+            cell.radioButton.addTarget(self, action: #selector(self.expandButtonClicked(sender:)), for: UIControlEvents.touchUpInside)
+            cell.radioButton.iconColor = UIColor.gray
+            cell.radioButton.indicatorColor = primaryColor
+            otherButtons.append(cell.radioButton)
+            cell.radioButton.otherButtons = otherButtons
+          //  cell.radioButton.isSelected = false
+            cell.selectionStyle = .none
 
-        // Configure the cell...
-        let listItem = listItems[indexPath.row]
-        deptDocNameLabel.text = listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM
-        deptDocNameLabel.textColor = UIColor.black
-        opdDateLabel.text = weekdayForm(dateString: listItem.opdDate.replacingOccurrences(of: "\n      ", with: ""))
-        opdDateLabel.textColor = UIColor.black
-        
-        if indexPath.row == 0 {
-            button = self.view.viewWithTag(rcTag + 3) as? DLRadioButton
-            button?.tag = indexPath.row
-            button?.addTarget(self, action: #selector(self.expandButtonClicked(sender:)), for: UIControlEvents.touchUpInside)
             print("if \(indexPath.row)" )
-            button?.iconColor = UIColor.gray
-            button?.indicatorColor = primaryColor
-        }else{
-            otherButton = self.view.viewWithTag(rcTag + 3) as? DLRadioButton
-            otherButton?.tag = indexPath.row
-            otherButton?.addTarget(self, action: #selector(self.expandButtonClicked(sender:)), for: UIControlEvents.touchUpInside)
-            otherButton?.iconColor = UIColor.gray
-            otherButton?.indicatorColor = primaryColor
-            print("else \(indexPath.row)")
-           // otherButtons.append(otherButton!)
-            //button.otherButtons = otherButtons
-            
+            return cell
         }
         
 
         
-        cell.selectionStyle = .none
-
-        
-        return cell
+        return UITableViewCell()
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         print(indexPath.row)
    
     }
+   
     
-    
-
 
     
     func expandButtonClicked(sender: UIButton) {
-        self.tbData.setEditing(false, animated: true)
         let btnTag = sender.tag
         let listItem = listItems[btnTag]
         
         print(listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM)
-        
 
-        
-        
-        
-        
     }
 
     

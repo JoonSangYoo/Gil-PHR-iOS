@@ -7,10 +7,18 @@
 //
 
 import Foundation
+import DLRadioButton
 
 class OPcell: UITableViewCell{
+    
+    let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
+
     
     @IBOutlet weak var opdDateLabel: UILabel!
     @IBOutlet weak var deptDocNameLabel: UILabel!
     
+    @IBOutlet weak var radioButton: DLRadioButton!
+
+
+
 }

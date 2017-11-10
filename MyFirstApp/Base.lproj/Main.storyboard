@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="i3k-Lu-BjP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="i3k-Lu-BjP">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -124,7 +124,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Chk-P3-tFg"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="XjR-7q-TDV">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P3W-xZ-4OK" customClass="GradientView" customModule="MyFirstApp" customModuleProvider="target">
@@ -305,7 +305,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Kvq-db-dcn"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="rJ5-0p-ebG">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZw-IX-3kh">
@@ -377,8 +377,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="선택된 진료의 진료과 및 의사로 
-곧바로 진료예약을 할 수 있습니다" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="56G-JB-1yO">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="선택된 진료의 진료과 및 의사로  곧바로 진료예약을 할 수 있습니다" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="56G-JB-1yO">
                                 <rect key="frame" x="30" y="25" width="210" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
@@ -443,6 +442,7 @@
                                                 <connections>
                                                     <outlet property="deptDocNameLabel" destination="GLg-9M-GG1" id="9hG-Yo-Gmg"/>
                                                     <outlet property="opdDateLabel" destination="E7r-IY-yNf" id="fxl-Xy-Guo"/>
+                                                    <outlet property="radioButton" destination="MNy-Ke-M49" id="MGy-su-aky"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -510,7 +510,7 @@
                         <viewControllerLayoutGuide type="bottom" id="zUg-E3-3Ou"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Gn4-5f-vD0">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QBv-AI-2hw">
@@ -629,7 +629,7 @@
                         <viewControllerLayoutGuide type="bottom" id="iHR-29-63g"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="57n-lP-nLT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MKa-2N-Occ">
@@ -1142,9 +1142,7 @@
         <image name="navImg1" width="114" height="115"/>
     </resources>
     <inferredMetricsTieBreakers>
-
         <segue reference="eWU-oK-MdI"/>
-
         <segue reference="Zmv-1m-H8X"/>
     </inferredMetricsTieBreakers>
 </document>
