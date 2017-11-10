@@ -9,7 +9,7 @@
 import Foundation
 import FSCalendar
 
-class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, XMLParserDelegate{
+class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var deptname: UILabel!
     @IBOutlet weak var deptdetail: UILabel!
@@ -32,6 +32,11 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     var search_month = ""
     var datesWithEvent: [String] = []
     var temp_month = ""
+    
+    var hhmm = String()
+    var closed = String()
+    var timelist = [timeList]()
+    var timeLB: UILabel!
     
     override func viewDidLoad() {
         event_dot()
@@ -63,54 +68,83 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     
     //날짜 선택
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print("calendar did select date \(self.formatter_second.string(from: date))")
+        print("timelist.count")
+        print(timelist.count)
+        print(datesWithEvent.contains(self.formatter.string(from: date)))
         if monthPosition == .previous || monthPosition == .next {
             calendar.setCurrentPage(date, animated: true)
         }
-        let xml_deptcd: String = deptlist[reserve_index-1].deptcd.replacingOccurrences(of: "\n  ", with: "")
-        let xml_docno: String = doctorlist[doctor_index].docno.replacingOccurrences(of: "\n", with: "")
-        
-        var time_postString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-        time_postString += "<request>"
-        time_postString += "<protocol>reservetime</protocol>"
-        time_postString += "<userid>\(UserDefault.load(key: UserDefaultKey.UD_id))</userid>"
-        time_postString += "<keycd>\(UserDefault.load(key: UserDefaultKey.UD_Key))</keycd>"
-        time_postString += "<deptcd>\(xml_deptcd)</deptcd>"
-        time_postString += "<docno>\(xml_docno)</docno>"
-        time_postString += "<yyyymmdd>"+self.formatter_second.string(from: date)+"</yyyymmdd>"
-        time_postString += "</request>"
-        
-        
-        HttpClient.requestXML(Xml: time_postString){ responseString in
-            let dataXML = responseString.data(using: .utf8)
+        if(datesWithEvent.contains(self.formatter.string(from: date)) == true){
+            let xml_deptcd: String = deptlist[reserve_index-1].deptcd.replacingOccurrences(of: "\n  ", with: "")
+            let xml_docno: String = doctorlist[doctor_index].docno.replacingOccurrences(of: "\n", with: "")
             
-            self.parser = XMLParser(data: dataXML!)
-            self.parser.delegate = self
+            var time_postString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+            time_postString += "<request>"
+            time_postString += "<protocol>reservetime</protocol>"
+            time_postString += "<userid>\(UserDefault.load(key: UserDefaultKey.UD_id))</userid>"
+            time_postString += "<keycd>\(UserDefault.load(key: UserDefaultKey.UD_Key))</keycd>"
+            time_postString += "<deptcd>\(xml_deptcd)</deptcd>"
+            time_postString += "<docno>\(xml_docno)</docno>"
+            time_postString += "<yyyymmdd>"+self.formatter_second.string(from: date)+"</yyyymmdd>"
+            time_postString += "</request>"
             
-            let success:Bool = self.parser.parse()
-            if success {
-                print("parse success!")
+            
+            HttpClient.requestXML(Xml: time_postString){ responseString in
+                let dataXML = responseString.data(using: .utf8)
                 
-                if self.st == "100"{        // 리스폰스 스테이터스가gfd 100(성공)일때
-                    DispatchQueue.main.async{
-                        self.calendar.dataSource = self
-                        self.calendar.delegate = self
-                        self.calendar.reloadData()
+                self.parser = XMLParser(data: dataXML!)
+                self.parser.delegate = self
+                
+                let success:Bool = self.parser.parse()
+                if success {
+                    print("parse success!")
+                    
+                    if self.st == "100"{        // 리스폰스 스테이터스가gfd 100(성공)일때
+                        DispatchQueue.main.async{
+                            self.time_tb.dataSource = self
+                            self.time_tb.delegate = self
+                            self.time_tb.reloadData()
+                            self.time_tb.tableFooterView = UIView()
+                        }
                     }
-                }
-                else if self.st == "202"{
-                    DispatchQueue.main.async{
+                    else if self.st == "202"{
+                        DispatchQueue.main.async{
+                        }
                     }
-                }
-                else{         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
-                    DispatchQueue.main.async{
+                    else{         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
+                        DispatchQueue.main.async{
+                        }
                     }
+                } else{
+                    print("parse failure!")
                 }
-            } else{
-                print("parse failure!")
+            
             }
         }
     }
+    //tableview
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return timelist.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "docCell")!
+        timeLB = cell.viewWithTag(41) as! UILabel
+        
+        let timeItem = timelist[indexPath.row]
+        
+        let rep_time: String = timeItem.hhmm.replacingOccurrences(of: "\n", with: "")
+        
+        timeLB.text = rep_time
+        cell.selectionStyle = .none
+        
+        return cell
+    }
+    
+    ////////////////////////////////////////////--tableview_end
     
     //페이지 전환
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
@@ -136,10 +170,13 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         currentElement = elementName
         if (elementName == "response") {
             st = attributeDict["status"]!
-            //datesWithEvent = Array<String>()
+            //datesWithEvent = Array<String>() 초기화
         }
         
-        
+        if (elementName == "times") {
+            hhmm = String()         // 의사직원코드
+            closed = String()
+        }
     }
     
     // string array add
@@ -150,6 +187,10 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         temp_month = search_month.substring(to: index)
         
         switch currentElement {
+        case "hhmm":
+            hhmm = hhmm + string
+        case "closed":
+            closed = closed + string
         case "d1":
             if(string == "Y"){
                 datesWithEvent.append(temp_month+"01")
@@ -301,6 +342,19 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         }
     }
     
+    // XML 파서가 종료 테그를 만나면 호출됨
+    public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?)
+    {
+        if (elementName == "times") {
+            let timeItem = timeList()
+            
+            //            timelist.hhmm = hhmm
+            //            timelist.closed = closed
+            
+            timelist.append(timeItem)
+        }
+    }
+    
     func event_dot(){
         /////////////특정날짜 dot표시
         let xml_deptcd: String = deptlist[reserve_index-1].deptcd.replacingOccurrences(of: "\n      ", with: "")
@@ -308,7 +362,7 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMM"
-        var dateString = dateFormatter.string(from: calendar.currentPage)
+        let dateString = dateFormatter.string(from: calendar.currentPage)/////var
         
         var postString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         postString += "<request>"
@@ -349,11 +403,8 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
                 print("parse failure!")
             }
         }
-        
         print(datesWithEvent)
     }
-    
-    
 }
 
 
