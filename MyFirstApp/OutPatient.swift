@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import DLRadioButton
 
 class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
     
@@ -33,9 +33,13 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     
     var deptDocNameLabel: UILabel!
     var opdDateLabel: UILabel!
-    var button: UIButton!
     
+    var button: DLRadioButton!
+    var otherButton: DLRadioButton!
     
+    var otherButtons : [DLRadioButton] = []
+
+    let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
     
     struct xmlWriter {             // xml 작성을 위한 구조체
         var prtc: String
@@ -196,33 +200,85 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "examCell", for: indexPath)
-//        let button = self.view.viewWithTag(rcTag + 3) as? UIButton
-//        
-//        button?.tag = indexPath.row
-//        button?.addTarget(self, action: #selector(self.expandButtonClicked(sender:)), for: UIControlEvents.touchUpInside)
         
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "opCell", for: indexPath) as? opCell{
+            
+        }
+
         
         deptDocNameLabel = self.view.viewWithTag(rcTag + 1) as? UILabel
         opdDateLabel = self.view.viewWithTag(rcTag + 2) as? UILabel
+        
+
         // Configure the cell...
         let listItem = listItems[indexPath.row]
-        deptDocNameLabel.text = listItem.deptNM + listItem.docNM
+        deptDocNameLabel.text = listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM
         deptDocNameLabel.textColor = UIColor.black
-        opdDateLabel.text = listItem.opdDate
+        opdDateLabel.text = weekdayForm(dateString: listItem.opdDate.replacingOccurrences(of: "\n      ", with: ""))
         opdDateLabel.textColor = UIColor.black
+        
+        if indexPath.row == 0 {
+            button = self.view.viewWithTag(rcTag + 3) as? DLRadioButton
+            button?.tag = indexPath.row
+            button?.addTarget(self, action: #selector(self.expandButtonClicked(sender:)), for: UIControlEvents.touchUpInside)
+            print("if \(indexPath.row)" )
+            button?.iconColor = UIColor.gray
+            button?.indicatorColor = primaryColor
+        }else{
+            otherButton = self.view.viewWithTag(rcTag + 3) as? DLRadioButton
+            otherButton?.tag = indexPath.row
+            otherButton?.addTarget(self, action: #selector(self.expandButtonClicked(sender:)), for: UIControlEvents.touchUpInside)
+            otherButton?.iconColor = UIColor.gray
+            otherButton?.indicatorColor = primaryColor
+            print("else \(indexPath.row)")
+           // otherButtons.append(otherButton!)
+            //button.otherButtons = otherButtons
+            
+        }
+        
+
+        
         cell.selectionStyle = .none
+
         
         return cell
     }
     
-//    func expandButtonClicked(sender: UIButton) {
-//        let btnTag = sender.tag
-//        let listItem = listItems[btnTag]
-//        UserDefault.save(key: UserDefaultKey.UD_tempURL , value: listItem.reqURL)
-//        print(UserDefault.load(key: UserDefaultKey.UD_tempURL))
-//        performSegue(withIdentifier: "segExam", sender: self)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print(indexPath.row)
+   
+    }
+    
+    
+
+
+    
+    func expandButtonClicked(sender: UIButton) {
+        self.tbData.setEditing(false, animated: true)
+        let btnTag = sender.tag
+        let listItem = listItems[btnTag]
+        
+        print(listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM)
+        
+
+        
+        
+        
+        
+    }
+
+    
+//    private func createRadioButton(frame : CGRect, tag: Int) -> DLRadioButton {
+//      
+//        let radioButton = DLRadioButton(frame: frame)
+//        radioButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.left
+//        radioButton.addTarget(self, action: #selector(self.btnAction(_:)), for: UIControlEvents.touchUpInside)
+//        self.view.addSubview(radioButton)
+//        
+//        return radioButton
 //    }
+
     
     
     

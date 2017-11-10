@@ -122,7 +122,6 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         recentItem = [recentlist]()
-        check = "1"
         idField = self.view.viewWithTag(loginTag + 1) as? UITextField
         pwField = self.view.viewWithTag(loginTag + 2) as? UITextField
         
