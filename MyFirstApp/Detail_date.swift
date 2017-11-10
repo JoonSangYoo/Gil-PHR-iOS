@@ -8,7 +8,9 @@
 
 import Foundation
 import FSCalendar
-
+var timelist = [timeList]()
+var time_index = 0
+var select_Date = ""
 class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var deptname: UILabel!
@@ -26,6 +28,12 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         return formatter
     }()
     
+    fileprivate let formatter_third: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        return formatter
+    }()
+    
     var parser = XMLParser()        // 파서 객체
     var currentElement = ""       // 현재 Element
     var st = ""                   //statuscode 구분
@@ -35,19 +43,31 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     
     var hhmm = String()
     var closed = String()
-    var timelist = [timeList]()
     var timeLB: UILabel!
     
+    var xml_deptcd = String()
+    var xml_doctor = String()
     override func viewDidLoad() {
         event_dot()
-        print(datesWithEvent)
         
-        let doctor = doctorlist[doctor_index]
-        let rep_deptnm: String = deptlist[reserve_index-1].deptnm.replacingOccurrences(of: "\n      ",with: "")
-        let rep_docnm: String = doctor.docnm.replacingOccurrences(of:"\n      ", with:"")
-        let rep_main: String = doctor.main.replacingOccurrences(of:"\n    ", with:"")
-        deptname.text = "   " + rep_deptnm + " " + rep_docnm + " 교수"
-        deptdetail.text = "   " + rep_main
+        if(plag_rec == 1  && reserve_index == 0){
+            let rep_deptnm: String = lastdeptnm.replacingOccurrences(of: "\n  ",with: "")
+            let rep_docnm: String = lastdocnm.replacingOccurrences(of:"\n  ", with:"")
+            let rep_main: String = lastmain.replacingOccurrences(of:"\n", with:"")
+            deptname.text = rep_deptnm + " " + rep_docnm + " 교수"
+            deptdetail.text = rep_main
+            
+            print(rep_deptnm + rep_docnm + rep_main)
+        }
+        else{
+            print("okokok")
+            let doctor = doctorlist[doctor_index]
+            let rep_deptnm: String = deptlist[reserve_index-1].deptnm.replacingOccurrences(of: "\n      ",with: "")
+            let rep_docnm: String = doctor.docnm.replacingOccurrences(of:"\n      ", with:"")
+            let rep_main: String = doctor.main.replacingOccurrences(of:"\n    ", with:"")
+            deptname.text = "   " + rep_deptnm + " " + rep_docnm + " 교수"
+            deptdetail.text = "   " + rep_main
+        }
         ///////////////////theme-----------------------------------------
         self.calendar.appearance.weekdayTextColor = UIColor.blue
         self.calendar.appearance.headerTitleColor = UIColor.darkGray
@@ -68,15 +88,20 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     
     //날짜 선택
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print("timelist.count")
-        print(timelist.count)
-        print(datesWithEvent.contains(self.formatter.string(from: date)))
+        select_Date = weekdayForm(dateString: self.formatter_third.string(from: date))
         if monthPosition == .previous || monthPosition == .next {
             calendar.setCurrentPage(date, animated: true)
         }
         if(datesWithEvent.contains(self.formatter.string(from: date)) == true){
-            let xml_deptcd: String = deptlist[reserve_index-1].deptcd.replacingOccurrences(of: "\n  ", with: "")
-            let xml_docno: String = doctorlist[doctor_index].docno.replacingOccurrences(of: "\n", with: "")
+            if(plag_rec == 1  && reserve_index == 0){
+                xml_deptcd = lastdeptcd.replacingOccurrences(of: "\n  ", with: "")
+                xml_doctor = lastdocno.replacingOccurrences(of: "\n  ", with: "")
+                
+            }
+            else{
+                xml_deptcd = deptlist[reserve_index-1].deptcd.replacingOccurrences(of: "\n      ", with: "")
+                xml_doctor = doctorlist[doctor_index].docno.replacingOccurrences(of: "\n      ", with: "")
+            }
             
             var time_postString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             time_postString += "<request>"
@@ -84,7 +109,7 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
             time_postString += "<userid>\(UserDefault.load(key: UserDefaultKey.UD_id))</userid>"
             time_postString += "<keycd>\(UserDefault.load(key: UserDefaultKey.UD_Key))</keycd>"
             time_postString += "<deptcd>\(xml_deptcd)</deptcd>"
-            time_postString += "<docno>\(xml_docno)</docno>"
+            time_postString += "<docno>\(xml_doctor)</docno>"
             time_postString += "<yyyymmdd>"+self.formatter_second.string(from: date)+"</yyyymmdd>"
             time_postString += "</request>"
             
@@ -118,9 +143,10 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
                 } else{
                     print("parse failure!")
                 }
-            
+                
             }
         }
+        time_tb.setContentOffset(CGPoint.zero, animated:true)
     }
     //tableview
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -128,20 +154,43 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return timelist.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "docCell")!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "time_cell")!
+        
         timeLB = cell.viewWithTag(41) as! UILabel
         
         let timeItem = timelist[indexPath.row]
         
-        let rep_time: String = timeItem.hhmm.replacingOccurrences(of: "\n", with: "")
+        let rep_time: String = timeItem.hhmm.replacingOccurrences(of: "\n      ", with: "")
+        let rep_closed: String = timeItem.closed.replacingOccurrences(of: "\n    ", with: "")
+        let end_time =  UIColor(red: 202/255.0, green: 202/255.0, blue: 202/255.0, alpha: 1.0).cgColor
         
-        timeLB.text = rep_time
-        cell.selectionStyle = .none
+        
+        if(rep_closed == "Y")
+        {
+            timeLB.textColor = UIColor(cgColor: end_time)
+            timeLB.text = "[마감]" + rep_time
+            cell.selectionStyle = .none
+        }
+        if(rep_closed == "N")
+        {
+            timeLB.textColor = UIColor.black
+            timeLB.text = rep_time
+            cell.selectionStyle = .none
+        }
+        
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        time_index = indexPath.row
+        if(timelist[time_index].closed == "N\n    "){
+            performSegue(withIdentifier: "last_view" , sender: self)
+        }
     }
     
     ////////////////////////////////////////////--tableview_end
@@ -170,11 +219,13 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         currentElement = elementName
         if (elementName == "response") {
             st = attributeDict["status"]!
-            //datesWithEvent = Array<String>() 초기화
         }
-        
-        if (elementName == "times") {
-            hhmm = String()         // 의사직원코드
+        if(elementName == "times"){
+            
+            timelist = Array<timeList>()///시간 배열 초기화
+        }
+        if (elementName == "time") {
+            hhmm = String()
             closed = String()
         }
     }
@@ -319,6 +370,20 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         }
     }
     
+    // XML 파서가 종료 테그를 만나면 호출됨
+    public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?)
+    {
+        if (elementName == "time") {
+            let timeItem = timeList()
+            
+            timeItem.hhmm = hhmm
+            timeItem.closed = closed
+            
+            timelist.append(timeItem)
+        }
+    }
+    
+    
     struct xmlWriter {             // xml 작성을 위한 구조체
         var prtc: String
         
@@ -342,24 +407,20 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         }
     }
     
-    // XML 파서가 종료 테그를 만나면 호출됨
-    public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?)
-    {
-        if (elementName == "times") {
-            let timeItem = timeList()
-            
-            //            timelist.hhmm = hhmm
-            //            timelist.closed = closed
-            
-            timelist.append(timeItem)
-        }
-    }
+    
     
     func event_dot(){
         /////////////특정날짜 dot표시
-        let xml_deptcd: String = deptlist[reserve_index-1].deptcd.replacingOccurrences(of: "\n      ", with: "")
-        let xml_doctor: String = doctorlist[doctor_index].docno.replacingOccurrences(of: "\n      ", with: "")
         
+        if(plag_rec == 1  && reserve_index == 0){
+            xml_deptcd = lastdeptcd.replacingOccurrences(of: "\n  ", with: "")
+            xml_doctor = lastdocno.replacingOccurrences(of: "\n  ", with: "")
+            
+        }
+        else{
+            xml_deptcd = deptlist[reserve_index-1].deptcd.replacingOccurrences(of: "\n      ", with: "")
+            xml_doctor = doctorlist[doctor_index].docno.replacingOccurrences(of: "\n      ", with: "")
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMM"
         let dateString = dateFormatter.string(from: calendar.currentPage)/////var
@@ -404,6 +465,47 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
             }
         }
         print(datesWithEvent)
+    }
+    
+    func weekdayForm(dateString: String) -> String {
+        let df: DateFormatter = DateFormatter()
+        df.dateFormat = "yyyyMMdd"
+        var weekFormDate: String = ""
+        let cal = Calendar(identifier: .gregorian)
+        if dateString == "" {
+            return ""
+        }else{
+            
+            
+            let formDate = df.date(from: dateString)
+            var comps = cal.dateComponents([.weekday], from: formDate!)
+            
+            df.dateFormat = "yyyy년 MM월 dd일"
+            
+            switch comps.weekday! {
+                
+            case 1:
+                weekFormDate = "\(df.string(from: formDate!))(일)"
+            case 2:
+                weekFormDate = "\(df.string(from: formDate!))(월)"
+            case 3:
+                weekFormDate = "\(df.string(from: formDate!))(화)"
+            case 4:
+                weekFormDate = "\(df.string(from: formDate!))(수)"
+            case 5:
+                weekFormDate = "\(df.string(from: formDate!))(목)"
+            case 6:
+                weekFormDate = "\(df.string(from: formDate!))(금)"
+            case 7:
+                weekFormDate = "\(df.string(from: formDate!))(토)"
+                
+                
+            default:break
+            }
+            
+            
+            return weekFormDate
+        }
     }
 }
 

@@ -9,10 +9,19 @@
 import Foundation
 import UIKit
 
+var lastdeptcd = ""  //진료과코드
+var lastdeptnm = ""   //wlsfyrhkaud
+var lastdate = ""     //진료일
+var lastdocno = ""    //의사코드
+var lastdocnm = ""        //의사명
+var lastesp = ""      // 특진 구분
+var lastmain = ""        //진료분야
+
 var deptlist = [Reslist]() // 진료과 목록 조회
 var recentItem = [recentlist]() //최근 진료기록
 var reserve_index = 0
 var plag_mobileres = 0
+var plag_rec = 0
 
 class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate{
     @IBOutlet weak var resTable: UITableView!
@@ -31,13 +40,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     var deptdesc = String()     //진료과 설명
     
     //최근 진료 기록
-    var lastdeptcd = ""  //진료과코드
-    var lastdeptnm = ""   //wlsfyrhkaud
-    var lastdate = ""     //진료일
-    var lastdocno = ""    //의사코드
-    var lastdocnm = ""        //의사명
-    var lastesp = ""      // 특진 구분
-    var lastmain = ""        //진료분야
+    
     
     var st = ""                 // 스테이터스 값 변수
     
@@ -110,8 +113,6 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        http_request(request_code: "lastopd_search")
-        
         if(deptlist.count==0){
             http_request(request_code: "deptlist_search")
         }
@@ -122,6 +123,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             self.resTable.tableFooterView = UIView()
             self.resTable.isHidden = false
         }
+        http_request(request_code: "lastopd_search")
         
         resTable.rowHeight = UITableViewAutomaticDimension
         resTable.estimatedRowHeight = 100
@@ -258,6 +260,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
                 
                 deptnmLabel.text = "최근 진료내역으로 예약"
                 deptdesctextview.text = "진료일 : \(weekdayForm(dateString: repdate)) \n진료과 : \(repdeptnm)  \(repdocnm) 교수\n"
+                plag_rec = 1
             }
             
         }
@@ -275,9 +278,9 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             }
             deptdesctextview.textColor = UIColor.black
             
-            self.deptdesctextview.addGestureRecognizer(UITapGestureRecognizer(target: self, action:  #selector (self.checkAction(sender: ))))
+            
         }
-        
+        self.deptdesctextview.addGestureRecognizer(UITapGestureRecognizer(target: self, action:  #selector (self.checkAction(sender: ))))
         cell.selectionStyle = .none
         
         return cell
@@ -290,8 +293,18 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         let test_indexPath = self.resTable.indexPathForRow(at: tapLocation)
         
         reserve_index = (test_indexPath?.row)!
+        let cell = resTable.dequeueReusableCell(withIdentifier: "Reservcell")
         
-        performSegue(withIdentifier: "Detail_doctor" , sender: self)
+        if(reserve_index == 0){
+            cell?.selectionStyle = .none
+            if(lastdeptnm != ""){
+                performSegue(withIdentifier: "Recent_date" , sender: self)
+            }
+        }
+        else{
+            performSegue(withIdentifier: "Detail_doctor" , sender: self)
+        }
+        
     }
     
     
@@ -299,19 +312,17 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         reserve_index = indexPath.row
-        
-        if(reserve_index == 0){
-            if(recentItem[0].esp == ""){
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ReservCell")!
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
-            }else{
-                performSegue(withIdentifier: "Recent_date" , sender: self)
-            }
+        if(plag_rec == 1){
+            performSegue(withIdentifier: "Recent_date" , sender: self)
         }
-        else{
-            performSegue(withIdentifier: "Detail_doctor" , sender: self)
-            
-            
+        if(plag_rec == 0){
+            if(reserve_index == 0){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ReservCell")!
+                cell.selectionStyle = .none
+            }
+            else{
+                performSegue(withIdentifier: "Detail_doctor" , sender: self)
+            }
         }
     }
     
@@ -382,7 +393,6 @@ extension String {
         return substring(with: startIndex..<endIndex)
     }
 }
-
 
 
 

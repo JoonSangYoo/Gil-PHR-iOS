@@ -1,13 +1,13 @@
  //
-//  Detail_doctor.swift
-//  MyFirstApp
-//
-//  Created by 조윤성 on 2017. 10. 30..
-//  Copyright © 2017년 Joonsang Yoo. All rights reserved.
-//
-
-import Foundation
-import UIKit
+ //  Detail_doctor.swift
+ //  MyFirstApp
+ //
+ //  Created by 조윤성 on 2017. 10. 30..
+ //  Copyright © 2017년 Joonsang Yoo. All rights reserved.
+ //
+ 
+ import Foundation
+ import UIKit
  
  var doctor_index = 0
  let receive_deptcd = deptlist[reserve_index-1].deptcd
@@ -61,6 +61,7 @@ import UIKit
                         self.DoctorTB.delegate = self
                         self.DoctorTB.reloadData()
                         self.DoctorTB.tableFooterView = UIView()
+                        
                     }
                     
                 }
@@ -199,7 +200,7 @@ import UIKit
         doctor_index = indexPath.row
         
         print(indexPath.row)
-            performSegue(withIdentifier: "Detail_date" , sender: self)
+        performSegue(withIdentifier: "Detail_date" , sender: self)
     }
     
     
@@ -223,6 +224,7 @@ import UIKit
         default:break
             
         }
-        
     }
-}
+ }
+ 
+

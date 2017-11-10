@@ -226,13 +226,7 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
         }
         
 
-        
-<<<<<<< HEAD
-        
 
-        
-=======
->>>>>>> 5678f7b7edb04a9c49b11c9d499a227433317c88
         return UITableViewCell()
     }
     
