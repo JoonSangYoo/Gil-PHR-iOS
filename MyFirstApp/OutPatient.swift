@@ -238,10 +238,10 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
         
 
         
-        cell.selectionStyle = .none
+        
 
         
-        return cell
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
