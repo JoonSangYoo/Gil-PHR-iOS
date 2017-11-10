@@ -15,6 +15,7 @@
 		462C33F31FB14FE3002375AB /* MobileCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C33F21FB14FE3002375AB /* MobileCard.swift */; };
 		462C33F51FB18D6D002375AB /* OutPatient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C33F41FB18D6D002375AB /* OutPatient.swift */; };
 		462C33F91FB2D9C3002375AB /* OPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C33F81FB2D9C3002375AB /* OPlist.swift */; };
+		462C33FB1FB51B88002375AB /* OPcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C33FA1FB51B88002375AB /* OPcell.swift */; };
 		4648C90A1F392EEA004EB270 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648C9091F392EEA004EB270 /* MainView.swift */; };
 		464F8BB21F43D2DE008F81E0 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464F8BB11F43D2DE008F81E0 /* GradientView.swift */; };
 		465378DF1F7C6B1E00E9BBA4 /* UserDefaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465378DE1F7C6B1E00E9BBA4 /* UserDefaultKey.swift */; };
@@ -43,6 +44,7 @@
 		F78200881F99DED10039D390 /* mobile_reserve.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78200871F99DED10039D390 /* mobile_reserve.swift */; };
 		F782008A1F99E17B0039D390 /* Reslist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78200891F99E17B0039D390 /* Reslist.swift */; };
 		F7A668D21FA80D6D00B51FAE /* doctorList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A668D11FA80D6D00B51FAE /* doctorList.swift */; };
+		F7D40DFA1FB521A500FB168D /* timeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D40DF91FB521A500FB168D /* timeList.swift */; };
 		F7D6E7851FAFF7AB00226B7D /* FSCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7D6E7841FAFF7AB00226B7D /* FSCalendar.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +79,7 @@
 		462C33F21FB14FE3002375AB /* MobileCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MobileCard.swift; sourceTree = "<group>"; };
 		462C33F41FB18D6D002375AB /* OutPatient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutPatient.swift; sourceTree = "<group>"; };
 		462C33F81FB2D9C3002375AB /* OPlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OPlist.swift; sourceTree = "<group>"; };
+		462C33FA1FB51B88002375AB /* OPcell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OPcell.swift; sourceTree = "<group>"; };
 		4648C9091F392EEA004EB270 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		464F8BB11F43D2DE008F81E0 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		465378DE1F7C6B1E00E9BBA4 /* UserDefaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultKey.swift; sourceTree = "<group>"; };
@@ -111,6 +114,7 @@
 		F78200871F99DED10039D390 /* mobile_reserve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mobile_reserve.swift; sourceTree = "<group>"; };
 		F78200891F99E17B0039D390 /* Reslist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reslist.swift; sourceTree = "<group>"; };
 		F7A668D11FA80D6D00B51FAE /* doctorList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = doctorList.swift; sourceTree = "<group>"; };
+		F7D40DF91FB521A500FB168D /* timeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = timeList.swift; sourceTree = "<group>"; };
 		F7D6E7841FAFF7AB00226B7D /* FSCalendar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FSCalendar.framework; path = Carthage/Build/iOS/FSCalendar.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -230,6 +234,7 @@
 				462C33F21FB14FE3002375AB /* MobileCard.swift */,
 				462C33F41FB18D6D002375AB /* OutPatient.swift */,
 				462C33F81FB2D9C3002375AB /* OPlist.swift */,
+				462C33FA1FB51B88002375AB /* OPcell.swift */,
 			);
 			path = MyFirstApp;
 			sourceTree = "<group>";
@@ -255,6 +260,7 @@
 				F76EF86E1F9DCFFF002F34AC /* Reservation_result.swift */,
 				F78200891F99E17B0039D390 /* Reslist.swift */,
 				F76EF8701F9DD55E002F34AC /* Resresult.swift */,
+				F7D40DF91FB521A500FB168D /* timeList.swift */,
 			);
 			name = reservation;
 			sourceTree = "<group>";
@@ -484,12 +490,14 @@
 				465378E11F7CDB2900E9BBA4 /* MedicalExam.swift in Sources */,
 				F7A668D21FA80D6D00B51FAE /* doctorList.swift in Sources */,
 				4681FE111F6130150038E307 /* CustomNavSegue.swift in Sources */,
+				462C33FB1FB51B88002375AB /* OPcell.swift in Sources */,
 				46720BA81F039199004AE4A8 /* ViewController.swift in Sources */,
 				462C33F31FB14FE3002375AB /* MobileCard.swift in Sources */,
 				46578ABE1F947C36007CDA36 /* TagNumList.swift in Sources */,
 				46C3989D1F6FAB3700368C01 /* Record.swift in Sources */,
 				F780C2A21FA00D730024C768 /* recentlist.swift in Sources */,
 				4648C90A1F392EEA004EB270 /* MainView.swift in Sources */,
+				F7D40DFA1FB521A500FB168D /* timeList.swift in Sources */,
 				464F8BB21F43D2DE008F81E0 /* GradientView.swift in Sources */,
 				46720BA61F039199004AE4A8 /* AppDelegate.swift in Sources */,
 				F76EF8711F9DD55E002F34AC /* Resresult.swift in Sources */,
