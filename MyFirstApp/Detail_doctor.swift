@@ -38,6 +38,10 @@
     var doc_pic: UIImageView!
     
     override func viewDidLoad() {
+//        if(plag_rec == 1  && reserve_index == 0){
+//            performSegue(withIdentifier: "Detail_date" , sender: self)
+//        }
+        self.navigationController?.navigationBar.isHidden = true
         super.viewDidLoad()
         doctorlist = [doctorList]()
         self.title = deptlist[reserve_index-1].deptnm

@@ -17,6 +17,9 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     @IBOutlet weak var deptdetail: UILabel!
     @IBOutlet weak var time_tb: UITableView!
     
+    @IBAction func back(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
     fileprivate let formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd"
@@ -48,25 +51,22 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     var xml_deptcd = String()
     var xml_doctor = String()
     override func viewDidLoad() {
+        self.tabBarController?.tabBar.isHidden = true
         event_dot()
-        
         if(plag_rec == 1  && reserve_index == 0){
             let rep_deptnm: String = lastdeptnm.replacingOccurrences(of: "\n  ",with: "")
             let rep_docnm: String = lastdocnm.replacingOccurrences(of:"\n  ", with:"")
             let rep_main: String = lastmain.replacingOccurrences(of:"\n", with:"")
             deptname.text = rep_deptnm + " " + rep_docnm + " 교수"
             deptdetail.text = rep_main
-            
-            print(rep_deptnm + rep_docnm + rep_main)
-        }
+}
         else{
-            print("okokok")
             let doctor = doctorlist[doctor_index]
             let rep_deptnm: String = deptlist[reserve_index-1].deptnm.replacingOccurrences(of: "\n      ",with: "")
             let rep_docnm: String = doctor.docnm.replacingOccurrences(of:"\n      ", with:"")
             let rep_main: String = doctor.main.replacingOccurrences(of:"\n    ", with:"")
-            deptname.text = "   " + rep_deptnm + " " + rep_docnm + " 교수"
-            deptdetail.text = "   " + rep_main
+            deptname.text =  rep_deptnm + " " + rep_docnm + " 교수"
+            deptdetail.text = rep_main
         }
         ///////////////////theme-----------------------------------------
         self.calendar.appearance.weekdayTextColor = UIColor.blue
