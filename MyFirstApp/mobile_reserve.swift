@@ -25,6 +25,7 @@ var plag_rec = 0
 
 class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate{
     @IBOutlet weak var resTable: UITableView!
+    var activityindicator : UIActivityIndicatorView = UIActivityIndicatorView()
     
     var check = "1"
     var parser = XMLParser()        // 파서 객체
@@ -67,7 +68,12 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     
     
     func http_request(request_code: String){
-        
+        activityindicator.center = self.view.center
+        activityindicator.hidesWhenStopped = true
+        activityindicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        view.addSubview(activityindicator)
+        activityindicator.startAnimating()
+        UIApplication.shared.endIgnoringInteractionEvents()
         if(request_code == "deptlist_search"){
             postString = xmlWriter(prtc: "reendept").xmlString()
         }
@@ -108,6 +114,8 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             } else{
                 print("parse failure!")
             }
+            
+            
         }
     }
     
@@ -135,6 +143,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         self.tabBarController?.tabBar.isHidden = false
         // Hide the navigation bar on the this view controller
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.navigationController?.navigationBar.topItem?.title = ""
     }
     
     override func didReceiveMemoryWarning() {
@@ -175,6 +184,9 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             deptcd = String()
             deptnm = String()
             deptdesc = String()
+        }
+        if(elementName == "depts"){
+            deptlist = Array<Reslist>()
         }
     }
     // 현재 테그에 담겨있는 문자열 전달
@@ -221,6 +233,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?)
     {
         
+        
         if (elementName == "dept") {
             let listItem = Reslist()
             listItem.deptcd = deptcd
@@ -237,12 +250,13 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 31
+        return deptlist.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReservCell")!
-        
+        activityindicator.stopAnimating()
+        UIApplication.shared.endIgnoringInteractionEvents()
         deptnmLabel = cell.viewWithTag(31) as! UILabel
         deptdesctextview = cell.viewWithTag(32) as! UITextView
         

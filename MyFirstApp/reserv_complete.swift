@@ -39,20 +39,23 @@ class reserv_complete : UIViewController{
         else{
             lb_main = doctorlist[doctor_index].main.replacingOccurrences(of: "\n    ", with: "")
             lb_esp = doctorlist[doctor_index].esp.replacingOccurrences(of: "\n     ", with: "")
-            lb_docnm = doctorlist[doctor_index].docnm.replacingOccurrences(of:"\n  ", with:"")
+            lb_docnm = doctorlist[doctor_index].docnm.replacingOccurrences(of:"\n     ", with:"")
             lb_deptnm = deptlist[reserve_index-1].deptnm
+            print(lb_docnm)
+            //고기동고기동
+            //황인철
         }
         
-        deptnmLB.text = "  \(lb_deptnm)"
-        dateLB.text = "  " + select_Date + "  " + timelist[time_index].hhmm
-        docnmLB.text = "  \(lb_docnm) 교수"
+        deptnmLB.text = "    \(lb_deptnm)"
+        dateLB.text = "    " + select_Date + "  " + timelist[time_index].hhmm
+        docnmLB.text = "    \(lb_docnm) 교수"
         //10특진 20 일반
         var erp_txt = ""
         if(lb_esp == "20"){ erp_txt = "일반진료" }
         else{ erp_txt = "선택진료" }
-        espLB.text = "  " + erp_txt
+        espLB.text = "    " + erp_txt
         /////////
-        mainLB.text = "  " + lb_main
+        mainLB.text = "    " + lb_main
     }
 }
 

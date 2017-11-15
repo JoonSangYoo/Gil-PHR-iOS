@@ -12,14 +12,12 @@ var timelist = [timeList]()
 var time_index = 0
 var select_Date = ""
 class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
+    var activityindicator : UIActivityIndicatorView = UIActivityIndicatorView()
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var deptname: UILabel!
     @IBOutlet weak var deptdetail: UILabel!
     @IBOutlet weak var time_tb: UITableView!
     
-    @IBAction func back(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
-    }
     fileprivate let formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd"
@@ -33,7 +31,7 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     
     fileprivate let formatter_third: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyyMMdd"
+        formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
     
@@ -53,13 +51,14 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     override func viewDidLoad() {
         self.tabBarController?.tabBar.isHidden = true
         event_dot()
+        
         if(plag_rec == 1  && reserve_index == 0){
             let rep_deptnm: String = lastdeptnm.replacingOccurrences(of: "\n  ",with: "")
             let rep_docnm: String = lastdocnm.replacingOccurrences(of:"\n  ", with:"")
             let rep_main: String = lastmain.replacingOccurrences(of:"\n", with:"")
             deptname.text = rep_deptnm + " " + rep_docnm + " 교수"
             deptdetail.text = rep_main
-}
+        }
         else{
             let doctor = doctorlist[doctor_index]
             let rep_deptnm: String = deptlist[reserve_index-1].deptnm.replacingOccurrences(of: "\n      ",with: "")
@@ -71,10 +70,12 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         ///////////////////theme-----------------------------------------
         self.calendar.appearance.weekdayTextColor = UIColor.blue
         self.calendar.appearance.headerTitleColor = UIColor.darkGray
-        self.calendar.appearance.selectionColor = UIColor.gray
-        self.calendar.appearance.headerDateFormat = "yyyy-MM";
-        self.calendar.appearance.todayColor = UIColor.red
-        self.calendar.appearance.headerMinimumDissolvedAlpha = 0.0
+        self.calendar.appearance.headerDateFormat = "yyyy년 MM월";
+        self.calendar.appearance.todayColor = UIColor.clear
+        self.calendar.appearance.titleTodayColor = UIColor.black
+        self.calendar.appearance.headerMinimumDissolvedAlpha = 1.0
+        self.calendar.appearance.eventDefaultColor = UIColor.red
+        
         let now = NSDate()
         let dateFormat_now = DateFormatter()
         dateFormat_now.dateFormat = "yyyy/MM/dd"
@@ -86,13 +87,34 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.tabBarController?.tabBar.isHidden = true
+        //self.navigationController?.navigationBar.isHidden = true
+        let background_color =  UIColor(red: 204/255.0, green: 221/255.0, blue: 252/255.0, alpha: 1.0).cgColor
+        self.navigationController?.navigationBar.backgroundColor = UIColor(cgColor: background_color)
+        self.navigationController?.navigationBar.tintColor = UIColor .black
+
+    }
+    
     //날짜 선택
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        select_Date = weekdayForm(dateString: self.formatter_third.string(from: date))
+        timelist = Array<timeList>()///시간 배열 초기화
+        self.time_tb.dataSource = self
+        self.time_tb.delegate = self
+        self.time_tb.reloadData()
+        self.time_tb.tableFooterView = UIView()
+        select_Date = weekdayForm(dateString: self.formatter_second.string(from: date))
         if monthPosition == .previous || monthPosition == .next {
             calendar.setCurrentPage(date, animated: true)
         }
         if(datesWithEvent.contains(self.formatter.string(from: date)) == true){
+            activityindicator.center = self.time_tb.center
+            activityindicator.hidesWhenStopped = true
+            activityindicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+            view.addSubview(activityindicator)
+            activityindicator.startAnimating()
+            UIApplication.shared.endIgnoringInteractionEvents()
             if(plag_rec == 1  && reserve_index == 0){
                 xml_deptcd = lastdeptcd.replacingOccurrences(of: "\n  ", with: "")
                 xml_doctor = lastdocno.replacingOccurrences(of: "\n  ", with: "")
@@ -145,6 +167,9 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
                 }
                 
             }
+        }else{
+            timelist = Array<timeList>()///시간 배열 초기화
+            self.time_tb.reloadData()
         }
         time_tb.setContentOffset(CGPoint.zero, animated:true)
     }
@@ -159,7 +184,8 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "time_cell")!
-        
+        activityindicator.stopAnimating()
+        UIApplication.shared.endIgnoringInteractionEvents()
         timeLB = cell.viewWithTag(41) as! UILabel
         
         let timeItem = timelist[indexPath.row]
@@ -194,7 +220,6 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
     }
     
     ////////////////////////////////////////////--tableview_end
-    
     //페이지 전환
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         event_dot()
@@ -208,10 +233,12 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         }
         return 0
     }
-    
+
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventColorFor date: Date) -> UIColor? {
-        return UIColor.purple
+        return UIColor.red
     }
+
+    
     
     //xml parsing start
     public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:])
@@ -406,7 +433,6 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
             return xml
         }
     }
-    
     
     
     func event_dot(){

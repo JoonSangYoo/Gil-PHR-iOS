@@ -24,6 +24,7 @@ class MaintabController : UITabBarController{
     @IBOutlet weak var resTab: UITabBar!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = true
         let appearance = UITabBarItem.appearance()
         let attributes: [String: AnyObject] = [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14.0)]
         appearance.setTitleTextAttributes(attributes, for: .normal)
