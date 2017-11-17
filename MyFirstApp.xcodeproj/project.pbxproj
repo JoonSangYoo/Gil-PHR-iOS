@@ -16,6 +16,13 @@
 		462C33F51FB18D6D002375AB /* OutPatient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C33F41FB18D6D002375AB /* OutPatient.swift */; };
 		462C33F91FB2D9C3002375AB /* OPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C33F81FB2D9C3002375AB /* OPlist.swift */; };
 		462C33FB1FB51B88002375AB /* OPcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C33FA1FB51B88002375AB /* OPcell.swift */; };
+		462C34071FB91AA1002375AB /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462C34061FB91AA1002375AB /* SWRevealViewController.m */; };
+		462C34091FB91B8A002375AB /* LTHRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C34081FB91B8A002375AB /* LTHRadioButton.swift */; };
+		462C340B1FBAB01F002375AB /* Hospitalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C340A1FBAB01F002375AB /* Hospitalization.swift */; };
+		462C340D1FBAB129002375AB /* HTcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C340C1FBAB129002375AB /* HTcell.swift */; };
+		462C340F1FBAB7C3002375AB /* HTlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C340E1FBAB7C3002375AB /* HTlist.swift */; };
+		462C34111FBBCDBC002375AB /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C34101FBBCDBC002375AB /* PaddingLabel.swift */; };
+		462C34131FBD620A002375AB /* RecordDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C34121FBD620A002375AB /* RecordDetail.swift */; };
 		4648C90A1F392EEA004EB270 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648C9091F392EEA004EB270 /* MainView.swift */; };
 		464F8BB21F43D2DE008F81E0 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464F8BB11F43D2DE008F81E0 /* GradientView.swift */; };
 		465378DF1F7C6B1E00E9BBA4 /* UserDefaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465378DE1F7C6B1E00E9BBA4 /* UserDefaultKey.swift */; };
@@ -43,7 +50,6 @@
 		F78200881F99DED10039D390 /* mobile_reserve.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78200871F99DED10039D390 /* mobile_reserve.swift */; };
 		F782008A1F99E17B0039D390 /* Reslist.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78200891F99E17B0039D390 /* Reslist.swift */; };
 		F7A668D21FA80D6D00B51FAE /* doctorList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A668D11FA80D6D00B51FAE /* doctorList.swift */; };
-		F7CD7BE41FB59F47009973FD /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CD7BE21FB59EDE009973FD /* SWRevealViewController.m */; };
 		F7CD7BE61FB5A06D009973FD /* reserv_complete.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CD7BE51FB5A06D009973FD /* reserv_complete.swift */; };
 		F7D40DFA1FB521A500FB168D /* timeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D40DF91FB521A500FB168D /* timeList.swift */; };
 		F7D6E7851FAFF7AB00226B7D /* FSCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7D6E7841FAFF7AB00226B7D /* FSCalendar.framework */; };
@@ -81,6 +87,14 @@
 		462C33F41FB18D6D002375AB /* OutPatient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutPatient.swift; sourceTree = "<group>"; };
 		462C33F81FB2D9C3002375AB /* OPlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OPlist.swift; sourceTree = "<group>"; };
 		462C33FA1FB51B88002375AB /* OPcell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OPcell.swift; sourceTree = "<group>"; };
+		462C34051FB91AA1002375AB /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = "../../../../Downloads/SWRevealViewController-master/SWRevealViewController/SWRevealViewController.h"; sourceTree = "<group>"; };
+		462C34061FB91AA1002375AB /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = "../../../../Downloads/SWRevealViewController-master/SWRevealViewController/SWRevealViewController.m"; sourceTree = "<group>"; };
+		462C34081FB91B8A002375AB /* LTHRadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LTHRadioButton.swift; path = "../../../../Downloads/LTHRadioButton-master/source/LTHRadioButton.swift"; sourceTree = "<group>"; };
+		462C340A1FBAB01F002375AB /* Hospitalization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hospitalization.swift; sourceTree = "<group>"; };
+		462C340C1FBAB129002375AB /* HTcell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTcell.swift; sourceTree = "<group>"; };
+		462C340E1FBAB7C3002375AB /* HTlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTlist.swift; sourceTree = "<group>"; };
+		462C34101FBBCDBC002375AB /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
+		462C34121FBD620A002375AB /* RecordDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDetail.swift; sourceTree = "<group>"; };
 		4648C9091F392EEA004EB270 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		464F8BB11F43D2DE008F81E0 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		465378DE1F7C6B1E00E9BBA4 /* UserDefaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultKey.swift; sourceTree = "<group>"; };
@@ -113,8 +127,6 @@
 		F78200871F99DED10039D390 /* mobile_reserve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mobile_reserve.swift; sourceTree = "<group>"; };
 		F78200891F99E17B0039D390 /* Reslist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reslist.swift; sourceTree = "<group>"; };
 		F7A668D11FA80D6D00B51FAE /* doctorList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = doctorList.swift; sourceTree = "<group>"; };
-		F7CD7BE21FB59EDE009973FD /* SWRevealViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = ../../../../Downloads/SWRevealViewController.m; sourceTree = "<group>"; };
-		F7CD7BE31FB59EDE009973FD /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = ../../../../Downloads/SWRevealViewController.h; sourceTree = "<group>"; };
 		F7CD7BE51FB5A06D009973FD /* reserv_complete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = reserv_complete.swift; sourceTree = "<group>"; };
 		F7D40DF91FB521A500FB168D /* timeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = timeList.swift; sourceTree = "<group>"; };
 		F7D6E7841FAFF7AB00226B7D /* FSCalendar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FSCalendar.framework; path = Carthage/Build/iOS/FSCalendar.framework; sourceTree = "<group>"; };
@@ -177,11 +189,28 @@
 		462409801F54F0C600B0D230 /* SupportingFile */ = {
 			isa = PBXGroup;
 			children = (
-				F7CD7BE31FB59EDE009973FD /* SWRevealViewController.h */,
-				F7CD7BE21FB59EDE009973FD /* SWRevealViewController.m */,
+				462C34051FB91AA1002375AB /* SWRevealViewController.h */,
+				462C34061FB91AA1002375AB /* SWRevealViewController.m */,
 				462409811F54F17E00B0D230 /* MyFirstApp-Bridging-Header.h */,
 			);
 			name = SupportingFile;
+			sourceTree = "<group>";
+		};
+		462C34141FBD6215002375AB /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				46C3989C1F6FAB3700368C01 /* Record.swift */,
+				462C33F41FB18D6D002375AB /* OutPatient.swift */,
+				462C33F81FB2D9C3002375AB /* OPlist.swift */,
+				462C33FA1FB51B88002375AB /* OPcell.swift */,
+				462C340A1FBAB01F002375AB /* Hospitalization.swift */,
+				462C340C1FBAB129002375AB /* HTcell.swift */,
+				462C340E1FBAB7C3002375AB /* HTlist.swift */,
+				462C34081FB91B8A002375AB /* LTHRadioButton.swift */,
+				462C34101FBBCDBC002375AB /* PaddingLabel.swift */,
+				462C34121FBD620A002375AB /* RecordDetail.swift */,
+			);
+			name = Record;
 			sourceTree = "<group>";
 		};
 		46720B991F039199004AE4A8 = {
@@ -209,6 +238,7 @@
 		46720BA41F039199004AE4A8 /* MyFirstApp */ = {
 			isa = PBXGroup;
 			children = (
+				462C34141FBD6215002375AB /* Record */,
 				F7D6E7871FB03A0C00226B7D /* reservation */,
 				462409801F54F0C600B0D230 /* SupportingFile */,
 				46720BA51F039199004AE4A8 /* AppDelegate.swift */,
@@ -224,7 +254,6 @@
 				462409871F56A97500B0D230 /* NavController.swift */,
 				462409951F5D361100B0D230 /* InfoWebView.swift */,
 				4681FE101F6130150038E307 /* CustomNavSegue.swift */,
-				46C3989C1F6FAB3700368C01 /* Record.swift */,
 				46C3989E1F70FD1E00368C01 /* Barcode.swift */,
 				46C398A01F7335E900368C01 /* HttpClient.swift */,
 				46C398A21F737FDB00368C01 /* UserDefault.swift */,
@@ -234,9 +263,6 @@
 				46578ABD1F947C36007CDA36 /* TagNumList.swift */,
 				46578ABF1F95E900007CDA36 /* ExamWebView.swift */,
 				462C33F21FB14FE3002375AB /* MobileCard.swift */,
-				462C33F41FB18D6D002375AB /* OutPatient.swift */,
-				462C33F81FB2D9C3002375AB /* OPlist.swift */,
-				462C33FA1FB51B88002375AB /* OPcell.swift */,
 			);
 			path = MyFirstApp;
 			sourceTree = "<group>";
@@ -489,14 +515,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F7CD7BE41FB59F47009973FD /* SWRevealViewController.m in Sources */,
 				462C33F51FB18D6D002375AB /* OutPatient.swift in Sources */,
 				465378E11F7CDB2900E9BBA4 /* MedicalExam.swift in Sources */,
+				462C34091FB91B8A002375AB /* LTHRadioButton.swift in Sources */,
 				F7A668D21FA80D6D00B51FAE /* doctorList.swift in Sources */,
+				462C34111FBBCDBC002375AB /* PaddingLabel.swift in Sources */,
 				4681FE111F6130150038E307 /* CustomNavSegue.swift in Sources */,
 				462C33FB1FB51B88002375AB /* OPcell.swift in Sources */,
 				46720BA81F039199004AE4A8 /* ViewController.swift in Sources */,
 				462C33F31FB14FE3002375AB /* MobileCard.swift in Sources */,
+				462C34071FB91AA1002375AB /* SWRevealViewController.m in Sources */,
 				46578ABE1F947C36007CDA36 /* TagNumList.swift in Sources */,
 				46C3989D1F6FAB3700368C01 /* Record.swift in Sources */,
 				F780C2A21FA00D730024C768 /* recentlist.swift in Sources */,
@@ -507,19 +535,23 @@
 				F76EF8711F9DD55E002F34AC /* Resresult.swift in Sources */,
 				F774FB0A1FAC00BE00CF9DE0 /* Detail_date.swift in Sources */,
 				462C33F91FB2D9C3002375AB /* OPlist.swift in Sources */,
+				462C340D1FBAB129002375AB /* HTcell.swift in Sources */,
 				F780C2A41FA6A7F20024C768 /* Detail_doctor.swift in Sources */,
 				46578AC01F95E900007CDA36 /* ExamWebView.swift in Sources */,
 				46C398A11F7335E900368C01 /* HttpClient.swift in Sources */,
 				46C398A31F737FDB00368C01 /* UserDefault.swift in Sources */,
 				465378E31F8F346500E9BBA4 /* MElist.swift in Sources */,
 				462409961F5D361100B0D230 /* InfoWebView.swift in Sources */,
+				462C34131FBD620A002375AB /* RecordDetail.swift in Sources */,
 				465378DF1F7C6B1E00E9BBA4 /* UserDefaultKey.swift in Sources */,
 				46C3989F1F70FD1E00368C01 /* Barcode.swift in Sources */,
 				F78200881F99DED10039D390 /* mobile_reserve.swift in Sources */,
 				F76EF86F1F9DCFFF002F34AC /* Reservation_result.swift in Sources */,
 				F78200831F99D0E80039D390 /* MaintabController.swift in Sources */,
+				462C340F1FBAB7C3002375AB /* HTlist.swift in Sources */,
 				F782008A1F99E17B0039D390 /* Reslist.swift in Sources */,
 				462409881F56A97500B0D230 /* NavController.swift in Sources */,
+				462C340B1FBAB01F002375AB /* Hospitalization.swift in Sources */,
 				F7CD7BE61FB5A06D009973FD /* reserv_complete.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

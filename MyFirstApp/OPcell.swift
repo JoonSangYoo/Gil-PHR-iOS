@@ -17,8 +17,40 @@ class OPcell: UITableViewCell{
     @IBOutlet weak var opdDateLabel: UILabel!
     @IBOutlet weak var deptDocNameLabel: UILabel!
     
-    @IBOutlet weak var radioButton: DLRadioButton!
 
+    @IBOutlet weak var radioButton: LTHRadioButton!
+    
 
+    
+//
+//    func update(with color: UIColor) {
+//        
+//        backgroundColor = color
+//        self.radioButton.selectedColor   = color == .darkGray ? .white : selectedColor
+//        self.radioButton.deselectedColor = color == .darkGray ? .lightGray : deselectedColor
+//    }
 
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let newBound = CGRect(
+            x: self.bounds.origin.x,
+            y: self.bounds.origin.y,
+            width: self.bounds.width,
+            height: self.bounds.height
+        )
+        return newBound.contains(point)
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        if selected {
+            return self.radioButton.select(animated: animated)
+        }
+        
+        self.radioButton.deselect(animated: animated)
+    }
+
+    
+    
 }
+
+

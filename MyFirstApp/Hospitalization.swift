@@ -1,15 +1,15 @@
 //
-//  OutPatient.swift
+//  Hospitalization.swift
 //  MyFirstApp
 //
-//  Created by 劉俊相 on 2017. 11. 7..
+//  Created by 劉俊相 on 2017. 11. 14..
 //  Copyright © 2017년 Joonsang Yoo. All rights reserved.
 //
 
 import Foundation
-import DLRadioButton
 
-class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
+
+class Hospitalization: UIViewController, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
     
     
     let rcTag = TagNumList.rcTag
@@ -19,19 +19,19 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     
     var currentElement = ""       // 현재 Element
     
-    var listItems = [OPlist]() // item Dictional Array
+    var listItems = [HTlist]() // item Dictional Array
     
-    var opdDate = String()
+    var admDate = String()
+    var outDate = String()
     var deptCD = String()
     var deptNM = String()
     var docNO = String()
     var docNM = String()
-    var esp = String()
-    var main = String()
     
     var st = ""                 // 스테이터스 값 변수
     
-
+    
+    
     let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
     
     struct xmlWriter {             // xml 작성을 위한 구조체
@@ -62,11 +62,12 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
         // Do any additional setup after loading the view, typically from a nib.
         
         //let postString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><request><protocol>login</protocol><userid>nayana</userid><pwd>test5782</pwd></request>"
         
-        let postString = xmlWriter(prtc: "clinicopd").xmlString()
+        let postString = xmlWriter(prtc: "clinicadm").xmlString()
         _ = HttpClient.requestXML(Xml: postString){ responseString in
             // print(responseString)
             let dataXML = responseString.data(using: .utf8)
@@ -86,7 +87,6 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
                         self.tbData.reloadData()
                         self.tbData.tableFooterView = UIView()
                         self.tbData.isHidden = false
-
                         
                     }
                 } else{         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
@@ -110,6 +110,7 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
         self.navigationController?.navigationBar.backgroundColor = UIColor.white
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.primaryColor
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -128,13 +129,12 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
         }
         
         if (elementName == "data") {
-            opdDate = String()
+            admDate = String()
+            outDate = String()
             deptCD = String()
             deptNM = String()
             docNO = String()
             docNM = String()
-            esp = String()
-            main = String()
             
         }
         
@@ -144,16 +144,15 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?)
     {
         if (elementName == "data") {
-            let listItem = OPlist()
+            let listItem = HTlist()
             
             
-            listItem.opdDate = opdDate
+            listItem.admDate = admDate
+            listItem.outDate = outDate
             listItem.deptCD = deptCD
             listItem.deptNM = deptNM
             listItem.docNO = docNO
             listItem.docNM = docNM
-            listItem.esp = esp
-            listItem.main = main
             
             listItems.append(listItem)
         }
@@ -166,8 +165,10 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     {
         
         switch currentElement {
-        case "opddate":
-            opdDate = opdDate + string
+        case "admdate":
+            admDate = admDate + string
+        case "outdate":
+            outDate = outDate + string
         case "deptcd":
             deptCD = deptCD + string
         case "deptnm":
@@ -176,12 +177,9 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
             docNO = docNO + string
         case "docnm":
             docNM = docNM + string
-        case "esp":
-            esp = esp + string
-        case "main":
-            esp = esp + string
 
-
+            
+            
         default:break
             
         }
@@ -198,64 +196,47 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "opCell", for: indexPath) as? OPcell{
-           
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "htCell", for: indexPath) as? HTcell{
+            
             let listItem = listItems[indexPath.row]
+            
+            
+            cell.deptDocLabel.text = listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM
+            cell.deptDocLabel.textColor = UIColor.black
+            
+            cell.dateLabel.text = weekdayForm(dateString: listItem.admDate.replacingOccurrences(of: "\n      ", with: ""))
+            cell.dateLabel.textColor = UIColor.black
+            cell.dateLabel2.text = "~ \(weekdayForm(dateString: listItem.outDate.replacingOccurrences(of: "\n      ", with: "")))"
+            cell.dateLabel.textColor = UIColor.black
+            
+           
 
-
-            cell.deptDocNameLabel.text = listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM
-            cell.deptDocNameLabel.textColor = UIColor.black
-            
-            cell.opdDateLabel.text = weekdayForm(dateString: listItem.opdDate.replacingOccurrences(of: "\n      ", with: ""))
-            cell.opdDateLabel.textColor = UIColor.black
-            
-
-            cell.radioButton.backgroundColor = UIColor.white
-            cell.opdDateLabel.isUserInteractionEnabled = true
-            cell.opdDateLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.expandButtonClicked(sender:))))
-            cell.deptDocNameLabel.isUserInteractionEnabled = true
-            cell.deptDocNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.expandButtonClicked(sender:))))
-           // cell.addedTouchArea.add(150)
-  
-            //cell.radioButton.addTarget(self, action: #selector(self.expandButtonClicked(sender:)), for: UIControlEvents.touchUpInside)
-            
-            
-//            cell.radioButton.iconColor = UIColor.gray
-//            cell.radioButton.indicatorColor = primaryColor
-//            otherButtons.append(cell.radioButton)
-//            cell.radioButton.otherButtons = otherButtons
-          //  cell.radioButton.isSelected = false
             cell.selectionStyle = .none
             print("if \(indexPath.row)" )
             return cell
         }
         
-
+        
         return UITableViewCell()
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-   
-        print("라디오버튼 이벤트: \(indexPath.row)")
-   
-    }
-    
-    func expandButtonClicked(sender: UITapGestureRecognizer) {
-        let tapLocation = sender.location(in: self.tbData)
-        
-        let indexPath = self.tbData.indexPathForRow(at: tapLocation)!
+     
         let listItem = listItems[indexPath.row]
-        
-        print("상세화면이동 이벤트 \(listItem.deptNM)")
-        UserDefault.save(key: UserDefaultKey.UD_ClinicIo, value: "20")
+
+        UserDefault.save(key: UserDefaultKey.UD_ClinicIo, value: "10")
         UserDefault.save(key: UserDefaultKey.UD_ClinicDeptcd, value: listItem.deptCD)
         UserDefault.save(key: UserDefaultKey.UD_ClinicDocno, value: listItem.docNO)
-        UserDefault.save(key: UserDefaultKey.UD_ClinicDate, value: listItem.opdDate)
-        self.performSegue(withIdentifier: "OPtoD", sender: self)
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDate, value: listItem.admDate)
+        self.performSegue(withIdentifier: "HTtoD", sender: self)
 
+        print("라디오버튼 이벤트: \(indexPath.row)")
+        
     }
+    
+
     
     
     
@@ -300,10 +281,4 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
             return weekFormDate
         }
     }
-}
-
-extension UIColor{
-
-    static let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
-
 }

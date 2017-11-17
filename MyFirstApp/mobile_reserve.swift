@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 var lastdeptcd = ""  //진료과코드
-var lastdeptnm = ""   //wlsfyrhkaud
+var lastdeptnm = ""   //진료과명
 var lastdate = ""     //진료일
 var lastdocno = ""    //의사코드
 var lastdocnm = ""        //의사명
@@ -25,6 +25,8 @@ var plag_rec = 0
 
 class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate{
     @IBOutlet weak var resTable: UITableView!
+    var activityindicator : UIActivityIndicatorView = UIActivityIndicatorView()
+    
     var check = "1"
     var parser = XMLParser()        // 파서 객체
     var test = "1"
@@ -32,6 +34,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     var rec202 = ""               //최근 진료 '내용없음'
     var pre_userid = ""           // 로그아웃 후 재로그인할경우 최근 진료목록
     var postString = ""
+    
     //진료과 조회
     var depts = String()        // 진료과들
     var dept = String()          // 진료과
@@ -40,8 +43,6 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     var deptdesc = String()     //진료과 설명
     
     //최근 진료 기록
-    
-    
     var st = ""                 // 스테이터스 값 변수
     
     var deptnmLabel: UILabel!               //진료과 명
@@ -67,7 +68,12 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     
     
     func http_request(request_code: String){
-        
+        activityindicator.center = self.view.center
+        activityindicator.hidesWhenStopped = true
+        activityindicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        view.addSubview(activityindicator)
+        activityindicator.startAnimating()
+        UIApplication.shared.endIgnoringInteractionEvents()
         if(request_code == "deptlist_search"){
             postString = xmlWriter(prtc: "reendept").xmlString()
         }
@@ -87,6 +93,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
                 print("parse success!")
                 
                 if self.st == "100"{        // 리스폰스 스테이터스가 100(성공)일때
+                    
                     // DispatchQueue.main.async -> ui가 대기상태에서 특정 조건에서 화면전환시 멈추는 현상을 없애기 위한 명령어(비동기제어)
                     DispatchQueue.main.async{
                         self.resTable.dataSource = self
@@ -107,6 +114,8 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             } else{
                 print("parse failure!")
             }
+            
+            
         }
     }
     
@@ -124,7 +133,6 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             self.resTable.isHidden = false
         }
         http_request(request_code: "lastopd_search")
-        
         resTable.rowHeight = UITableViewAutomaticDimension
         resTable.estimatedRowHeight = 100
     }
@@ -135,6 +143,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         self.tabBarController?.tabBar.isHidden = false
         // Hide the navigation bar on the this view controller
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.navigationController?.navigationBar.topItem?.title = ""
     }
     
     override func didReceiveMemoryWarning() {
@@ -175,6 +184,9 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             deptcd = String()
             deptnm = String()
             deptdesc = String()
+        }
+        if(elementName == "depts"){
+            deptlist = Array<Reslist>()
         }
     }
     // 현재 테그에 담겨있는 문자열 전달
@@ -221,6 +233,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?)
     {
         
+        
         if (elementName == "dept") {
             let listItem = Reslist()
             listItem.deptcd = deptcd
@@ -237,12 +250,13 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 31
+        return deptlist.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReservCell")!
-        
+        activityindicator.stopAnimating()
+        UIApplication.shared.endIgnoringInteractionEvents()
         deptnmLabel = cell.viewWithTag(31) as! UILabel
         deptdesctextview = cell.viewWithTag(32) as! UITextView
         
@@ -251,34 +265,28 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             if(lastdate == ""){
                 deptnmLabel.text = "최근 진료내역으로 예약"
                 deptdesctextview.text = "진료일 : 내역 없음 \n진료과 : 내역 없음\n"
-                
             }
             else{
                 let repdate: String = lastdate.replacingOccurrences(of: "\n  ", with: "")
                 let repdeptnm: String = lastdeptnm.replacingOccurrences(of: "\n  ", with: "")
                 let repdocnm: String = lastdocnm.replacingOccurrences(of: "\n  ", with: "")
-                
                 deptnmLabel.text = "최근 진료내역으로 예약"
                 deptdesctextview.text = "진료일 : \(weekdayForm(dateString: repdate)) \n진료과 : \(repdeptnm)  \(repdocnm) 교수\n"
                 plag_rec = 1
             }
-            
         }
         else {
+           
             let listItem = deptlist[indexPath.row - 1]
-            
             deptnmLabel.text = listItem.deptnm
             deptnmLabel.textColor = UIColor.black
-            if(indexPath.row == 18)//외과
-            {
+            if(indexPath.row == 18){
                 deptdesctextview.text = listItem.deptdesc.tsubstring(from: 1)
             }
             else{
                 deptdesctextview.text = listItem.deptdesc
             }
             deptdesctextview.textColor = UIColor.black
-            
-            
         }
         self.deptdesctextview.addGestureRecognizer(UITapGestureRecognizer(target: self, action:  #selector (self.checkAction(sender: ))))
         cell.selectionStyle = .none
@@ -312,17 +320,15 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         reserve_index = indexPath.row
-        if(plag_rec == 1){
-            performSegue(withIdentifier: "Recent_date" , sender: self)
+        if(reserve_index == 0){
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ReservCell")!
+            cell.selectionStyle = .none
+            if(lastdeptnm != ""){
+                performSegue(withIdentifier: "Recent_date" , sender: self)
+            }
         }
-        if(plag_rec == 0){
-            if(reserve_index == 0){
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ReservCell")!
-                cell.selectionStyle = .none
-            }
-            else{
-                performSegue(withIdentifier: "Detail_doctor" , sender: self)
-            }
+        else{
+            performSegue(withIdentifier: "Detail_doctor" , sender: self)
         }
     }
     
@@ -336,8 +342,6 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         if dateString == "" {
             return ""
         }else{
-            
-            
             let formDate = df.date(from: dateString)
             var comps = cal.dateComponents([.weekday], from: formDate!)
             
@@ -359,12 +363,8 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
                 weekFormDate = "\(df.string(from: formDate!))(금)"
             case 7:
                 weekFormDate = "\(df.string(from: formDate!))(토)"
-                
-                
             default:break
             }
-            
-            
             return weekFormDate
         }
     }
@@ -393,9 +393,3 @@ extension String {
         return substring(with: startIndex..<endIndex)
     }
 }
-
-
-
-
-
-

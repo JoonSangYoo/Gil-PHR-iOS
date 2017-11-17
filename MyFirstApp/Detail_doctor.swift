@@ -38,10 +38,13 @@
     var doc_pic: UIImageView!
     
     override func viewDidLoad() {
+//        if(plag_rec == 1  && reserve_index == 0){
+//            performSegue(withIdentifier: "Detail_date" , sender: self)
+//        }
+        self.navigationController?.navigationBar.isHidden = true
         super.viewDidLoad()
         doctorlist = [doctorList]()
         self.title = deptlist[reserve_index-1].deptnm
-        self.navigationController?.navigationBar.backgroundColor = UIColor.blue
         let postString = xmlWriter(prtc: "deptdocs").xmlString()
         _ = HttpClient.requestXML(Xml: postString){ responseString in
             // print(responseString)
@@ -85,10 +88,10 @@
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.tabBarController?.tabBar.isHidden = true
-        
-        let backColor =  UIColor(red: 17.0/255.0, green: 54.0/255.0, blue: 109.0/255.0, alpha: 1.0).cgColor
-        self.navigationController?.navigationBar.tintColor = UIColor(cgColor: backColor)
-        
+        //self.navigationController?.navigationBar.isHidden = true
+        let background_color =  UIColor(red: 204/255.0, green: 221/255.0, blue: 252/255.0, alpha: 1.0).cgColor
+        self.navigationController?.navigationBar.backgroundColor = UIColor(cgColor: background_color)
+        self.navigationController?.navigationBar.tintColor = UIColor .black
     }
     
     struct xmlWriter {             // xml 작성을 위한 구조체
