@@ -1314,6 +1314,7 @@
         </scene>
         <!--예약정보 확인-->
 <<<<<<< HEAD
+<<<<<<< HEAD
         <scene sceneID="g48-gH-G8S">
             <objects>
                 <viewController title="예약정보 확인" id="K31-ub-CnA" customClass="reserv_complete" sceneMemberID="viewController">
@@ -1439,6 +1440,8 @@
         <!--Reserv complete-->
 =======
 >>>>>>> 36380752c78305eb5183f88e4608b782d4b425af
+=======
+>>>>>>> 36380752c78305eb5183f88e4608b782d4b425af
         <scene sceneID="lKL-hh-8CB">
             <objects>
                 <viewController title="예약정보 확인" id="gBU-KA-GX3" customClass="reserv_complete" customModule="MyFirstApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -1560,6 +1563,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FrC-3f-MCH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7592.8000000000002" y="-958.4707646176912"/>
+<<<<<<< HEAD
         </scene>
         <!--외래-->
         <scene sceneID="cLb-WA-niV">
@@ -1602,6 +1606,8 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4iL-gA-XOB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-831.20000000000005" y="1538.6806596701651"/>
+=======
+>>>>>>> 36380752c78305eb5183f88e4608b782d4b425af
         </scene>
     </scenes>
     <resources>
@@ -1614,6 +1620,10 @@
     </resources>
     <inferredMetricsTieBreakers>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <segue reference="qDP-PI-reC"/>
+>>>>>>> 36380752c78305eb5183f88e4608b782d4b425af
 =======
         <segue reference="qDP-PI-reC"/>
 >>>>>>> 36380752c78305eb5183f88e4608b782d4b425af
