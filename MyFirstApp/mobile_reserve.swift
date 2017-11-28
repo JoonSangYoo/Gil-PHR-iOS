@@ -312,17 +312,18 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         else{
             performSegue(withIdentifier: "Detail_doctor" , sender: self)
         }
-        
     }
-    
+
     
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         reserve_index = indexPath.row
+        
+        
+        let cell = resTable.dequeueReusableCell(withIdentifier: "Reservcell")
         if(reserve_index == 0){
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ReservCell")!
-            cell.selectionStyle = .none
+            cell?.selectionStyle = .none
             if(lastdeptnm != ""){
                 performSegue(withIdentifier: "Recent_date" , sender: self)
             }

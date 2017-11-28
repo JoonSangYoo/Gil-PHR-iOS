@@ -42,8 +42,6 @@ class reserv_complete : UIViewController{
             lb_docnm = doctorlist[doctor_index].docnm.replacingOccurrences(of:"\n     ", with:"")
             lb_deptnm = deptlist[reserve_index-1].deptnm
             print(lb_docnm)
-            //고기동고기동
-            //황인철
         }
         
         deptnmLB.text = "    \(lb_deptnm)"
