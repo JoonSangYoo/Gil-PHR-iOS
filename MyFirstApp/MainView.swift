@@ -312,6 +312,7 @@ class MainView : UIViewController{
             frameView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-64))
             frameView.tag = 84
             
+            
             let textView = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             
             textView.contentMode = .scaleAspectFit
@@ -322,8 +323,9 @@ class MainView : UIViewController{
             
             print(screenSize.height)
             print(navigationController?.navigationBar.frame.height)
-            view.addSubview(frameView)
-
+           // view.addSubview(frameView)
+            UIView.transition(with: self.view, duration: 0.8, options: UIViewAnimationOptions.curveEaseOut, animations: {self.view.addSubview(self.frameView)}, completion: nil)
+            
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
             navigationItem.rightBarButtonItem?.tintColor = UIColor.white
 
@@ -499,3 +501,5 @@ public extension UIDevice {
         return Model.unrecognized
     }
 }
+
+

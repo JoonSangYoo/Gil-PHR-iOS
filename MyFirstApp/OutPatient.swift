@@ -31,11 +31,7 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     
     var st = ""                 // 스테이터스 값 변수
     
-    var deptDocNameLabel: UILabel!
-    var opdDateLabel: UILabel!
-    
-    var otherButtons : [DLRadioButton] = []
-
+    @IBOutlet weak var emptyLabel: UILabel!
 
     let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
     
@@ -67,7 +63,6 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         // Do any additional setup after loading the view, typically from a nib.
         
         //let postString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><request><protocol>login</protocol><userid>nayana</userid><pwd>test5782</pwd></request>"
@@ -87,10 +82,14 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
                 if self.st == "100"{        // 리스폰스 스테이터스가 100(성공)일때
                     // DispatchQueue.main.async -> ui가 대기상태에서 특정 조건에서 화면전환시 멈추는 현상을 없애기 위한 명령어(비동기제어)
                     DispatchQueue.main.async{
+
+                        self.emptyLabel.isHidden = true
+                        
                         self.tbData.dataSource = self
                         self.tbData.delegate = self
                         self.tbData.reloadData()
                         self.tbData.tableFooterView = UIView()
+                        self.tbData.isHidden = false
                         
                     }
                 } else{         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
@@ -107,9 +106,11 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        tabBarController?.tabBar.isHidden = false
+
         // Hide the navigation bar on the this view controller
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.navigationController?.navigationBar.isTranslucent = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -210,55 +211,53 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
             cell.opdDateLabel.text = weekdayForm(dateString: listItem.opdDate.replacingOccurrences(of: "\n      ", with: ""))
             cell.opdDateLabel.textColor = UIColor.black
             
-            cell.radioButton.tag = indexPath.row
 
+            cell.radioButton.backgroundColor = UIColor.white
+            cell.opdDateLabel.isUserInteractionEnabled = true
+            cell.opdDateLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.expandButtonClicked(sender:))))
+            cell.deptDocNameLabel.isUserInteractionEnabled = true
+            cell.deptDocNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.expandButtonClicked(sender:))))
+           // cell.addedTouchArea.add(150)
+  
+            //cell.radioButton.addTarget(self, action: #selector(self.expandButtonClicked(sender:)), for: UIControlEvents.touchUpInside)
             
-            cell.radioButton.addTarget(self, action: #selector(self.expandButtonClicked(sender:)), for: UIControlEvents.touchUpInside)
-            cell.radioButton.iconColor = UIColor.gray
-            cell.radioButton.indicatorColor = primaryColor
-            otherButtons.append(cell.radioButton)
-            cell.radioButton.otherButtons = otherButtons
+            
+//            cell.radioButton.iconColor = UIColor.gray
+//            cell.radioButton.indicatorColor = primaryColor
+//            otherButtons.append(cell.radioButton)
+//            cell.radioButton.otherButtons = otherButtons
           //  cell.radioButton.isSelected = false
             cell.selectionStyle = .none
-
             print("if \(indexPath.row)" )
             return cell
         }
         
-
 
         return UITableViewCell()
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        print(indexPath.row)
+   
+        print("라디오버튼 이벤트: \(indexPath.row)")
    
     }
-   
     
-
-    
-    func expandButtonClicked(sender: UIButton) {
-        let btnTag = sender.tag
-        let listItem = listItems[btnTag]
+    func expandButtonClicked(sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: self.tbData)
         
-        print(listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM)
+        let indexPath = self.tbData.indexPathForRow(at: tapLocation)!
+        let listItem = listItems[indexPath.row]
+        
+        print("상세화면이동 이벤트 \(listItem.deptNM)")
+        UserDefault.save(key: UserDefaultKey.UD_ClinicIo, value: "20")
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDeptcd, value: listItem.deptCD)
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDeptnm, value: listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM)
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDocno, value: listItem.docNO)
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDate, value: listItem.opdDate)
+        self.performSegue(withIdentifier: "OPtoD", sender: self)
 
     }
-
-    
-//    private func createRadioButton(frame : CGRect, tag: Int) -> DLRadioButton {
-//      
-//        let radioButton = DLRadioButton(frame: frame)
-//        radioButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.left
-//        radioButton.addTarget(self, action: #selector(self.btnAction(_:)), for: UIControlEvents.touchUpInside)
-//        self.view.addSubview(radioButton)
-//        
-//        return radioButton
-//    }
-
     
     
     
@@ -303,4 +302,11 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
             return weekFormDate
         }
     }
+}
+
+extension UIColor{
+
+    static let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
+    static let bgColor = UIColor(red: 217.0/255.0, green: 220.0/255.0, blue: 232.0/255.0, alpha: 1.0)
+
 }

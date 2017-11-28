@@ -13,47 +13,22 @@ class MobileCard: UIViewController {
     
     
     @IBOutlet weak var img: UIImageView!
+    @IBOutlet weak var ptntNumLabel: UILabel!
 
-    struct ItemTrackingRequest {
-        var trackingNumbers: [String]
-        
-        init(trackingNumbers: String...) {
-            self.trackingNumbers = trackingNumbers
-        }
-        
-        func xmlString() -> String {
-            var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-            xml += "<request>"
-            xml += "<protocol>login</protocol>"
-            xml += "<userid>wnstkd13</userid>"
-            xml += "<pwd>test5782</pwd>"
-            xml += "</request>"
-            
-            //      for number in self.trackingNumbers {
-            //                xml += "<TrackingNumber>\(number)</TrackingNumber>"
-            //    }
-            
-            
-            return xml
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        ptntNumLabel.text = "환자번호  \(UserDefault.load(key: UserDefaultKey.UD_Ptntno))"
         img.contentMode = .scaleAspectFit
-        let image = Barcode.fromString(string: "11657673")
+        let image = Barcode.fromString(string: UserDefault.load(key: UserDefaultKey.UD_Ptntno))
         img.image = image
         
+        img.transform = img.transform.rotated(by: CGFloat(M_PI_2))
+        ptntNumLabel.transform = ptntNumLabel.transform.rotated(by: CGFloat(M_PI_2))
         
         // Do any additional setup after loading the view, typically from a nib.
-        var request = URLRequest(url: URL(string: "https://ucare.gilhospital.com/phr2/gateway.aspx")!)
-        //let postString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><request><protocol>login</protocol><userid>nayana</userid><pwd>test5782</pwd></request>"
-        
-        let postString = ItemTrackingRequest(trackingNumbers: "SMT0000000628").xmlString()
-        
-        request.httpMethod = "POST"
-        request.httpBody = postString.data(using: .utf8)
+       
     }
     
     override func didReceiveMemoryWarning() {
