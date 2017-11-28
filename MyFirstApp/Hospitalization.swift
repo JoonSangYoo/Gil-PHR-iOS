@@ -30,6 +30,7 @@ class Hospitalization: UIViewController, XMLParserDelegate, UITableViewDataSourc
     
     var st = ""                 // 스테이터스 값 변수
     
+    @IBOutlet weak var emptyLabel: UILabel!
     
     
     let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
@@ -82,6 +83,9 @@ class Hospitalization: UIViewController, XMLParserDelegate, UITableViewDataSourc
                 if self.st == "100"{        // 리스폰스 스테이터스가 100(성공)일때
                     // DispatchQueue.main.async -> ui가 대기상태에서 특정 조건에서 화면전환시 멈추는 현상을 없애기 위한 명령어(비동기제어)
                     DispatchQueue.main.async{
+                        
+                        self.emptyLabel.isHidden = true
+                        
                         self.tbData.dataSource = self
                         self.tbData.delegate = self
                         self.tbData.reloadData()
@@ -107,9 +111,7 @@ class Hospitalization: UIViewController, XMLParserDelegate, UITableViewDataSourc
 
         // Hide the navigation bar on the this view controller
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
-        self.navigationController?.navigationBar.backgroundColor = UIColor.white
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.primaryColor
 
     }
     
@@ -208,7 +210,7 @@ class Hospitalization: UIViewController, XMLParserDelegate, UITableViewDataSourc
             cell.dateLabel.text = weekdayForm(dateString: listItem.admDate.replacingOccurrences(of: "\n      ", with: ""))
             cell.dateLabel.textColor = UIColor.black
             cell.dateLabel2.text = "~ \(weekdayForm(dateString: listItem.outDate.replacingOccurrences(of: "\n      ", with: "")))"
-            cell.dateLabel.textColor = UIColor.black
+            cell.dateLabel2.textColor = UIColor.black
             
            
 
@@ -230,9 +232,10 @@ class Hospitalization: UIViewController, XMLParserDelegate, UITableViewDataSourc
         UserDefault.save(key: UserDefaultKey.UD_ClinicDeptcd, value: listItem.deptCD)
         UserDefault.save(key: UserDefaultKey.UD_ClinicDocno, value: listItem.docNO)
         UserDefault.save(key: UserDefaultKey.UD_ClinicDate, value: listItem.admDate)
+        UserDefault.save(key: UserDefaultKey.UD_ClinicHdate, value: weekdayForm(dateString: listItem.admDate.replacingOccurrences(of: "\n      ", with: "")) + " ~ \(weekdayForm(dateString: listItem.outDate.replacingOccurrences(of: "\n      ", with: "")))")
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDeptnm, value: listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM)
         self.performSegue(withIdentifier: "HTtoD", sender: self)
 
-        print("라디오버튼 이벤트: \(indexPath.row)")
         
     }
     

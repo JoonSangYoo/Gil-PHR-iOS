@@ -28,6 +28,10 @@
 		465378DF1F7C6B1E00E9BBA4 /* UserDefaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465378DE1F7C6B1E00E9BBA4 /* UserDefaultKey.swift */; };
 		465378E11F7CDB2900E9BBA4 /* MedicalExam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465378E01F7CDB2900E9BBA4 /* MedicalExam.swift */; };
 		465378E31F8F346500E9BBA4 /* MElist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465378E21F8F346500E9BBA4 /* MElist.swift */; };
+		4655F61A1FC51D9E0018CB1B /* RDlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4655F6191FC51D9E0018CB1B /* RDlist.swift */; };
+		4655F61C1FC54AD00018CB1B /* ExamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4655F61B1FC54AD00018CB1B /* ExamCell.swift */; };
+		4655F61E1FC69B500018CB1B /* DrugCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4655F61D1FC69B500018CB1B /* DrugCell.swift */; };
+		4655F6201FCBE3D70018CB1B /* SurveyWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4655F61F1FCBE3D70018CB1B /* SurveyWebView.swift */; };
 		46578ABE1F947C36007CDA36 /* TagNumList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46578ABD1F947C36007CDA36 /* TagNumList.swift */; };
 		46578AC01F95E900007CDA36 /* ExamWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46578ABF1F95E900007CDA36 /* ExamWebView.swift */; };
 		46720BA61F039199004AE4A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46720BA51F039199004AE4A8 /* AppDelegate.swift */; };
@@ -100,6 +104,10 @@
 		465378DE1F7C6B1E00E9BBA4 /* UserDefaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultKey.swift; sourceTree = "<group>"; };
 		465378E01F7CDB2900E9BBA4 /* MedicalExam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicalExam.swift; sourceTree = "<group>"; };
 		465378E21F8F346500E9BBA4 /* MElist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MElist.swift; sourceTree = "<group>"; };
+		4655F6191FC51D9E0018CB1B /* RDlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RDlist.swift; sourceTree = "<group>"; };
+		4655F61B1FC54AD00018CB1B /* ExamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamCell.swift; sourceTree = "<group>"; };
+		4655F61D1FC69B500018CB1B /* DrugCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrugCell.swift; sourceTree = "<group>"; };
+		4655F61F1FCBE3D70018CB1B /* SurveyWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyWebView.swift; sourceTree = "<group>"; };
 		46578ABD1F947C36007CDA36 /* TagNumList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagNumList.swift; sourceTree = "<group>"; };
 		46578ABF1F95E900007CDA36 /* ExamWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamWebView.swift; sourceTree = "<group>"; };
 		46720BA21F039199004AE4A8 /* MyFirstApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFirstApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -209,6 +217,10 @@
 				462C34081FB91B8A002375AB /* LTHRadioButton.swift */,
 				462C34101FBBCDBC002375AB /* PaddingLabel.swift */,
 				462C34121FBD620A002375AB /* RecordDetail.swift */,
+				4655F6191FC51D9E0018CB1B /* RDlist.swift */,
+				4655F61B1FC54AD00018CB1B /* ExamCell.swift */,
+				4655F61D1FC69B500018CB1B /* DrugCell.swift */,
+				4655F61F1FCBE3D70018CB1B /* SurveyWebView.swift */,
 			);
 			name = Record;
 			sourceTree = "<group>";
@@ -519,15 +531,19 @@
 				465378E11F7CDB2900E9BBA4 /* MedicalExam.swift in Sources */,
 				462C34091FB91B8A002375AB /* LTHRadioButton.swift in Sources */,
 				F7A668D21FA80D6D00B51FAE /* doctorList.swift in Sources */,
+				4655F61C1FC54AD00018CB1B /* ExamCell.swift in Sources */,
 				462C34111FBBCDBC002375AB /* PaddingLabel.swift in Sources */,
 				4681FE111F6130150038E307 /* CustomNavSegue.swift in Sources */,
 				462C33FB1FB51B88002375AB /* OPcell.swift in Sources */,
 				46720BA81F039199004AE4A8 /* ViewController.swift in Sources */,
+				4655F6201FCBE3D70018CB1B /* SurveyWebView.swift in Sources */,
 				462C33F31FB14FE3002375AB /* MobileCard.swift in Sources */,
 				462C34071FB91AA1002375AB /* SWRevealViewController.m in Sources */,
 				46578ABE1F947C36007CDA36 /* TagNumList.swift in Sources */,
 				46C3989D1F6FAB3700368C01 /* Record.swift in Sources */,
 				F780C2A21FA00D730024C768 /* recentlist.swift in Sources */,
+				4655F61E1FC69B500018CB1B /* DrugCell.swift in Sources */,
+				4655F61A1FC51D9E0018CB1B /* RDlist.swift in Sources */,
 				4648C90A1F392EEA004EB270 /* MainView.swift in Sources */,
 				F7D40DFA1FB521A500FB168D /* timeList.swift in Sources */,
 				464F8BB21F43D2DE008F81E0 /* GradientView.swift in Sources */,

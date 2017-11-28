@@ -17,7 +17,10 @@ class UserDefaultKey {
     static var UD_tempURL: String = "tempURL"
     static var UD_ClinicDeptcd: String = "ClinicDeptcd"
     static var UD_ClinicDocno: String = "ClinicDocno"
+    static var UD_ClinicDeptnm: String = "ClinicDeptnm"
     static var UD_ClinicDate: String = "ClinicDate"
+    static var UD_ClinicHdate: String = "ClinicHdate"
     static var UD_ClinicIo: String = "ClinicIo"
+    static var UD_SurveyURL: String = "SurveyURL"
     
 }

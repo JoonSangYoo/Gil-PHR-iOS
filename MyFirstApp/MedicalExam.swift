@@ -57,6 +57,7 @@ class MedicalExam: UIViewController, XMLParserDelegate, UITableViewDataSource, U
     var counselDateLabel: UILabel!
     var button: UIButton!
    
+    @IBOutlet weak var emptyLabel: UILabel!
   
 
     struct xmlWriter {             // xml 작성을 위한 구조체
@@ -107,6 +108,9 @@ class MedicalExam: UIViewController, XMLParserDelegate, UITableViewDataSource, U
                 if self.st == "100"{        // 리스폰스 스테이터스가 100(성공)일때
                     // DispatchQueue.main.async -> ui가 대기상태에서 특정 조건에서 화면전환시 멈추는 현상을 없애기 위한 명령어(비동기제어)
                     DispatchQueue.main.async{
+                        self.emptyLabel.isHidden = true
+
+                        self.tbData.isHidden = false
                         self.tbData.dataSource = self
                         self.tbData.delegate = self
                         self.tbData.reloadData()

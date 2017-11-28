@@ -31,6 +31,7 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
     
     var st = ""                 // 스테이터스 값 변수
     
+    @IBOutlet weak var emptyLabel: UILabel!
 
     let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
     
@@ -81,12 +82,14 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
                 if self.st == "100"{        // 리스폰스 스테이터스가 100(성공)일때
                     // DispatchQueue.main.async -> ui가 대기상태에서 특정 조건에서 화면전환시 멈추는 현상을 없애기 위한 명령어(비동기제어)
                     DispatchQueue.main.async{
+
+                        self.emptyLabel.isHidden = true
+                        
                         self.tbData.dataSource = self
                         self.tbData.delegate = self
                         self.tbData.reloadData()
                         self.tbData.tableFooterView = UIView()
                         self.tbData.isHidden = false
-
                         
                     }
                 } else{         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
@@ -107,9 +110,7 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
 
         // Hide the navigation bar on the this view controller
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
-        self.navigationController?.navigationBar.backgroundColor = UIColor.white
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.primaryColor
     }
     
     override func didReceiveMemoryWarning() {
@@ -251,6 +252,7 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
         print("상세화면이동 이벤트 \(listItem.deptNM)")
         UserDefault.save(key: UserDefaultKey.UD_ClinicIo, value: "20")
         UserDefault.save(key: UserDefaultKey.UD_ClinicDeptcd, value: listItem.deptCD)
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDeptnm, value: listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM)
         UserDefault.save(key: UserDefaultKey.UD_ClinicDocno, value: listItem.docNO)
         UserDefault.save(key: UserDefaultKey.UD_ClinicDate, value: listItem.opdDate)
         self.performSegue(withIdentifier: "OPtoD", sender: self)
@@ -305,5 +307,6 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
 extension UIColor{
 
     static let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
+    static let bgColor = UIColor(red: 217.0/255.0, green: 220.0/255.0, blue: 232.0/255.0, alpha: 1.0)
 
 }
