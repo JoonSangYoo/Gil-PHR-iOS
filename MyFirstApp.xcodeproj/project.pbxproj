@@ -45,8 +45,6 @@
 		46C398A11F7335E900368C01 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C398A01F7335E900368C01 /* HttpClient.swift */; };
 		46C398A31F737FDB00368C01 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C398A21F737FDB00368C01 /* UserDefault.swift */; };
 		7CD45B9F019D7BF10B4373C9 /* Pods_MyFirstApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59965708967B901CB7E6D7F7 /* Pods_MyFirstApp.framework */; };
-		F7155DA81FCCF6AF0028E59A /* alarm_drug.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7155DA71FCCF6AF0028E59A /* alarm_drug.swift */; };
-		F718393F1FC2B73900D9467C /* Today_treat.swift in Sources */ = {isa = PBXBuildFile; fileRef = F718393E1FC2B73900D9467C /* Today_treat.swift */; };
 		F76EF86F1F9DCFFF002F34AC /* Reservation_result.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EF86E1F9DCFFF002F34AC /* Reservation_result.swift */; };
 		F76EF8711F9DD55E002F34AC /* Resresult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EF8701F9DD55E002F34AC /* Resresult.swift */; };
 		F774FB0A1FAC00BE00CF9DE0 /* Detail_date.swift in Sources */ = {isa = PBXBuildFile; fileRef = F774FB091FAC00BE00CF9DE0 /* Detail_date.swift */; };
@@ -128,8 +126,6 @@
 		59965708967B901CB7E6D7F7 /* Pods_MyFirstApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyFirstApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		73E83FDE9B38F2321F51EC36 /* Pods-MyFirstApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFirstApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyFirstApp/Pods-MyFirstApp.release.xcconfig"; sourceTree = "<group>"; };
 		8FB7691F374D34382B8CD9AD /* Pods-MyFirstApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFirstApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyFirstApp/Pods-MyFirstApp.debug.xcconfig"; sourceTree = "<group>"; };
-		F7155DA71FCCF6AF0028E59A /* alarm_drug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = alarm_drug.swift; sourceTree = "<group>"; };
-		F718393E1FC2B73900D9467C /* Today_treat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Today_treat.swift; sourceTree = "<group>"; };
 		F76EF86E1F9DCFFF002F34AC /* Reservation_result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation_result.swift; sourceTree = "<group>"; };
 		F76EF8701F9DD55E002F34AC /* Resresult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resresult.swift; sourceTree = "<group>"; };
 		F774FB091FAC00BE00CF9DE0 /* Detail_date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail_date.swift; sourceTree = "<group>"; };
@@ -279,14 +275,6 @@
 				46578ABD1F947C36007CDA36 /* TagNumList.swift */,
 				46578ABF1F95E900007CDA36 /* ExamWebView.swift */,
 				462C33F21FB14FE3002375AB /* MobileCard.swift */,
-<<<<<<< HEAD
-				462C33F41FB18D6D002375AB /* OutPatient.swift */,
-				462C33F81FB2D9C3002375AB /* OPlist.swift */,
-				462C33FA1FB51B88002375AB /* OPcell.swift */,
-				F718393E1FC2B73900D9467C /* Today_treat.swift */,
-				F7155DA71FCCF6AF0028E59A /* alarm_drug.swift */,
-=======
->>>>>>> e98b12eeb9e273ac3e69b01c48a5d18832d7c4fe
 			);
 			path = MyFirstApp;
 			sourceTree = "<group>";
@@ -560,7 +548,6 @@
 				F7D40DFA1FB521A500FB168D /* timeList.swift in Sources */,
 				464F8BB21F43D2DE008F81E0 /* GradientView.swift in Sources */,
 				46720BA61F039199004AE4A8 /* AppDelegate.swift in Sources */,
-				F7155DA81FCCF6AF0028E59A /* alarm_drug.swift in Sources */,
 				F76EF8711F9DD55E002F34AC /* Resresult.swift in Sources */,
 				F774FB0A1FAC00BE00CF9DE0 /* Detail_date.swift in Sources */,
 				462C33F91FB2D9C3002375AB /* OPlist.swift in Sources */,
@@ -574,7 +561,6 @@
 				462C34131FBD620A002375AB /* RecordDetail.swift in Sources */,
 				465378DF1F7C6B1E00E9BBA4 /* UserDefaultKey.swift in Sources */,
 				46C3989F1F70FD1E00368C01 /* Barcode.swift in Sources */,
-				F718393F1FC2B73900D9467C /* Today_treat.swift in Sources */,
 				F78200881F99DED10039D390 /* mobile_reserve.swift in Sources */,
 				F76EF86F1F9DCFFF002F34AC /* Reservation_result.swift in Sources */,
 				F78200831F99D0E80039D390 /* MaintabController.swift in Sources */,
