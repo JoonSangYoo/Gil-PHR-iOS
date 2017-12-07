@@ -22,5 +22,6 @@ class UserDefaultKey {
     static var UD_ClinicHdate: String = "ClinicHdate"
     static var UD_ClinicIo: String = "ClinicIo"
     static var UD_SurveyURL: String = "SurveyURL"
-    
+    static var UD_LoginURL: String = "LoginURL"
+    static var UD_IDcheck: String = "IDcheck"
 }

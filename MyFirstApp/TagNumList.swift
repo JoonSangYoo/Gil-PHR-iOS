@@ -14,5 +14,6 @@ class TagNumList {
     static let meTag = 20
     static let resTag = 30
     static let rcTag = 50
+    static let miTag = 70
     
 }

@@ -308,5 +308,7 @@ extension UIColor{
 
     static let primaryColor = UIColor(red: 23.0/255.0, green: 70.0/255.0, blue: 142.0/255.0, alpha: 1.0)
     static let bgColor = UIColor(red: 217.0/255.0, green: 220.0/255.0, blue: 232.0/255.0, alpha: 1.0)
+    static let primaryColor2 = UIColor(red: 40.0/255.0, green: 55.0/255.0, blue: 115.0/255.0, alpha: 1.0)
+    static let silver = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 236.0/255.0, alpha: 1.0)
 
 }
