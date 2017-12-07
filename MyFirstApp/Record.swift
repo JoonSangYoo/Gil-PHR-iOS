@@ -31,6 +31,23 @@ class Record: UITabBarController {
         tabBar?.layer.borderColor = UIColor.gray.cgColor
         tabBar?.clipsToBounds = true
 }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        let screenSize: CGRect = UIScreen.main.bounds
+
+        var tabFrame:CGRect = self.tabBar.frame
+        tabFrame.origin.y = screenSize.height * 0.16
+        self.tabBar.frame = tabFrame
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar on the this view controller
+//        let screenSize: CGRect = UIScreen.main.bounds
+//        RecordTab.frame = CGRect(x: 0, y: screenSize.height * 0.25, width: self.RecordTab.frame.width, height: self.RecordTab.frame.height)
+
+        
+        
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

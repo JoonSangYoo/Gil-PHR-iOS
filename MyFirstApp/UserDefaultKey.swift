@@ -22,6 +22,7 @@ class UserDefaultKey {
     static var UD_ClinicHdate: String = "ClinicHdate"
     static var UD_ClinicIo: String = "ClinicIo"
     static var UD_SurveyURL: String = "SurveyURL"
+<<<<<<< HEAD
     
     static var alarm_onoff: String = "alarm_onoff"
     static var alarm_startdate: String = "alarm_startdate"
@@ -40,4 +41,8 @@ class UserDefaultKey {
     static var alarm_befor_dinner: String = "alarm_befor_dinner"
     static var alarm_after_dinner: String = "alarm_after_dinner"
     
+=======
+    static var UD_LoginURL: String = "LoginURL"
+    static var UD_IDcheck: String = "IDcheck"
+>>>>>>> 9d1cd55d717e74a69a38619fd656aed080d274cc
 }

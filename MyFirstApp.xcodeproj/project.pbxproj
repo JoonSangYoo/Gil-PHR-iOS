@@ -7,8 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4600A8DF1FCE70D500E890C8 /* LoginWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4600A8DE1FCE70D500E890C8 /* LoginWebView.swift */; };
+		4600A8E11FCE851400E890C8 /* HospitalPhone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4600A8E01FCE851400E890C8 /* HospitalPhone.swift */; };
+		4600A8E31FCFE3DD00E890C8 /* TriLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4600A8E21FCFE3DD00E890C8 /* TriLabelView.swift */; };
 		460D57DD1F5E65BE00242786 /* MyFirstAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460D57DC1F5E65BE00242786 /* MyFirstAppTests.swift */; };
 		460D57EB1F5E65EC00242786 /* MyFirstAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460D57EA1F5E65EC00242786 /* MyFirstAppUITests.swift */; };
+		46129BC81FD114A400A2FABC /* MyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46129BC71FD114A400A2FABC /* MyInfo.swift */; };
+		46129BCA1FD11F9900A2FABC /* GradientView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46129BC91FD11F9900A2FABC /* GradientView2.swift */; };
+		46129BCC1FD4D5EE00A2FABC /* PsnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46129BCB1FD4D5EE00A2FABC /* PsnChange.swift */; };
+		46129BCE1FD65DFF00A2FABC /* GilHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46129BCD1FD65DFF00A2FABC /* GilHome.swift */; };
+		46129BD01FD6831100A2FABC /* PsnSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46129BCF1FD6831100A2FABC /* PsnSave.swift */; };
 		462409861F55248900B0D230 /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 462409851F55248900B0D230 /* login.storyboard */; };
 		462409881F56A97500B0D230 /* NavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462409871F56A97500B0D230 /* NavController.swift */; };
 		462409961F5D361100B0D230 /* InfoWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462409951F5D361100B0D230 /* InfoWebView.swift */; };
@@ -81,12 +89,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4600A8DE1FCE70D500E890C8 /* LoginWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWebView.swift; sourceTree = "<group>"; };
+		4600A8E01FCE851400E890C8 /* HospitalPhone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HospitalPhone.swift; sourceTree = "<group>"; };
+		4600A8E21FCFE3DD00E890C8 /* TriLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TriLabelView.swift; path = "../../../../Downloads/TriLabelView-master/TriLabelView/TriLabelView.swift"; sourceTree = "<group>"; };
 		460D57DA1F5E65BE00242786 /* MyFirstAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyFirstAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		460D57DC1F5E65BE00242786 /* MyFirstAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFirstAppTests.swift; sourceTree = "<group>"; };
 		460D57DE1F5E65BE00242786 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		460D57E81F5E65EC00242786 /* MyFirstAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyFirstAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		460D57EA1F5E65EC00242786 /* MyFirstAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFirstAppUITests.swift; sourceTree = "<group>"; };
 		460D57EC1F5E65EC00242786 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46129BC71FD114A400A2FABC /* MyInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyInfo.swift; sourceTree = "<group>"; };
+		46129BC91FD11F9900A2FABC /* GradientView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GradientView2.swift; path = "../../../../Downloads/Gradient-View-master/GradientView2.swift"; sourceTree = "<group>"; };
+		46129BCB1FD4D5EE00A2FABC /* PsnChange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsnChange.swift; sourceTree = "<group>"; };
+		46129BCD1FD65DFF00A2FABC /* GilHome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GilHome.swift; sourceTree = "<group>"; };
+		46129BCF1FD6831100A2FABC /* PsnSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsnSave.swift; sourceTree = "<group>"; };
 		462409811F54F17E00B0D230 /* MyFirstApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MyFirstApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		462409851F55248900B0D230 /* login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = login.storyboard; sourceTree = "<group>"; };
 		462409871F56A97500B0D230 /* NavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavController.swift; sourceTree = "<group>"; };
@@ -206,11 +222,20 @@
 		462409801F54F0C600B0D230 /* SupportingFile */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				F70252A91FCE346B00CAB756 /* SWRevealViewController.h */,
 				F70252A81FCE346A00CAB756 /* SWRevealViewController.m */,
 				F75E4A941FD65C27005939B7 /* DLRadioButton.h */,
 				F75E4A931FD65C27005939B7 /* DLRadioButton.m */,
+=======
+				462C34051FB91AA1002375AB /* SWRevealViewController.h */,
+				4600A8E21FCFE3DD00E890C8 /* TriLabelView.swift */,
+				462C34061FB91AA1002375AB /* SWRevealViewController.m */,
+>>>>>>> 9d1cd55d717e74a69a38619fd656aed080d274cc
 				462409811F54F17E00B0D230 /* MyFirstApp-Bridging-Header.h */,
+				464F8BB11F43D2DE008F81E0 /* GradientView.swift */,
+				462409871F56A97500B0D230 /* NavController.swift */,
+				46129BC91FD11F9900A2FABC /* GradientView2.swift */,
 			);
 			name = SupportingFile;
 			sourceTree = "<group>";
@@ -272,9 +297,7 @@
 				46720BAE1F039199004AE4A8 /* LaunchScreen.storyboard */,
 				46720BB11F039199004AE4A8 /* Info.plist */,
 				46720BB81F04C8A7004AE4A8 /* MyPlayground.playground */,
-				464F8BB11F43D2DE008F81E0 /* GradientView.swift */,
 				462409851F55248900B0D230 /* login.storyboard */,
-				462409871F56A97500B0D230 /* NavController.swift */,
 				462409951F5D361100B0D230 /* InfoWebView.swift */,
 				4681FE101F6130150038E307 /* CustomNavSegue.swift */,
 				F70252AD1FCE36CC00CAB756 /* Today_treat.swift */,
@@ -287,7 +310,16 @@
 				46578ABD1F947C36007CDA36 /* TagNumList.swift */,
 				46578ABF1F95E900007CDA36 /* ExamWebView.swift */,
 				462C33F21FB14FE3002375AB /* MobileCard.swift */,
+<<<<<<< HEAD
 				F70252AB1FCE368A00CAB756 /* alarm_drug.swift */,
+=======
+				4600A8DE1FCE70D500E890C8 /* LoginWebView.swift */,
+				4600A8E01FCE851400E890C8 /* HospitalPhone.swift */,
+				46129BC71FD114A400A2FABC /* MyInfo.swift */,
+				46129BCB1FD4D5EE00A2FABC /* PsnChange.swift */,
+				46129BCD1FD65DFF00A2FABC /* GilHome.swift */,
+				46129BCF1FD6831100A2FABC /* PsnSave.swift */,
+>>>>>>> 9d1cd55d717e74a69a38619fd656aed080d274cc
 			);
 			path = MyFirstApp;
 			sourceTree = "<group>";
@@ -405,6 +437,7 @@
 					};
 					46720BA11F039199004AE4A8 = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = UKVJE5TA3Q;
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
@@ -558,10 +591,12 @@
 				F780C2A21FA00D730024C768 /* recentlist.swift in Sources */,
 				4655F61E1FC69B500018CB1B /* DrugCell.swift in Sources */,
 				4655F61A1FC51D9E0018CB1B /* RDlist.swift in Sources */,
+				46129BCC1FD4D5EE00A2FABC /* PsnChange.swift in Sources */,
 				4648C90A1F392EEA004EB270 /* MainView.swift in Sources */,
 				F75E4A971FD66B84005939B7 /* reserv_complete2.swift in Sources */,
 				F7D40DFA1FB521A500FB168D /* timeList.swift in Sources */,
 				464F8BB21F43D2DE008F81E0 /* GradientView.swift in Sources */,
+				4600A8E11FCE851400E890C8 /* HospitalPhone.swift in Sources */,
 				46720BA61F039199004AE4A8 /* AppDelegate.swift in Sources */,
 				F76EF8711F9DD55E002F34AC /* Resresult.swift in Sources */,
 				F774FB0A1FAC00BE00CF9DE0 /* Detail_date.swift in Sources */,
@@ -570,22 +605,31 @@
 				F780C2A41FA6A7F20024C768 /* Detail_doctor.swift in Sources */,
 				46578AC01F95E900007CDA36 /* ExamWebView.swift in Sources */,
 				46C398A11F7335E900368C01 /* HttpClient.swift in Sources */,
+				46129BC81FD114A400A2FABC /* MyInfo.swift in Sources */,
 				46C398A31F737FDB00368C01 /* UserDefault.swift in Sources */,
 				465378E31F8F346500E9BBA4 /* MElist.swift in Sources */,
 				462409961F5D361100B0D230 /* InfoWebView.swift in Sources */,
 				F75E4A951FD65C27005939B7 /* DLRadioButton.m in Sources */,
 				462C34131FBD620A002375AB /* RecordDetail.swift in Sources */,
 				465378DF1F7C6B1E00E9BBA4 /* UserDefaultKey.swift in Sources */,
+				46129BD01FD6831100A2FABC /* PsnSave.swift in Sources */,
+				4600A8DF1FCE70D500E890C8 /* LoginWebView.swift in Sources */,
 				46C3989F1F70FD1E00368C01 /* Barcode.swift in Sources */,
 				F78200881F99DED10039D390 /* mobile_reserve.swift in Sources */,
 				F76EF86F1F9DCFFF002F34AC /* Reservation_result.swift in Sources */,
 				F78200831F99D0E80039D390 /* MaintabController.swift in Sources */,
+				46129BCE1FD65DFF00A2FABC /* GilHome.swift in Sources */,
 				462C340F1FBAB7C3002375AB /* HTlist.swift in Sources */,
+				4600A8E31FCFE3DD00E890C8 /* TriLabelView.swift in Sources */,
 				F782008A1F99E17B0039D390 /* Reslist.swift in Sources */,
 				F70252AC1FCE368A00CAB756 /* alarm_drug.swift in Sources */,
 				462409881F56A97500B0D230 /* NavController.swift in Sources */,
 				462C340B1FBAB01F002375AB /* Hospitalization.swift in Sources */,
+<<<<<<< HEAD
 				F70252AA1FCE346B00CAB756 /* SWRevealViewController.m in Sources */,
+=======
+				46129BCA1FD11F9900A2FABC /* GradientView2.swift in Sources */,
+>>>>>>> 9d1cd55d717e74a69a38619fd656aed080d274cc
 				F7CD7BE61FB5A06D009973FD /* reserv_complete.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -722,6 +766,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -764,6 +809,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -774,13 +820,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = UKVJE5TA3Q;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = MyFirstApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = kr.example.MyFirstApp;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.Gil.PHRapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MyFirstApp/MyFirstApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -794,13 +841,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = UKVJE5TA3Q;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = MyFirstApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = kr.example.MyFirstApp;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.Gil.PHRapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MyFirstApp/MyFirstApp-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;

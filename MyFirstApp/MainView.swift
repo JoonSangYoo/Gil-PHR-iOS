@@ -10,15 +10,15 @@
 import UIKit
 
 
-class MainView : UIViewController{
+class MainView : UIViewController, XMLParserDelegate{
     
-    //let parentView = UIView();
-    //let menu1 = UIView();
-    //let menu2 = UIView();
-    //let menu3 = UIView();
-    //let menu4 = UIView();
-    //let menu5 = UIView();
-    //let menu6 = UIView();
+    var parser = XMLParser()        // 파서 객체
+    
+    var currentElement = ""       // 현재 Element
+    var st = ""                 // 스테이터스 값 변수
+    var countData = [String]()
+
+
     var frameView: UIView!
     var currentViewController:UIViewController?
     
@@ -41,6 +41,12 @@ class MainView : UIViewController{
     @IBOutlet weak var menuImage6: UIImageView!
     @IBOutlet weak var menuImage7: UIImageView!
     
+    @IBOutlet weak var rsvCorner: UIImageView!
+    @IBOutlet weak var alarmCorner: UIImageView!
+    @IBOutlet weak var todayCorner: UIImageView!
+    
+    @IBOutlet weak var rsvCount: UILabel!
+    @IBOutlet weak var todayCount: UILabel!
     
     var webView: UIWebView!
     
@@ -58,16 +64,53 @@ class MainView : UIViewController{
         self.view.layer.addSublayer(gradientLayer)
     }
     
+    
+    struct xmlWriter {             // xml 작성을 위한 구조체
+        var prtc: String
+        
+        init(prtc: String) {
+            self.prtc = prtc
+        }
+        
+        func xmlString() -> String {
+            
+            var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+            xml += "<request>"
+            xml += "<protocol>\(self.prtc)</protocol>"
+            xml += "<userid>\(UserDefault.load(key: UserDefaultKey.UD_id))</userid>"
+            xml += "<keycd>\(UserDefault.load(key: UserDefaultKey.UD_Key))</keycd>"
+            xml += "</request>"
+            
+            //      for number in self.trackingNumbers {
+            //                xml += "<TrackingNumber>\(number)</TrackingNumber>"
+            //    }
+            
+            
+            return xml
+        }
+    }
+
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         //setGradientBackground()
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        imageView.contentMode = .scaleAspectFit
-        let image = UIImage(named: "gilLogo")
-        imageView.image = image
-        navigationItem.titleView = imageView
-
+        
+        let supportView = UIView(frame: CGRect(x: 0, y: 0, width: 152, height: 32))
+        supportView.contentMode = .scaleAspectFit
+        
+        let logo = UIImageView(image: UIImage(named: "gilLogo") ) //UIImage(named: "SelectAnAlbumTitleLettering")
+        logo.frame = CGRect(x: 0, y: 0, width: supportView.frame.size.width, height: supportView.frame.size.height)
+        supportView.addSubview(logo)
+        supportView.contentMode = .center
+        navigationItem.titleView = supportView
+        
+//        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+//        imageView.contentMode = .scaleAspectFit
+//        let image = UIImage(named: "gilLogo")
+//        imageView.image = image
+//        navigationItem.titleView = imageView
+        
         print(UserDefault.load(key: UserDefaultKey.UD_Key))
         print(UserDefault.load(key: UserDefaultKey.UD_Ptntnm))
         print(UserDefault.load(key: UserDefaultKey.UD_Ptntno))
@@ -337,22 +380,73 @@ class MainView : UIViewController{
 
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let postString = xmlWriter(prtc: "count").xmlString()
+        _ = HttpClient.requestXML(Xml: postString){ responseString in
+            // print(responseString)
+            let dataXML = responseString.data(using: .utf8)
+            
+            self.parser = XMLParser(data: dataXML!)
+            self.parser.delegate = self
+            
+            let success:Bool = self.parser.parse()
+            if success {
+                print("parse success!")
+                
+                if self.st == "100"{        // 리스폰스 스테이터스가 100(성공)일때
+                    // DispatchQueue.main.async -> ui가 대기상태에서 특정 조건에서 화면전환시 멈추는 현상을 없애기 위한 명령어(비동기제어)
+                    DispatchQueue.main.async{
+                        self.rsvCount.text = self.countData[0]
+                        self.todayCount.text = self.countData[2]
+                        if self.countData[0] != "0"{
+                            self.rsvCorner.isHidden = false
+                        } else {
+                            self.rsvCorner.isHidden = true
+                        }
+                        
+                        if self.countData[2] != "0"{
+                            self.todayCorner.isHidden = false
+                            } else {
+                            self.todayCorner.isHidden = true
+                        }
+                        
+                    }
+                }else {         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
+                    DispatchQueue.main.async{
+                        
+                    }
+                }
+            } else{
+                print("parse failure!")
+            }
+        }
+        
+        
+    }
+
 
 
     
     func infoButtonTapped(sender: UIBarButtonItem) {
         
-        print("Start remove sibview")
         if let viewWithTag = self.view.viewWithTag(84) {
             viewWithTag.removeFromSuperview()
             
-            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            imageView.contentMode = .scaleAspectFit
-            let image = UIImage(named: "gilLogo")
-            imageView.image = image
-            navigationItem.titleView = imageView
+            let supportView = UIView(frame: CGRect(x: 0, y: 0, width: 152, height: 32))
+            supportView.contentMode = .scaleAspectFit
+            
+            let logo = UIImageView(image: UIImage(named: "gilLogo") ) //UIImage(named: "SelectAnAlbumTitleLettering")
+            logo.frame = CGRect(x: 0, y: 0, width: supportView.frame.size.width, height: supportView.frame.size.height)
+            supportView.addSubview(logo)
+            supportView.contentMode = .center
+            navigationItem.titleView = supportView
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideInfo"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
             navigationItem.rightBarButtonItem?.tintColor = UIColor.white
+            
+            viewWillAppear(true)
             
         }else{
             performSegue(withIdentifier: "segInfo", sender: nil)
@@ -360,41 +454,34 @@ class MainView : UIViewController{
         
     }
     
-    /*
-    
-    func setColor() -> Void {
-        let margins = view.layoutMarginsGuide
-        
-        parentView.translatesAutoresizingMaskIntoConstraints = false
-        parentView.backgroundColor = UIColor.red
-        parentView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
-        parentView.heightAnchor.constraint(equalToConstant: view.bounds.size.height).isActive = true
-        parentView.widthAnchor.constraint(equalToConstant: view.bounds.size.width).isActive = true
-        parentView.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 100).isActive = true
-    }
-    func setLayout() -> Void {
-        
-        
-        parentView.addSubview(menu1)
-        parentView.addSubview(menu2)
-        
-        menu1.translatesAutoresizingMaskIntoConstraints = false
-        menu1.backgroundColor = UIColor.yellow
-        menu1.heightAnchor.constraint(equalTo: parentView.heightAnchor).isActive = true
-        menu1.widthAnchor.constraint(equalTo: parentView.widthAnchor).isActive = true
-        //menu1.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
-        //menu1.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 100).isActive = true
 
+
+    // XML 파서가 시작 테그를 만나면 호출됨
+    public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:])
+    {
+        currentElement = elementName
         
-        menu2.translatesAutoresizingMaskIntoConstraints = false
-        menu2.backgroundColor = UIColor.brown
-        menu2.heightAnchor.constraint(equalToConstant: parentView.bounds.size.height*0.3).isActive = true
-        menu2.widthAnchor.constraint(equalToConstant: parentView.bounds.size.width).isActive = true
-        menu2.topAnchor.constraint(equalTo: menu1.bottomAnchor).isActive = true
+        if (elementName == "response") {
+            st = attributeDict["status"]!
+            
+        }
     }
- */
+
+
+
+    // 현재 테그에 담겨있는 문자열 전달
+    public func parser(_ parser: XMLParser, foundCharacters string: String)
+    {
+        switch currentElement {
+        case "rsrvcnt":
+            countData.append(string)
+        case "todaycnt":
+            countData.append(string)
+
+        default:break
+        }
+    }
 }
-
 public enum Model : String {
     case simulator   = "simulator/sandbox",
     iPod1            = "iPod 1",
