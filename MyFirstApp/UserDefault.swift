@@ -13,6 +13,7 @@ class UserDefault{
         let userDefaults = UserDefaults.standard
         userDefaults.setValue(value, forKey: key)
         userDefaults.synchronize()
+        
     }
     
     class func load(key:String) -> String {

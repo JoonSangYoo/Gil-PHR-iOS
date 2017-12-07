@@ -87,7 +87,6 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             self.parser = XMLParser(data: dataXML!)
             self.parser.delegate = self
             
-            
             let success:Bool = self.parser.parse()
             if success {
                 print("parse success!")
@@ -104,6 +103,20 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
                     }
                 } else if(self.st=="202" && request_code == "lastopd_search"){         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
                     DispatchQueue.main.async{
+                        self.http_request(request_code: "deptlist_search")
+                        if(request_code == "lastopd_search"){
+                            self.deptnmLabel.text = "최근 진료내역으로 예약"
+                            self.deptdesctextview.text = "진료일 : 내역 없음 \n진료과 : 내역 없음\n"
+                            lastdeptcd = ""  //진료과코드
+                            lastdeptnm = ""   //진료과명
+                            lastdate = ""     //진료일
+                            lastdocno = ""    //의사코드
+                            lastdocnm = ""        //의사명
+                            lastesp = ""      // 특진 구분
+                            lastmain = ""        //진료분야
+                            plag_rec = 0
+                        }
+                        print(lastdate)
                         self.rec202 = "ok"
                     }
                 }
@@ -124,6 +137,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         super.viewDidLoad()
         if(deptlist.count==0){
             http_request(request_code: "deptlist_search")
+            
         }
         else{
             self.resTable.dataSource = self
@@ -135,6 +149,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         http_request(request_code: "lastopd_search")
         resTable.rowHeight = UITableViewAutomaticDimension
         resTable.estimatedRowHeight = 100
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -154,6 +169,8 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
     // XML 파서가 시작 테그를 만나면 호출됨
     public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:])
     {
+        
+        
         currentElement = elementName
         if (elementName == "response"){
             st = attributeDict["status"]!
@@ -242,6 +259,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
             
             deptlist.append(listItem)
         }
+        
     }
     
     
@@ -272,6 +290,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
                 let repdocnm: String = lastdocnm.replacingOccurrences(of: "\n  ", with: "")
                 deptnmLabel.text = "최근 진료내역으로 예약"
                 deptdesctextview.text = "진료일 : \(weekdayForm(dateString: repdate)) \n진료과 : \(repdeptnm)  \(repdocnm) 교수\n"
+                self.deptdesctextview.addGestureRecognizer(UITapGestureRecognizer(target: self, action:  #selector (self.checkAction(sender: ))))
                 plag_rec = 1
             }
         }
@@ -287,8 +306,9 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
                 deptdesctextview.text = listItem.deptdesc
             }
             deptdesctextview.textColor = UIColor.black
+            self.deptdesctextview.addGestureRecognizer(UITapGestureRecognizer(target: self, action:  #selector (self.checkAction(sender: ))))
         }
-        self.deptdesctextview.addGestureRecognizer(UITapGestureRecognizer(target: self, action:  #selector (self.checkAction(sender: ))))
+        
         cell.selectionStyle = .none
         
         return cell
@@ -305,8 +325,9 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         
         if(reserve_index == 0){
             cell?.selectionStyle = .none
-            if(lastdeptnm != ""){
+            if(lastdate != ""){
                 performSegue(withIdentifier: "Recent_date" , sender: self)
+                plag_rec = 1
             }
         }
         else{
@@ -324,7 +345,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         let cell = resTable.dequeueReusableCell(withIdentifier: "Reservcell")
         if(reserve_index == 0){
             cell?.selectionStyle = .none
-            if(lastdeptnm != ""){
+            if(lastdate != ""){
                 performSegue(withIdentifier: "Recent_date" , sender: self)
             }
         }

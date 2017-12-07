@@ -10,8 +10,7 @@
  import UIKit
  
  var doctor_index = 0
- let receive_deptcd = deptlist[reserve_index-1].deptcd
- let receive_deptnm = deptlist[reserve_index-1].deptnm
+
  var doctorlist = [doctorList]() // 의사 목록 출력 내용 array
  
  class Detail_doctor : UIViewController, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
@@ -201,8 +200,6 @@
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         doctor_index = indexPath.row
-        
-        print(indexPath.row)
         performSegue(withIdentifier: "Detail_date" , sender: self)
     }
     

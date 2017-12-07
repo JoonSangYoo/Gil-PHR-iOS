@@ -32,7 +32,7 @@ class Reservation_result: UIViewController, XMLParserDelegate, UITableViewDataSo
     var dateLB: UILabel!
     var deptnmLB: UILabel!
     var docnmLB: UILabel!
-    
+    var date_V = ""
     struct xmlWriter {             // xml 작성을 위한 구조체
         var prtc: String
         
@@ -165,7 +165,9 @@ class Reservation_result: UIViewController, XMLParserDelegate, UITableViewDataSo
         docnmLB = cell.viewWithTag(35) as! UILabel
         
         let resultItem = listItems[indexPath.row]
-        dateLB.text = weekdayForm(dateString: date.substring(to: 8)) + "  " + time
+        date_V = resultItem.date.substring(to: 8)
+        dateLB.text = weekdayForm(dateString: date_V) + "    " + resultItem.time
+        //dateLB.text = weekdayForm(dateString: date.substring(to: 8)) + "  " + time
         deptnmLB.text = resultItem.deptnm
         docnmLB.text = resultItem.docnm
         cell.selectionStyle = .none

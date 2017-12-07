@@ -11,6 +11,7 @@ import FSCalendar
 var timelist = [timeList]()
 var time_index = 0
 var select_Date = ""
+var temp_date = Date()
 class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, XMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
     var activityindicator : UIActivityIndicatorView = UIActivityIndicatorView()
     @IBOutlet weak var calendar: FSCalendar!
@@ -104,7 +105,9 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
         self.time_tb.delegate = self
         self.time_tb.reloadData()
         self.time_tb.tableFooterView = UIView()
+        temp_date = date
         select_Date = weekdayForm(dateString: self.formatter_second.string(from: date))
+        
         if monthPosition == .previous || monthPosition == .next {
             calendar.setCurrentPage(date, animated: true)
         }

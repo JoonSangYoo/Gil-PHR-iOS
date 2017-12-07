@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import UserNotifications
 
 
 extension UITextField {
@@ -33,7 +33,6 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
     var pubTitle = ""
     var contents = ""
     var st = ""
-    
     
     
     func loginAttempt() -> Void {
@@ -121,6 +120,23 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //최근 진료내역 초기화
+        lastdeptcd = ""  //진료과코드
+        lastdeptnm = ""   //진료과명
+        lastdate = ""     //진료일
+        lastdocno = ""    //의사코드
+        lastdocnm = ""        //의사명
+        lastesp = ""      // 특진 구분
+        lastmain = ""        //진료분야
+        plag_rec = 0
+        //알림 권한 허용
+        let app = UIApplication.shared
+        
+        let notificationSettings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+        
+        app.registerUserNotificationSettings(notificationSettings)
+        //----
         recentItem = [recentlist]()
         idField = self.view.viewWithTag(loginTag + 1) as? UITextField
         pwField = self.view.viewWithTag(loginTag + 2) as? UITextField

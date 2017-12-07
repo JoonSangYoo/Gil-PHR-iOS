@@ -23,4 +23,21 @@ class UserDefaultKey {
     static var UD_ClinicIo: String = "ClinicIo"
     static var UD_SurveyURL: String = "SurveyURL"
     
+    static var alarm_onoff: String = "alarm_onoff"
+    static var alarm_startdate: String = "alarm_startdate"
+    static var alarm_enddate: String = "alarm_enddate"
+    static var alarm_getuptime: String = "alarm_getuptime"
+    static var alarm_bedtime : String = "alarm_bedtime"
+    static var alarm_breakfast : String = "alarm_breakfast"
+    static var alarm_lunch: String = "alarm_lunch"
+    static var alarm_dinner: String = "alarm_dinner"
+    static var alarm_getup: String = "alarm_getup"
+    static var alarm_bed: String = "alarm_bed"
+    static var alarm_befor_breakfast: String = "alarm_befor_breakfast"
+    static var alarm_after_breakfast: String = "alarm_after_breakfast"
+    static var alarm_befor_lunch: String = "alarm_befor_lunch"
+    static var alarm_after_lunch: String = "alarm_after_lunch"
+    static var alarm_befor_dinner: String = "alarm_befor_dinner"
+    static var alarm_after_dinner: String = "alarm_after_dinner"
+    
 }

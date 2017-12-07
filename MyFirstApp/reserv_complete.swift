@@ -6,6 +6,8 @@
 //  Copyright © 2017년 Joonsang Yoo. All rights reserved.
 //
 import Foundation
+var receive_time = ""
+var receive_date = ""
 
 class reserv_complete : UIViewController{
     
@@ -16,7 +18,28 @@ class reserv_complete : UIViewController{
     @IBOutlet weak var mainLB: UITextField!
     @IBOutlet weak var lastview_tv: UITextView!
     
+
+    
+    fileprivate let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
+    
+    fileprivate let formatter2: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        return formatter
+    }()
+    
     override func viewDidLoad() {
+        super.viewDidLoad()
+        //self.navigationController?.isNavigationBarHidden = true   //네비게이션 바 숨기기
+        deptnmLB.isUserInteractionEnabled = false
+        dateLB.isUserInteractionEnabled = false
+        docnmLB.isUserInteractionEnabled = false
+        espLB.isUserInteractionEnabled = false
+        mainLB.isUserInteractionEnabled = false
         deptnmLB.addBorderBottom(height: 1.0, color: UIColor.lightGray)
         dateLB.addBorderBottom(height: 1.0, color: UIColor.lightGray)
         docnmLB.addBorderBottom(height: 1.0, color: UIColor.lightGray)
@@ -38,10 +61,10 @@ class reserv_complete : UIViewController{
         }
         else{
             lb_main = doctorlist[doctor_index].main.replacingOccurrences(of: "\n    ", with: "")
-            lb_esp = doctorlist[doctor_index].esp.replacingOccurrences(of: "\n     ", with: "")
+            lb_esp = doctorlist[doctor_index].esp.replacingOccurrences(of: "\n      ", with: "")
             lb_docnm = doctorlist[doctor_index].docnm.replacingOccurrences(of:"\n     ", with:"")
             lb_deptnm = deptlist[reserve_index-1].deptnm
-            print(lb_docnm)
+            print(lb_esp)
         }
         
         deptnmLB.text = "    \(lb_deptnm)"
@@ -49,11 +72,35 @@ class reserv_complete : UIViewController{
         docnmLB.text = "    \(lb_docnm) 교수"
         //10특진 20 일반
         var erp_txt = ""
-        if(lb_esp == "20"){ erp_txt = "일반진료" }
-        else{ erp_txt = "선택진료" }
+        if(lb_esp == "20"){
+            erp_txt = "일반진료"
+        }else{
+            erp_txt = "선택진료"
+        }
         espLB.text = "    " + erp_txt
         /////////
         mainLB.text = "    " + lb_main
+        
+        receive_time = timelist[time_index].hhmm
+        receive_date = formatter2.string(from: temp_date)
+        
+    }
+    
+    @IBAction func complete_btn(_ sender: Any) {
+        createAlert(title: "예약 확정", message: "해당 진료로 예약을 하시겠습니까?")
+    }
+    
+    
+    func createAlert(title:String, message:String){
+        let alert = UIAlertController(title : title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: "확인",style : UIAlertActionStyle.default, handler:ok_btn))
+        alert.addAction(UIAlertAction(title: "취소",style : UIAlertActionStyle.default, handler:{(action)in alert.dismiss(animated: false, completion: nil)}))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func ok_btn(action: UIAlertAction) {
+        performSegue(withIdentifier: "complete_seg" , sender: self)
     }
 }
 
