@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import DLRadioButton
 
 
 extension UITextField {
@@ -34,6 +34,7 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
     var contents = ""
     var st = ""
     
+    @IBOutlet weak var idCheck: DLRadioButton!
     
     
     func loginAttempt() -> Void {
@@ -121,21 +122,45 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.idCheck.isMultipleSelectionEnabled = true
+    
+        
         recentItem = [recentlist]()
         idField = self.view.viewWithTag(loginTag + 1) as? UITextField
         pwField = self.view.viewWithTag(loginTag + 2) as? UITextField
         
         idField?.addBorderBottom(height: 1.0, color: UIColor.lightGray)
         idField?.placeholder = "아이디"
-        idField?.becomeFirstResponder()
         idField.delegate = self
         
         pwField?.addBorderBottom(height: 1.0, color: UIColor.lightGray)
         pwField?.placeholder = "비밀번호"
         pwField.delegate = self
-        //border.borderColor = UIColor( red: 32.0/255, green: 53.0/255, blue:88.0/255, alpha: 1.0 ).CGColo
         
         // Do any additional setup after loading the view, typically from a nib.
+        
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide the navigation bar on the this view controller
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.idField?.text = ""
+        self.pwField?.text = ""
+        if UserDefault.load(key: UserDefaultKey.UD_IDcheck) == "1"{
+            if self.idCheck.isSelected == false{
+                self.idCheck.isSelected = true
+            }
+            idField?.text = UserDefault.load(key: UserDefaultKey.UD_id)
+            pwField?.becomeFirstResponder()
+        } else {
+            idField?.becomeFirstResponder()
+            
+        }
+        
     }
     
 
@@ -194,7 +219,31 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func idFind(_ sender: Any) {
+        UserDefault.save(key: UserDefaultKey.UD_LoginURL, value: "https://www.gilhospital.com/phr/find_id.html")
+        performSegue(withIdentifier: "loginWeb", sender: self)
+    }
    
+    @IBAction func pwFind(_ sender: Any) {
+        UserDefault.save(key: UserDefaultKey.UD_LoginURL, value: "https://www.gilhospital.com/phr/findpw_mail.html")
+        performSegue(withIdentifier: "loginWeb", sender: self)
+    }
+    
+    @IBAction func join(_ sender: Any) {
+        UserDefault.save(key: UserDefaultKey.UD_LoginURL, value: "https://www.gilhospital.com/phr/member_gubun.html")
+        performSegue(withIdentifier: "loginWeb", sender: self)
+
+    }
+    
+    @IBAction func idCheck(_ sender: Any) {
+        if self.idCheck.isSelected{
+            UserDefault.save(key: UserDefaultKey.UD_IDcheck, value: "1")
+        } else {
+            UserDefault.save(key: UserDefaultKey.UD_IDcheck, value: "0")
+
+        }
+    }
+
     /*
     func myTargetEditingDidBeginFunction(textField: UITextField) {
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
