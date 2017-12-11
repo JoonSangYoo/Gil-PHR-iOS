@@ -11,8 +11,11 @@ import UIKit
 class NavController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let arrayStr = [ "진료기록", "진료예약", "복약알림", "건강검진", "개인정보", "오늘진료", "진료카드", "원내전화", "로그아웃"]
-    
     let arrayImg = [#imageLiteral(resourceName: "navImg1"), #imageLiteral(resourceName: "ic_02"), #imageLiteral(resourceName: "ic_03"), #imageLiteral(resourceName: "ic_04"), #imageLiteral(resourceName: "ic_05"), #imageLiteral(resourceName: "ic_06"), #imageLiteral(resourceName: "ic_07"), #imageLiteral(resourceName: "ic_08"), #imageLiteral(resourceName: "ic_09") ]
+    
+    let arrayStr2 = [ "진료기록", "진료예약", "복약알림", "건강검진", "개인정보", "오늘진료", "진료카드", "로그아웃"]
+    let arrayImg2 = [#imageLiteral(resourceName: "navImg1"), #imageLiteral(resourceName: "ic_02"), #imageLiteral(resourceName: "ic_03"), #imageLiteral(resourceName: "ic_04"), #imageLiteral(resourceName: "ic_05"), #imageLiteral(resourceName: "ic_06"), #imageLiteral(resourceName: "ic_07"), #imageLiteral(resourceName: "ic_09") ]
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var imageView: UIImageView!
     
@@ -31,8 +34,11 @@ class NavController: UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        
-        return arrayStr.count
+        if UserDefault.load(key: UserDefaultKey.UD_Staffyn) == "Y"{
+            return arrayStr.count
+        } else{
+            return arrayStr2.count
+        }
         
     }
     
@@ -44,8 +50,16 @@ class NavController: UIViewController, UITableViewDataSource, UITableViewDelegat
         
         let cell1 = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! CustomCell
         
-        cell1.name.text = arrayStr[indexPath.row]
-        cell1.navImg.image = arrayImg[indexPath.row]
+        if UserDefault.load(key: UserDefaultKey.UD_Staffyn) == "Y"{
+            cell1.name.text = arrayStr[indexPath.row]
+            cell1.navImg.image = arrayImg[indexPath.row]
+            
+        } else{
+            cell1.name.text = arrayStr2[indexPath.row]
+            cell1.navImg.image = arrayImg2[indexPath.row]
+            
+        }
+
         
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
         

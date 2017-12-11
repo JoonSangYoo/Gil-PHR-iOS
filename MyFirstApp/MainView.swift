@@ -111,11 +111,6 @@ class MainView : UIViewController, XMLParserDelegate{
 //        imageView.image = image
 //        navigationItem.titleView = imageView
         
-        print(UserDefault.load(key: UserDefaultKey.UD_Key))
-        print(UserDefault.load(key: UserDefaultKey.UD_Ptntnm))
-        print(UserDefault.load(key: UserDefaultKey.UD_Ptntno))
-        print(UserDefault.load(key: UserDefaultKey.UD_Staffyn))
-        
         menuImage1.image = UIImage(named: "menuImage1")
         menuImage2.image = UIImage(named: "menuImage2")
         menuImage3.image = UIImage(named: "menuImage3")
@@ -168,7 +163,7 @@ class MainView : UIViewController, XMLParserDelegate{
         }
                 
         if(positionValue == "로그아웃"){
-            
+            UserDefault.save(key: UserDefaultKey.UD_Ptntno, value: "0")
             dismiss(animated: true, completion: nil)
 
         }else if(positionValue != nil){
@@ -192,8 +187,17 @@ class MainView : UIViewController, XMLParserDelegate{
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
             navigationItem.rightBarButtonItem?.tintColor = UIColor.white
 
-            
-            performSegue(withIdentifier: positionValue!, sender: nil)
+            if UserDefault.load(key: UserDefaultKey.UD_Staffyn) != "Y"{
+                if positionValue == "원내전화"{
+                    UserDefault.save(key: UserDefaultKey.UD_Ptntno, value: "0")
+                    dismiss(animated: true, completion: nil)
+                }else{
+                    performSegue(withIdentifier: positionValue!, sender: nil)
+                }
+            }else{
+                performSegue(withIdentifier: positionValue!, sender: nil)
+
+            }
             
         }
         

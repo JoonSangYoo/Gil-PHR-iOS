@@ -14,18 +14,23 @@ class MyInfo: UIViewController {
     let tag = TagNumList.miTag
     
     @IBOutlet weak var ptntNumView: UIView!
-
     @IBOutlet weak var phrView: UIView!
-
     @IBOutlet weak var changeView: UIView!
   
+    @IBOutlet weak var ptntLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.ptntNumView.addGestureRecognizer(UITapGestureRecognizer(target: self, action:  #selector (self.checkAction(sender:))))
         self.phrView.addGestureRecognizer(UITapGestureRecognizer(target: self, action:  #selector (self.checkAction(sender:))))
         self.changeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action:  #selector (self.checkAction(sender:))))
-
+        
+        if UserDefault.load(key: UserDefaultKey.UD_Ptntno) == "0" || UserDefault.load(key: UserDefaultKey.UD_Ptntno) == ""{
+            self.ptntLabel.text = "병원등록번호 찾기"
+        }else{
+            self.ptntLabel.text = "병원등록번호  \(UserDefault.load(key: UserDefaultKey.UD_Ptntno))"
+        }
         
     }
     
@@ -33,9 +38,15 @@ class MyInfo: UIViewController {
         let tag = sender.view!.tag
         switch tag {
         case 71:
+            if UserDefault.load(key: UserDefaultKey.UD_Ptntno) != "0" || UserDefault.load(key: UserDefaultKey.UD_Ptntno) != ""{
+                performSegue(withIdentifier: "ptntWeb2", sender: self)
+            }else{
+                let alert = UIAlertController(title: "병원등록번호", message: "환자번호가 이미 있습니다.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "닫기", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
                 
+            }
             
-            print("ptnt")
         case 72:
             print("phr")
             performSegue(withIdentifier: "psnSave", sender: self)

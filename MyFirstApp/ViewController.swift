@@ -54,13 +54,26 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
 
                 if self.st == "100"{
                 DispatchQueue.main.async{
+                    print(self.loginData[6])
+                    print(self.loginData[8])
+                    print(self.loginData[10])
                     UserDefault.save(key: UserDefaultKey.UD_Key, value: self.loginData[0])
                     UserDefault.save(key: UserDefaultKey.UD_Ptntno, value: self.loginData[2])
                     UserDefault.save(key: UserDefaultKey.UD_Ptntnm, value: self.loginData[4])
-                    UserDefault.save(key: UserDefaultKey.UD_Staffyn, value: self.loginData[6])
+                    UserDefault.save(key: UserDefaultKey.UD_Staffyn, value: self.loginData[10])
                     UserDefault.save(key: UserDefaultKey.UD_id, value: self.idField.text!)
+                    let tempURL = self.loginData[12].replacingOccurrences(of: "![CDATA[", with: "")
+                    
+                    if self.loginData[6] == "Y"{
+                        UserDefault.save(key: UserDefaultKey.UD_LoginURL, value: tempURL.replacingOccurrences(of: "]]", with: ""))
+                        self.performSegue(withIdentifier: "loginWeb", sender: self)
+
+                    } else{
+                        self.performSegue(withIdentifier: "segMain", sender: self)
+
+                    }
                     self.loginData = [String]()
-                    self.performSegue(withIdentifier: "segMain", sender: self)
+
                     
                     }
                 } else{
@@ -122,10 +135,8 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.idCheck.isMultipleSelectionEnabled = true
-    
-        
+
         recentItem = [recentlist]()
         idField = self.view.viewWithTag(loginTag + 1) as? UITextField
         pwField = self.view.viewWithTag(loginTag + 2) as? UITextField
@@ -146,6 +157,7 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         // Hide the navigation bar on the this view controller
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         self.idField?.text = ""
@@ -206,8 +218,15 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
             loginData.append(string)
         case "ptntnm":
             loginData.append(string)
+        case "firstlogin":
+            loginData.append(string)
+        case "ptntnofound":
+            loginData.append(string)
         case "emplyn":
             loginData.append(string)
+        case "ptntnofindurl":
+            loginData.append(string)
+
         default:break
         }
     }
@@ -244,31 +263,7 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
         }
     }
 
-    /*
-    func myTargetEditingDidBeginFunction(textField: UITextField) {
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        // do your stuff
-    }
 
-    
-    func keyboardWillShow(notification: NSNotification) {
-        //if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= 100
-          //  }
-        }
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        //if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += 100
-         //   }
-        }
-    }
- 
- */
    
 }
 

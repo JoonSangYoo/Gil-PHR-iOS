@@ -31,20 +31,24 @@
 		462C340F1FBAB7C3002375AB /* HTlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C340E1FBAB7C3002375AB /* HTlist.swift */; };
 		462C34111FBBCDBC002375AB /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C34101FBBCDBC002375AB /* PaddingLabel.swift */; };
 		462C34131FBD620A002375AB /* RecordDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C34121FBD620A002375AB /* RecordDetail.swift */; };
+		463531E21FD939CA00B28D52 /* Today_treat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463531E11FD939C900B28D52 /* Today_treat.swift */; };
+		463531E81FDA18C000B28D52 /* alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463531E71FDA18C000B28D52 /* alarm.swift */; };
+		463531EC1FDA19F000B28D52 /* UserDefaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463531EB1FDA19F000B28D52 /* UserDefaultKey.swift */; };
+		463531EE1FDA1A7E00B28D52 /* reserv_complete2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463531ED1FDA1A7E00B28D52 /* reserv_complete2.swift */; };
+		463531F01FDA1B3A00B28D52 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463531EF1FDA1B3A00B28D52 /* AppDelegate.swift */; };
 		4648C90A1F392EEA004EB270 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4648C9091F392EEA004EB270 /* MainView.swift */; };
+		464F6FB81FD9389F00140B7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 464F6FB61FD9389F00140B7F /* Main.storyboard */; };
 		464F8BB21F43D2DE008F81E0 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464F8BB11F43D2DE008F81E0 /* GradientView.swift */; };
-		465378DF1F7C6B1E00E9BBA4 /* UserDefaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465378DE1F7C6B1E00E9BBA4 /* UserDefaultKey.swift */; };
 		465378E11F7CDB2900E9BBA4 /* MedicalExam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465378E01F7CDB2900E9BBA4 /* MedicalExam.swift */; };
 		465378E31F8F346500E9BBA4 /* MElist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465378E21F8F346500E9BBA4 /* MElist.swift */; };
+		4655389D1FD9357D0046B745 /* alarm_drug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4655389C1FD9357D0046B745 /* alarm_drug.swift */; };
 		4655F61A1FC51D9E0018CB1B /* RDlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4655F6191FC51D9E0018CB1B /* RDlist.swift */; };
 		4655F61C1FC54AD00018CB1B /* ExamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4655F61B1FC54AD00018CB1B /* ExamCell.swift */; };
 		4655F61E1FC69B500018CB1B /* DrugCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4655F61D1FC69B500018CB1B /* DrugCell.swift */; };
 		4655F6201FCBE3D70018CB1B /* SurveyWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4655F61F1FCBE3D70018CB1B /* SurveyWebView.swift */; };
 		46578ABE1F947C36007CDA36 /* TagNumList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46578ABD1F947C36007CDA36 /* TagNumList.swift */; };
 		46578AC01F95E900007CDA36 /* ExamWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46578ABF1F95E900007CDA36 /* ExamWebView.swift */; };
-		46720BA61F039199004AE4A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46720BA51F039199004AE4A8 /* AppDelegate.swift */; };
 		46720BA81F039199004AE4A8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46720BA71F039199004AE4A8 /* ViewController.swift */; };
-		46720BAB1F039199004AE4A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46720BA91F039199004AE4A8 /* Main.storyboard */; };
 		46720BAD1F039199004AE4A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46720BAC1F039199004AE4A8 /* Assets.xcassets */; };
 		46720BB01F039199004AE4A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46720BAE1F039199004AE4A8 /* LaunchScreen.storyboard */; };
 		4681FE111F6130150038E307 /* CustomNavSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4681FE101F6130150038E307 /* CustomNavSegue.swift */; };
@@ -115,11 +119,17 @@
 		462C340E1FBAB7C3002375AB /* HTlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTlist.swift; sourceTree = "<group>"; };
 		462C34101FBBCDBC002375AB /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		462C34121FBD620A002375AB /* RecordDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDetail.swift; sourceTree = "<group>"; };
+		463531E11FD939C900B28D52 /* Today_treat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Today_treat.swift; path = "../../../../Downloads/Gil-PHR-iOS-master-2/MyFirstApp/Today_treat.swift"; sourceTree = "<group>"; };
+		463531E71FDA18C000B28D52 /* alarm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = alarm.swift; path = "../../../../Downloads/Gil-PHR-iOS-master-2/MyFirstApp/alarm.swift"; sourceTree = "<group>"; };
+		463531EB1FDA19F000B28D52 /* UserDefaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDefaultKey.swift; path = "../../../../Downloads/Gil-PHR-iOS-master-2/MyFirstApp/UserDefaultKey.swift"; sourceTree = "<group>"; };
+		463531ED1FDA1A7E00B28D52 /* reserv_complete2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = reserv_complete2.swift; sourceTree = "<group>"; };
+		463531EF1FDA1B3A00B28D52 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4648C9091F392EEA004EB270 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		464F6FB71FD9389F00140B7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "../../../../Downloads/Gil-PHR-iOS-master-2/MyFirstApp/Base.lproj/Main.storyboard"; sourceTree = "<group>"; };
 		464F8BB11F43D2DE008F81E0 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
-		465378DE1F7C6B1E00E9BBA4 /* UserDefaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultKey.swift; sourceTree = "<group>"; };
 		465378E01F7CDB2900E9BBA4 /* MedicalExam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicalExam.swift; sourceTree = "<group>"; };
 		465378E21F8F346500E9BBA4 /* MElist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MElist.swift; sourceTree = "<group>"; };
+		4655389C1FD9357D0046B745 /* alarm_drug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = alarm_drug.swift; sourceTree = "<group>"; };
 		4655F6191FC51D9E0018CB1B /* RDlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RDlist.swift; sourceTree = "<group>"; };
 		4655F61B1FC54AD00018CB1B /* ExamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamCell.swift; sourceTree = "<group>"; };
 		4655F61D1FC69B500018CB1B /* DrugCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrugCell.swift; sourceTree = "<group>"; };
@@ -127,9 +137,7 @@
 		46578ABD1F947C36007CDA36 /* TagNumList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagNumList.swift; sourceTree = "<group>"; };
 		46578ABF1F95E900007CDA36 /* ExamWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamWebView.swift; sourceTree = "<group>"; };
 		46720BA21F039199004AE4A8 /* MyFirstApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFirstApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		46720BA51F039199004AE4A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		46720BA71F039199004AE4A8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		46720BAA1F039199004AE4A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		46720BAC1F039199004AE4A8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		46720BAF1F039199004AE4A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		46720BB11F039199004AE4A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -273,9 +281,9 @@
 				462C34141FBD6215002375AB /* Record */,
 				F7D6E7871FB03A0C00226B7D /* reservation */,
 				462409801F54F0C600B0D230 /* SupportingFile */,
-				46720BA51F039199004AE4A8 /* AppDelegate.swift */,
+				464F6FB61FD9389F00140B7F /* Main.storyboard */,
 				46720BA71F039199004AE4A8 /* ViewController.swift */,
-				46720BA91F039199004AE4A8 /* Main.storyboard */,
+				463531EF1FDA1B3A00B28D52 /* AppDelegate.swift */,
 				4648C9091F392EEA004EB270 /* MainView.swift */,
 				46720BAC1F039199004AE4A8 /* Assets.xcassets */,
 				46720BAE1F039199004AE4A8 /* LaunchScreen.storyboard */,
@@ -287,13 +295,16 @@
 				46C3989E1F70FD1E00368C01 /* Barcode.swift */,
 				46C398A01F7335E900368C01 /* HttpClient.swift */,
 				46C398A21F737FDB00368C01 /* UserDefault.swift */,
-				465378DE1F7C6B1E00E9BBA4 /* UserDefaultKey.swift */,
 				465378E01F7CDB2900E9BBA4 /* MedicalExam.swift */,
+				463531EB1FDA19F000B28D52 /* UserDefaultKey.swift */,
+				463531E11FD939C900B28D52 /* Today_treat.swift */,
 				465378E21F8F346500E9BBA4 /* MElist.swift */,
 				46578ABD1F947C36007CDA36 /* TagNumList.swift */,
 				46578ABF1F95E900007CDA36 /* ExamWebView.swift */,
 				462C33F21FB14FE3002375AB /* MobileCard.swift */,
 				4600A8DE1FCE70D500E890C8 /* LoginWebView.swift */,
+				463531E71FDA18C000B28D52 /* alarm.swift */,
+				4655389C1FD9357D0046B745 /* alarm_drug.swift */,
 				4600A8E01FCE851400E890C8 /* HospitalPhone.swift */,
 				46129BC71FD114A400A2FABC /* MyInfo.swift */,
 				46129BCB1FD4D5EE00A2FABC /* PsnChange.swift */,
@@ -326,6 +337,7 @@
 				F76EF8701F9DD55E002F34AC /* Resresult.swift */,
 				F7D40DF91FB521A500FB168D /* timeList.swift */,
 				F7CD7BE51FB5A06D009973FD /* reserv_complete.swift */,
+				463531ED1FDA1A7E00B28D52 /* reserv_complete2.swift */,
 			);
 			name = reservation;
 			sourceTree = "<group>";
@@ -463,7 +475,7 @@
 				462409861F55248900B0D230 /* login.storyboard in Resources */,
 				46720BB01F039199004AE4A8 /* LaunchScreen.storyboard in Resources */,
 				46720BAD1F039199004AE4A8 /* Assets.xcassets in Resources */,
-				46720BAB1F039199004AE4A8 /* Main.storyboard in Resources */,
+				464F6FB81FD9389F00140B7F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -568,16 +580,18 @@
 				46C3989D1F6FAB3700368C01 /* Record.swift in Sources */,
 				F780C2A21FA00D730024C768 /* recentlist.swift in Sources */,
 				4655F61E1FC69B500018CB1B /* DrugCell.swift in Sources */,
+				463531EC1FDA19F000B28D52 /* UserDefaultKey.swift in Sources */,
 				4655F61A1FC51D9E0018CB1B /* RDlist.swift in Sources */,
 				46129BCC1FD4D5EE00A2FABC /* PsnChange.swift in Sources */,
 				4648C90A1F392EEA004EB270 /* MainView.swift in Sources */,
 				F7D40DFA1FB521A500FB168D /* timeList.swift in Sources */,
 				464F8BB21F43D2DE008F81E0 /* GradientView.swift in Sources */,
 				4600A8E11FCE851400E890C8 /* HospitalPhone.swift in Sources */,
-				46720BA61F039199004AE4A8 /* AppDelegate.swift in Sources */,
 				F76EF8711F9DD55E002F34AC /* Resresult.swift in Sources */,
 				F774FB0A1FAC00BE00CF9DE0 /* Detail_date.swift in Sources */,
+				4655389D1FD9357D0046B745 /* alarm_drug.swift in Sources */,
 				462C33F91FB2D9C3002375AB /* OPlist.swift in Sources */,
+				463531E81FDA18C000B28D52 /* alarm.swift in Sources */,
 				462C340D1FBAB129002375AB /* HTcell.swift in Sources */,
 				F780C2A41FA6A7F20024C768 /* Detail_doctor.swift in Sources */,
 				46578AC01F95E900007CDA36 /* ExamWebView.swift in Sources */,
@@ -587,16 +601,18 @@
 				465378E31F8F346500E9BBA4 /* MElist.swift in Sources */,
 				462409961F5D361100B0D230 /* InfoWebView.swift in Sources */,
 				462C34131FBD620A002375AB /* RecordDetail.swift in Sources */,
-				465378DF1F7C6B1E00E9BBA4 /* UserDefaultKey.swift in Sources */,
 				46129BD01FD6831100A2FABC /* PsnSave.swift in Sources */,
 				4600A8DF1FCE70D500E890C8 /* LoginWebView.swift in Sources */,
+				463531E21FD939CA00B28D52 /* Today_treat.swift in Sources */,
 				46C3989F1F70FD1E00368C01 /* Barcode.swift in Sources */,
 				F78200881F99DED10039D390 /* mobile_reserve.swift in Sources */,
 				F76EF86F1F9DCFFF002F34AC /* Reservation_result.swift in Sources */,
 				F78200831F99D0E80039D390 /* MaintabController.swift in Sources */,
 				46129BCE1FD65DFF00A2FABC /* GilHome.swift in Sources */,
 				462C340F1FBAB7C3002375AB /* HTlist.swift in Sources */,
+				463531EE1FDA1A7E00B28D52 /* reserv_complete2.swift in Sources */,
 				4600A8E31FCFE3DD00E890C8 /* TriLabelView.swift in Sources */,
+				463531F01FDA1B3A00B28D52 /* AppDelegate.swift in Sources */,
 				F782008A1F99E17B0039D390 /* Reslist.swift in Sources */,
 				462409881F56A97500B0D230 /* NavController.swift in Sources */,
 				462C340B1FBAB01F002375AB /* Hospitalization.swift in Sources */,
@@ -621,10 +637,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		46720BA91F039199004AE4A8 /* Main.storyboard */ = {
+		464F6FB61FD9389F00140B7F /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				46720BAA1F039199004AE4A8 /* Base */,
+				464F6FB71FD9389F00140B7F /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
