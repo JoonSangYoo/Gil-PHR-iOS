@@ -8,7 +8,7 @@
 
 import UIKit
 import DLRadioButton
-
+import UserNotifications
 
 extension UITextField {
     
@@ -34,6 +34,15 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
     var contents = ""
     var st = ""
     
+    var keyCD = String()
+    var ptntNO = String()
+    var ptntNM = String()
+    var firstLogin = String()
+    var ptntFound = String()
+    var staffYN = String()
+    var ptntURL = String()
+    
+    
     @IBOutlet weak var idCheck: DLRadioButton!
     
     
@@ -54,26 +63,31 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
 
                 if self.st == "100"{
                 DispatchQueue.main.async{
-                    print(self.loginData[6])
-                    print(self.loginData[8])
-                    print(self.loginData[10])
-                    UserDefault.save(key: UserDefaultKey.UD_Key, value: self.loginData[0])
-                    UserDefault.save(key: UserDefaultKey.UD_Ptntno, value: self.loginData[2])
-                    UserDefault.save(key: UserDefaultKey.UD_Ptntnm, value: self.loginData[4])
-                    UserDefault.save(key: UserDefaultKey.UD_Staffyn, value: self.loginData[10])
+                    print(self.ptntNM)
+                    print(self.ptntNO)
+                    print(self.staffYN)
+                    print(self.ptntURL)
+                    print(self.ptntFound)
+                    UserDefault.save(key: UserDefaultKey.UD_Key, value: self.keyCD)
+                    UserDefault.save(key: UserDefaultKey.UD_Ptntno, value: self.ptntNO)
+                    UserDefault.save(key: UserDefaultKey.UD_Ptntnm, value: self.ptntNM)
+                    UserDefault.save(key: UserDefaultKey.UD_Staffyn, value: self.staffYN)
                     UserDefault.save(key: UserDefaultKey.UD_id, value: self.idField.text!)
-                    let tempURL = self.loginData[12].replacingOccurrences(of: "![CDATA[", with: "")
                     
-                    if self.loginData[6] == "Y"{
-                        UserDefault.save(key: UserDefaultKey.UD_LoginURL, value: tempURL.replacingOccurrences(of: "]]", with: ""))
-                        self.performSegue(withIdentifier: "loginWeb", sender: self)
-
-                    } else{
+                    if self.firstLogin == "N"{
                         self.performSegue(withIdentifier: "segMain", sender: self)
 
+                    } else{
+                        UIApplication.shared.open(URL(string: "https://www.gilhospital.com/phr/findptntno.html?id=\(UserDefault.load(key: UserDefaultKey.UD_id))&keycd=\(UserDefault.load(key: UserDefaultKey.UD_Key))")!, options: [:], completionHandler: nil)
                     }
                     self.loginData = [String]()
-
+                    self.keyCD = String()
+                    self.ptntNO = String()
+                    self.ptntNM = String()
+                    self.firstLogin = String()
+                    self.ptntFound = String()
+                    self.staffYN = String()
+                    self.ptntURL = String()
                     
                     }
                 } else{
@@ -149,6 +163,7 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
         pwField?.placeholder = "비밀번호"
         pwField.delegate = self
         
+
         // Do any additional setup after loading the view, typically from a nib.
         
         
@@ -206,25 +221,45 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
         }
     }
     
-
     
     // 현재 테그에 담겨있는 문자열 전달
     public func parser(_ parser: XMLParser, foundCharacters string: String)
     {
         switch currentElement {
         case "keycd":
+            if string != "\n  "{
+                keyCD = string
+            }
             loginData.append(string)
         case "ptntno":
+            if string != "\n  "{
+                ptntNO = string
+            }
             loginData.append(string)
         case "ptntnm":
+            if string != "\n  "{
+                ptntNM = string
+            }
             loginData.append(string)
         case "firstlogin":
+            if string != "\n  "{
+                firstLogin = string
+            }
             loginData.append(string)
         case "ptntnofound":
+            if string != "\n  "{
+                ptntFound = string
+            }
             loginData.append(string)
         case "emplyn":
+            if string != "\n  "{
+                staffYN = string
+            }
             loginData.append(string)
         case "ptntnofindurl":
+            if string != "\n  "{
+                ptntURL = string
+            }
             loginData.append(string)
 
         default:break
@@ -239,19 +274,15 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
     }
     
     @IBAction func idFind(_ sender: Any) {
-        UserDefault.save(key: UserDefaultKey.UD_LoginURL, value: "https://www.gilhospital.com/phr/find_id.html")
-        performSegue(withIdentifier: "loginWeb", sender: self)
+        UIApplication.shared.open(URL(string: "https://www.gilhospital.com/phr/find_id.html")!, options: [:], completionHandler: nil)
     }
    
     @IBAction func pwFind(_ sender: Any) {
-        UserDefault.save(key: UserDefaultKey.UD_LoginURL, value: "https://www.gilhospital.com/phr/findpw_mail.html")
-        performSegue(withIdentifier: "loginWeb", sender: self)
+        UIApplication.shared.open(URL(string: "https://www.gilhospital.com/phr/findpw_mail.html")!, options: [:], completionHandler: nil)
     }
     
     @IBAction func join(_ sender: Any) {
-        UserDefault.save(key: UserDefaultKey.UD_LoginURL, value: "https://www.gilhospital.com/phr/member_gubun.html")
-        performSegue(withIdentifier: "loginWeb", sender: self)
-
+         UIApplication.shared.open(URL(string: "https://www.gilhospital.com/phr/member_gubun.html")!, options: [:], completionHandler: nil)
     }
     
     @IBAction func idCheck(_ sender: Any) {
@@ -263,7 +294,5 @@ class ViewController: UIViewController, UITextFieldDelegate, XMLParserDelegate {
         }
     }
 
-
-   
 }
 

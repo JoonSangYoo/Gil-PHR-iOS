@@ -168,8 +168,7 @@ class RecordDetail: UIViewController, XMLParserDelegate, UITableViewDataSource, 
         // Dispose of any resources that can be recreated.
     }
     @IBAction func surveyButtonEvent(_ sender: Any) {
-        UserDefault.save(key: UserDefaultKey.UD_SurveyURL, value: self.surveyData[2])
-        performSegue(withIdentifier: "SurveyWeb", sender: self)
+        UIApplication.shared.open(URL(string: self.surveyData[2])!, options: [:], completionHandler: nil)
     }
     func tbDataSet() -> Void {
         self.tbData.dataSource = self

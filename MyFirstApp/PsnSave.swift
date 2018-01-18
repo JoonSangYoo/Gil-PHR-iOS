@@ -116,6 +116,7 @@ class PsnSave: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, X
             return xml
         }
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -253,29 +254,22 @@ class PsnSave: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, X
         case "bloodtype":
             if string != "\n  "{
                 blood = string
-                psnData.append(string)
             }
-
         case "height":
             if string != "\n  "{
-            height = string
-            psnData.append(string)
+                height = string
             }
         case "weight":
             if string != "\n  "{
-            weight = string
-            psnData.append(string)
+                weight = string
             }
         case "alg":
             if string != "\n  "{
-            alg = string
-            psnData.append(string)
+                alg = string
             }
-
         case "drug":
             if string != "\n"{
-            drug = string
-            psnData.append(string)
+                drug = string
             }
         default:break
             

@@ -1,6 +1,7 @@
 
 
 import Foundation
+import UserNotifications
 import UIKit
 
 class alarm_drug : UIViewController, XMLParserDelegate{
@@ -34,6 +35,7 @@ class alarm_drug : UIViewController, XMLParserDelegate{
     @IBOutlet weak var before_dinner_sw: UISwitch!
     @IBOutlet weak var after_dinner_sw: UISwitch!
     
+    @IBOutlet weak var dateSetting: UIButton!
     
     
     var set_time = Date()
@@ -49,14 +51,10 @@ class alarm_drug : UIViewController, XMLParserDelegate{
     var endat = ""
     var tempdate = ""
     
-    var temp_startdate = ""
-    var temp_enddate = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let now = NSDate()
-        let dateFormat_now = DateFormatter()
-        dateFormat_now.dateFormat = "yyyyMMdd"
-        let now_Date = dateFormat_now.string(from: now as Date)
+     
         
         start_day.addBorderBottom(height: 1.0, color: UIColor.lightGray)
         end_day.addBorderBottom(height: 1.0, color: UIColor.lightGray)
@@ -65,14 +63,11 @@ class alarm_drug : UIViewController, XMLParserDelegate{
         breakfast_time.addBorderBottom(height: 1.0, color: UIColor.lightGray)
         lunch_time.addBorderBottom(height: 1.0, color: UIColor.lightGray)
         dinner_time.addBorderBottom(height: 1.0, color: UIColor.lightGray)
-        
-        temp_startdate = now_Date
-        temp_enddate = now_Date
-        start_day.text = weekdayForm(dateString: now_Date)
-        end_day.text = weekdayForm(dateString: now_Date)
+
         
         data_load()
-        
+       
+
         startDatePicker()
         endDatePicker()
         getupDatePicker()
@@ -81,20 +76,30 @@ class alarm_drug : UIViewController, XMLParserDelegate{
         lunchDatePicker()
         dinnerDatePicker()
         
+            
     }
     
-    @IBOutlet weak var alarm_buttonout: UIButton!
+    
+    override func viewWillAppear(_ animated: Bool) {
+
+    }
+    
+    
+    
+    @IBOutlet weak var alarm_buttonout: SAFollowButton!
+    
     @IBAction func alarm_button(_ sender: Any) {
-        if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+        if(alarm_buttonout.isOn == true){
+            //알람 켜짐
+            UserDefault.save(key: UserDefaultKey.alarm_onoff, value: "on")
+        }
+        else{
             //알람 꺼짐
             UserDefault.save(key: UserDefaultKey.alarm_onoff, value: "off")
         }
-        else{
-            //알람켜짐
-            UserDefault.save(key: UserDefaultKey.alarm_onoff, value: "on")
-        }
-        self.data_store()
-        viewDidLoad()
+        data_load()
+  //      self.data_store()
+ //       viewDidLoad()
     }
     
     @IBAction func date_setting(_ sender: Any) {
@@ -199,9 +204,40 @@ class alarm_drug : UIViewController, XMLParserDelegate{
     func donePicker (sender:UIBarButtonItem)
     {
         tempdate = self.formatter.string(from: datepicker.date)
-        temp_startdate = tempdate
-        start_day.text = "\(weekdayForm(dateString: tempdate))"
-        self.view.endEditing(true)
+
+//        문자열에서 숫자만 골라내는 처리
+        let intString = end_day.text?.components(
+            separatedBy: NSCharacterSet
+                .decimalDigits
+                .inverted)
+            .joined(separator: "")
+        
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyyMMdd"
+
+        if(tempdate<=intString!){
+            startdate = tempdate
+            start_day.text = "\(weekdayForm(dateString: tempdate))"
+            self.view.endEditing(true)
+            UserDefault.save(key: UserDefaultKey.alarm_startdate, value: startdate)
+            pickerDoneAlarm()
+        } else if(start_day.text == "yyyy-MM-dd" || start_day.text == ""){
+            startdate = tempdate
+            start_day.text = "\(weekdayForm(dateString: tempdate))"
+            self.view.endEditing(true)
+            UserDefault.save(key: UserDefaultKey.alarm_startdate, value: startdate)
+            pickerDoneAlarm()
+        }
+        
+        else{
+            self.view.endEditing(true)
+            print("s\(start_day.text!)a")
+            let alert = UIAlertController(title: "오류", message: "알림 시작일을 종료일 이전으로 설정하세요.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+ 
+
     }
     //---------------------------------------------시작날짜 end
     
@@ -220,9 +256,37 @@ class alarm_drug : UIViewController, XMLParserDelegate{
     {
         
         tempdate = self.formatter.string(from: datepicker.date)
-        temp_enddate = tempdate
-        end_day.text = "\(weekdayForm(dateString: tempdate))"
-        self.view.endEditing(true)
+        
+        let intString = start_day.text?.components(
+            separatedBy: NSCharacterSet
+                .decimalDigits
+                .inverted)
+            .joined(separator: "")
+
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyyMMdd"
+        
+        if(tempdate>=intString!){
+            enddate = tempdate
+            end_day.text = "\(weekdayForm(dateString: tempdate))"
+            self.view.endEditing(true)
+            UserDefault.save(key: UserDefaultKey.alarm_enddate, value: enddate)
+            pickerDoneAlarm()
+
+        }else if(end_day.text! == "yyyy-MM-dd" || end_day.text! == ""){
+            enddate = tempdate
+            end_day.text = "\(weekdayForm(dateString: tempdate))"
+            self.view.endEditing(true)
+            UserDefault.save(key: UserDefaultKey.alarm_enddate, value: enddate)
+            pickerDoneAlarm()
+        }else{
+            self.view.endEditing(true)
+            let alert = UIAlertController(title: "오류", message: "알림 종료일을 시작일 이후로 설정하세요.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+
     }
     //---------------------------------------------종료날짜 end
     
@@ -247,6 +311,7 @@ class alarm_drug : UIViewController, XMLParserDelegate{
     func getup_donePicker (sender:UIBarButtonItem)
     {
         getup_time.text = "\(self.time_formatter.string(from: getup_timepicker.date))"
+        UserDefault.save(key: UserDefaultKey.alarm_getuptime, value: self.getup_time.text!)
         self.view.endEditing(true)
     }
     //---------------------------------------------기상시간 end
@@ -272,6 +337,8 @@ class alarm_drug : UIViewController, XMLParserDelegate{
     func bed_donePicker (sender:UIBarButtonItem)
     {
         bed_time.text = "\(self.time_formatter.string(from: bed_timepicker.date))"
+        UserDefault.save(key: UserDefaultKey.alarm_bedtime, value: self.bed_time.text!)
+
         self.view.endEditing(true)
     }
     //---------------------------------------------취침시간 end
@@ -296,6 +363,7 @@ class alarm_drug : UIViewController, XMLParserDelegate{
     func breakfast_donePicker (sender:UIBarButtonItem)
     {
         breakfast_time.text = "\(self.time_formatter.string(from: breakfast_timepicker.date))"
+        UserDefault.save(key: UserDefaultKey.alarm_breakfast, value: self.breakfast_time.text!)
         self.view.endEditing(true)
     }
     //---------------------------------------------아침식사시간 end
@@ -317,6 +385,7 @@ class alarm_drug : UIViewController, XMLParserDelegate{
     func lunch_donePicker (sender:UIBarButtonItem)
     {
         lunch_time.text = "\(self.time_formatter.string(from: lunch_timepicker.date))"
+        UserDefault.save(key: UserDefaultKey.alarm_lunch, value: self.lunch_time.text!)
         self.view.endEditing(true)
     }
     //---------------------------------------------점심식사시간 end
@@ -334,11 +403,14 @@ class alarm_drug : UIViewController, XMLParserDelegate{
         dinner_time.inputAccessoryView = toolbar
         dinner_time.inputView  = dinner_timepicker
     }
+    
     func dinner_donePicker (sender:UIBarButtonItem)
     {
         dinner_time.text = "\(self.time_formatter.string(from: dinner_timepicker.date))"
+        UserDefault.save(key: UserDefaultKey.alarm_dinner, value: self.dinner_time.text!)
         self.view.endEditing(true)
     }
+    
     //---------------------------------------------저녀식사시간 end
     fileprivate let formatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -364,100 +436,371 @@ class alarm_drug : UIViewController, XMLParserDelegate{
             let formDate = df.date(from: dateString)
             var comps = cal.dateComponents([.weekday], from: formDate!)
             
-            df.dateFormat = "yyyy.MM.dd"
-            
-            switch comps.weekday! {
-                
-            case 1:
-                weekFormDate = "\(df.string(from: formDate!))(일)"
-            case 2:
-                weekFormDate = "\(df.string(from: formDate!))(월)"
-            case 3:
-                weekFormDate = "\(df.string(from: formDate!))(화)"
-            case 4:
-                weekFormDate = "\(df.string(from: formDate!))(수)"
-            case 5:
-                weekFormDate = "\(df.string(from: formDate!))(목)"
-            case 6:
-                weekFormDate = "\(df.string(from: formDate!))(금)"
-            case 7:
-                weekFormDate = "\(df.string(from: formDate!))(토)"
-            default:break
-            }
+            df.dateFormat = "yyyy.MM.dd(EEE)"
+            weekFormDate = df.string(from: formDate!)
+
+//            switch comps.weekday! {
+//
+//            case 1:
+//                weekFormDate = "\(df.string(from: formDate!))(일)"
+//            case 2:
+//                weekFormDate = "\(df.string(from: formDate!))(월)"
+//            case 3:
+//                weekFormDate = "\(df.string(from: formDate!))(화)"
+//            case 4:
+//                weekFormDate = "\(df.string(from: formDate!))(수)"
+//            case 5:
+//                weekFormDate = "\(df.string(from: formDate!))(목)"
+//            case 6:
+//                weekFormDate = "\(df.string(from: formDate!))(금)"
+//            case 7:
+//                weekFormDate = "\(df.string(from: formDate!))(토)"
+//            default:break
+//            }
             return weekFormDate
         }
     }
+    
+    func countDate() -> Int {
+        let start = UserDefault.load(key: UserDefaultKey.alarm_startdate)
+        let end = UserDefault.load(key: UserDefaultKey.alarm_enddate)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        print(daysBetweenDates(startDate: dateFormatter.date(from: start)!, endDate:  dateFormatter.date(from: end)!))
+        return daysBetweenDates(startDate: dateFormatter.date(from: start)!, endDate:  dateFormatter.date(from: end)!)
+        
+        
+    }
+    
+    func daysBetweenDates(startDate: Date, endDate: Date) -> Int {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([Calendar.Component.day], from: startDate, to: endDate)
+        print(components.day!)
+        return components.day!
+    }
+    
+    
+    func alarmTrigger(startDate: String, time: String, id: String, count: Int, ba: String) -> Void {
+      
+        let year = startDate.substring(with: 0..<4)
+        let month = startDate.substring(with: 5..<7)
+        let day = startDate.substring(with: 8..<10)
+        let hour = time.substring(with: 0..<2)
+        let min = time.substring(with: 3..<5)
+        
+        let content = UNMutableNotificationContent()
+        content.title = "복약알림"
+        content.body = "길병원 처방약 복약시간입니다.\n(알림을 원하지 않으시면 앱에서 기능을 꺼주세요)"
+        content.sound = UNNotificationSound.default()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMddHHmm"
+        let baseDate: String = year + month + day + hour + min
+        if (count>=0) {
+            
+        
+        for i in 0..<count+1 {
+            //let triggerDate = DateComponents(year: Int(year), month: Int(month), day: Int(day)!+i, hour: Int(hour), minute: Int(minute))
+            var triggerDate = DateComponents()
+            triggerDate.setValue(0, for: Calendar.Component.year)
+            triggerDate.setValue(0, for: Calendar.Component.month)
+            triggerDate.setValue(i, for: Calendar.Component.day)
+            triggerDate.setValue(0, for: Calendar.Component.hour)
+            if(ba == "a"){
+                triggerDate.setValue(30, for: Calendar.Component.minute)
+            }else if(ba == "b"){
+                triggerDate.setValue(-30, for: Calendar.Component.minute)
+            }else{
+                triggerDate.setValue(0, for: Calendar.Component.minute)
+            }
+            
+            let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+
+            let base = formatter.date(from: baseDate)
+            let tempDate = calendar.date(byAdding: triggerDate, to: base!)
+//            print(formatter.string(from: tempDate!))
+            
+            let comps = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: tempDate!)
+            
+            print(comps)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
+
+            let request = UNNotificationRequest(identifier: id+String(i), content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+            })
+            }
+        }
+
+       // UNUserNotificationCenter.current().remov
+
+    }
     //--------------------------날짜 형식 end
     //------스위치 제어
-    var getup_onoff = "off"
-    var bed_onoff = "off"
-    var before_breakfast_onoff = "off"
-    var after_breakfast_onoff = "off"
-    var before_lunch_onoff = "off"
-    var after_lunch_onoff = "off"
-    var before_dinner_onoff = "off"
-    var after_dinner_onoff="off"
     
     @IBAction func getup_sw_click(_ sender: Any) {
-        if( getup_onoff == "off"){getup_onoff = "on"}
-        else{getup_onoff = "off"}
-        self.data_store()
+        if(getup_sw.isOn){
+            UserDefault.save(key: UserDefaultKey.alarm_getup, value: "on")
+
+            
+            if(0<=countDate()){
+                alarmTrigger(startDate: start_day.text!, time: getup_time.text!, id: "gw", count: countDate(), ba: "a")
+            }else{
+                getup_sw.isOn = false
+                let alert = UIAlertController(title: "알림", message: "복약알림 기간설정을 먼저 하시기 바랍니다.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+       
+        } else{
+            if(countDate()>=0){
+                var id: [String] = []
+                for i in 0..<countDate()+1{
+                    id.append("gw"+String(i))
+                }
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: id)
+            }
+
+            UserDefault.save(key: UserDefaultKey.alarm_getup, value: "off")
+        }
+   //     self.data_store()
     }
     @IBAction func bed_sw_click(_ sender: Any) {
-        if( bed_onoff == "off"){bed_onoff = "on"}
-        else{bed_onoff = "off"}
-        self.data_store()
+        if(bed_sw.isOn){
+            UserDefault.save(key: UserDefaultKey.alarm_bed, value: "on")
+            
+            if(0<=countDate()){
+                alarmTrigger(startDate: start_day.text!, time: bed_time.text!, id: "bw", count: countDate(), ba: "b")
+            }else{
+                bed_sw.isOn = false
+                let alert = UIAlertController(title: "알림", message: "복약알림 기간설정을 먼저 하시기 바랍니다.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else{
+            if(countDate()>=0){
+
+            var id: [String] = []
+            for i in 0..<countDate()+1{
+                id.append("bw"+String(i))
+            }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: id)
+            }
+            UserDefault.save(key: UserDefaultKey.alarm_bed, value: "off")
+        }
+   //     self.data_store()
     }
     @IBAction func before_break_click(_ sender: Any) {
-        if( before_breakfast_onoff == "off"){before_breakfast_onoff = "on"}
-        else{before_breakfast_onoff = "off"}
-        self.data_store()
+        if(before_break_sw.isOn){
+            UserDefault.save(key: UserDefaultKey.alarm_befor_breakfast, value: "on")
+            if(0<=countDate()){
+                alarmTrigger(startDate: start_day.text!, time: breakfast_time.text!, id: "bb", count: countDate(), ba: "b")
+            }else{
+                before_break_sw.isOn = false
+                let alert = UIAlertController(title: "알림", message: "복약알림 기간설정을 먼저 하시기 바랍니다.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else{
+            if(countDate()>=0){
+
+            var id: [String] = []
+            for i in 0..<countDate()+1{
+                id.append("bb"+String(i))
+            }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: id)
+            }
+            UserDefault.save(key: UserDefaultKey.alarm_befor_breakfast, value: "off")
+        }
+  //      self.data_store()
     }
     @IBAction func after_break_click(_ sender: Any) {
-        if( after_breakfast_onoff == "off"){after_breakfast_onoff = "on"}
-        else{after_breakfast_onoff = "off"}
-        self.data_store()
+        if(after_break_sw.isOn){
+            UserDefault.save(key: UserDefaultKey.alarm_after_breakfast, value: "on")
+            if(0<=countDate()){
+                alarmTrigger(startDate: start_day.text!, time: breakfast_time.text!, id: "ab", count: countDate(), ba: "a")
+            }else{
+                after_break_sw.isOn = false
+                let alert = UIAlertController(title: "알림", message: "복약알림 기간설정을 먼저 하시기 바랍니다.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else{
+            if(countDate()>=0){
+
+            var id: [String] = []
+            for i in 0..<countDate()+1{
+                id.append("ab"+String(i))
+            }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: id)
+            }
+            UserDefault.save(key: UserDefaultKey.alarm_after_breakfast, value: "off")
+        }
+   //     self.data_store()
     }
     @IBAction func before_lunch_click(_ sender: Any) {
-        if( before_lunch_onoff == "off"){before_lunch_onoff = "on"}
-        else{before_lunch_onoff = "off"}
-        self.data_store()
+        if(before_lunch_sw.isOn){
+            UserDefault.save(key: UserDefaultKey.alarm_befor_lunch, value: "on")
+            if(0<=countDate()){
+                alarmTrigger(startDate: start_day.text!, time: lunch_time.text!, id: "bl", count: countDate(), ba: "b")
+            }else{
+                before_lunch_sw.isOn = false
+                let alert = UIAlertController(title: "알림", message: "복약알림 기간설정을 먼저 하시기 바랍니다.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else{
+            if(countDate()>=0){
+
+            var id: [String] = []
+            for i in 0..<countDate()+1{
+                id.append("bl"+String(i))
+            }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: id)
+            }
+            UserDefault.save(key: UserDefaultKey.alarm_befor_lunch, value: "off")
+        }
+   //     self.data_store()
     }
     
     @IBAction func after_lunch_click(_ sender: Any) {
-        if( after_lunch_onoff == "off"){after_lunch_onoff = "on"}
-        else{after_lunch_onoff = "off"}
-        self.data_store()
+        if(after_lunch_sw.isOn){
+            UserDefault.save(key: UserDefaultKey.alarm_after_lunch, value: "on")
+            if(0<=countDate()){
+                alarmTrigger(startDate: start_day.text!, time: lunch_time.text!, id: "al", count: countDate(), ba: "a")
+            }else{
+                after_lunch_sw.isOn = false
+                let alert = UIAlertController(title: "알림", message: "복약알림 기간설정을 먼저 하시기 바랍니다.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else{
+            if(countDate()>=0){
+
+            var id: [String] = []
+            for i in 0..<countDate()+1{
+                id.append("al"+String(i))
+            }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: id)
+            }
+            UserDefault.save(key: UserDefaultKey.alarm_after_lunch, value: "off")
+        }
+     //   self.data_store()
     }
     @IBAction func before_dinner_click(_ sender: Any) {
-        if( before_dinner_onoff == "off"){before_dinner_onoff = "on"}
-        else{before_dinner_onoff = "off"}
-        self.data_store()
+        if(before_dinner_sw.isOn){
+            UserDefault.save(key: UserDefaultKey.alarm_befor_dinner, value: "on")
+            if(0<=countDate()){
+                alarmTrigger(startDate: start_day.text!, time: dinner_time.text!, id: "bd", count: countDate(), ba: "b")
+            }else{
+                before_dinner_sw.isOn = false
+                let alert = UIAlertController(title: "알림", message: "복약알림 기간설정을 먼저 하시기 바랍니다.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else{
+            if(countDate()>=0){
+
+            var id: [String] = []
+            for i in 0..<countDate()+1{
+                id.append("bd"+String(i))
+            }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: id)
+            }
+            UserDefault.save(key: UserDefaultKey.alarm_befor_dinner, value: "off")
+        }
+     //   self.data_store()
     }
     @IBAction func after_dinner_click(_ sender: Any) {
-        if( after_dinner_onoff == "off"){after_dinner_onoff = "on"}
-        else{after_dinner_onoff = "off"}
-        self.data_store()
+        if(after_dinner_sw.isOn){
+            if(0<=countDate()){
+                alarmTrigger(startDate: start_day.text!, time: dinner_time.text!, id: "ad", count: countDate(), ba: "a")
+            }else{
+                after_dinner_sw.isOn = false
+                let alert = UIAlertController(title: "알림", message: "복약알림 기간설정을 먼저 하시기 바랍니다.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            UserDefault.save(key: UserDefaultKey.alarm_after_dinner, value: "on")
+        } else{
+            if(countDate()>=0){
+
+            var id: [String] = []
+            for i in 0..<countDate()+1{
+                id.append("ad"+String(i))
+            }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: id)
+            }
+            UserDefault.save(key: UserDefaultKey.alarm_after_dinner, value: "off")
+        }
+   //     self.data_store()
+    }
+    
+    func pickerDoneAlarm() -> Void {
+        if(UserDefault.load(key: UserDefaultKey.alarm_getup) == "on"){
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+                alarmTrigger(startDate: start_day.text!, time: getup_time.text!, id: "gw", count: countDate(), ba: "a")
+            }
+        }
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_bed) == "on"){
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+                alarmTrigger(startDate: start_day.text!, time: bed_time.text!, id: "bw", count: countDate(), ba: "b")
+            }
+            
+        }
+        
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_befor_breakfast) == "on"){
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+                alarmTrigger(startDate: start_day.text!, time: breakfast_time.text!, id: "bb", count: countDate(), ba: "b")
+            }
+        }
+        
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_after_breakfast) == "on"){
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+                alarmTrigger(startDate: start_day.text!, time: breakfast_time.text!, id: "ab", count: countDate(), ba: "a")
+            }
+        }
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_befor_lunch) == "on"){
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+                alarmTrigger(startDate: start_day.text!, time: lunch_time.text!, id: "bl", count: countDate(), ba: "b")
+            }
+        }
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_after_lunch) == "on"){
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+                alarmTrigger(startDate: start_day.text!, time: lunch_time.text!, id: "al", count: countDate(), ba: "a")
+            }
+        }
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_befor_dinner) == "on"){
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+                alarmTrigger(startDate: start_day.text!, time: dinner_time.text!, id: "bd", count: countDate(), ba: "b")
+            }
+            
+        }
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_after_dinner) == "on"){
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+                alarmTrigger(startDate: start_day.text!, time: dinner_time.text!, id: "ad", count: countDate(), ba: "a")
+            }
+            
+        }
     }
     
     
     func data_store(){
-        UserDefault.save(key: UserDefaultKey.alarm_startdate, value: temp_startdate)
-        UserDefault.save(key: UserDefaultKey.alarm_enddate, value: temp_enddate)
-        UserDefault.save(key: UserDefaultKey.alarm_getuptime, value: self.getup_time.text!)
+        UserDefault.save(key: UserDefaultKey.alarm_startdate, value: startdate)
+        UserDefault.save(key: UserDefaultKey.alarm_enddate, value: enddate)
         UserDefault.save(key: UserDefaultKey.alarm_bedtime, value: self.bed_time.text!)
         UserDefault.save(key: UserDefaultKey.alarm_breakfast, value: self.breakfast_time.text!)
         UserDefault.save(key: UserDefaultKey.alarm_lunch, value: self.lunch_time.text!)
         UserDefault.save(key: UserDefaultKey.alarm_dinner, value: self.dinner_time.text!)
         
-        UserDefault.save(key: UserDefaultKey.alarm_getup, value: getup_onoff)
-        UserDefault.save(key: UserDefaultKey.alarm_bed, value: bed_onoff)
-        UserDefault.save(key: UserDefaultKey.alarm_befor_breakfast, value: before_breakfast_onoff)
-        UserDefault.save(key: UserDefaultKey.alarm_after_breakfast, value: after_breakfast_onoff)
-        UserDefault.save(key: UserDefaultKey.alarm_befor_lunch, value: before_lunch_onoff)
-        UserDefault.save(key: UserDefaultKey.alarm_after_lunch, value: after_lunch_onoff)
-        UserDefault.save(key: UserDefaultKey.alarm_befor_dinner, value: before_dinner_onoff)
-        UserDefault.save(key: UserDefaultKey.alarm_after_dinner, value: after_dinner_onoff)
         
         print(UserDefault.load(key: UserDefaultKey.alarm_onoff))
         print(UserDefault.load(key: UserDefaultKey.alarm_startdate))
@@ -480,9 +823,11 @@ class alarm_drug : UIViewController, XMLParserDelegate{
     func data_load(){
         if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
             
-            let background_color =  UIColor(red: 126/255.0, green: 158/255.0, blue: 220/255.0, alpha: 1.0)
-            alarm_buttonout.backgroundColor = background_color
-            alarm_buttonout.setTitle("알람 켜짐", for: .normal)
+//            let background_color =  UIColor(red: 126/255.0, green: 158/255.0, blue: 220/255.0, alpha: 1.0)
+//            alarm_buttonout.backgroundColor = background_color
+//            alarm_buttonout.setTitle("알람 켜짐", for: .normal)
+            alarm_buttonout.activateButton(bool: true)
+            dateSetting.isEnabled = true
             start_day.textColor = UIColor.black
             end_day.textColor = UIColor.black
             getup_time.textColor = UIColor.black
@@ -490,10 +835,30 @@ class alarm_drug : UIViewController, XMLParserDelegate{
             breakfast_time.textColor = UIColor.black
             lunch_time.textColor = UIColor.black
             dinner_time.textColor = UIColor.black
+            getup_sw.isEnabled = true
+            bed_sw.isEnabled = true
+            before_break_sw.isEnabled = true
+            after_break_sw.isEnabled = true
+            before_lunch_sw.isEnabled = true
+            after_lunch_sw.isEnabled = true
+            before_dinner_sw.isEnabled = true
+            after_dinner_sw.isEnabled = true
+            start_day.isEnabled = true
+            end_day.isEnabled = true
+            getup_time.isEnabled = true
+            bed_time.isEnabled = true
+            breakfast_time.isEnabled = true
+            lunch_time.isEnabled = true
+            dinner_time.isEnabled = true
+            
+            
         }
         else{
-            alarm_buttonout.backgroundColor = UIColor.lightGray
-            alarm_buttonout.setTitle("알람 꺼짐", for: .normal)
+//            alarm_buttonout.backgroundColor = UIColor.lightGray
+//            alarm_buttonout.setTitle("알람 꺼짐", for: .normal
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            dateSetting.isEnabled = false
+            alarm_buttonout.activateButton(bool: false)
             start_day.textColor = UIColor.lightGray
             end_day.textColor = UIColor.lightGray
             getup_time.textColor = UIColor.lightGray
@@ -501,19 +866,43 @@ class alarm_drug : UIViewController, XMLParserDelegate{
             breakfast_time.textColor = UIColor.lightGray
             lunch_time.textColor = UIColor.lightGray
             dinner_time.textColor = UIColor.lightGray
+            getup_sw.isEnabled = false
+            bed_sw.isEnabled = false
+            before_break_sw.isEnabled = false
+            after_break_sw.isEnabled = false
+            before_lunch_sw.isEnabled = false
+            after_lunch_sw.isEnabled = false
+            before_dinner_sw.isEnabled = false
+            after_dinner_sw.isEnabled = false
+            start_day.isEnabled = false
+            end_day.isEnabled = false
+            getup_time.isEnabled = false
+            bed_time.isEnabled = false
+            breakfast_time.isEnabled = false
+            lunch_time.isEnabled = false
+            dinner_time.isEnabled = false
         }
-        if(UserDefault.load(key: UserDefaultKey.alarm_startdate) != ""){
-            start_day.text = weekdayForm(dateString: UserDefault.load(key: UserDefaultKey.alarm_startdate))
-        }
-        if(UserDefault.load(key: UserDefaultKey.alarm_enddate) != ""){
-            end_day.text = weekdayForm(dateString: UserDefault.load(key: UserDefaultKey.alarm_enddate))
-        }
+        
+
         if(UserDefault.load(key: UserDefaultKey.alarm_getuptime) != ""){
             getup_time.text = UserDefault.load(key: UserDefaultKey.alarm_getuptime)
         }
-        if(UserDefault.load(key: UserDefaultKey.alarm_bed) != ""){
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_bedtime) != ""){
             bed_time.text = UserDefault.load(key: UserDefaultKey.alarm_bedtime)
         }
+    
+//        let now = NSDate()
+//        let dateFormat_now = DateFormatter()
+//        dateFormat_now.dateFormat = "yyyyMMdd"
+//        let now_Date = dateFormat_now.string(from: now as Date)
+        
+
+        start_day.text = weekdayForm(dateString: UserDefault.load(key: UserDefaultKey.alarm_startdate))
+
+        end_day.text = weekdayForm(dateString: UserDefault.load(key: UserDefaultKey.alarm_enddate))
+        
+
         if(UserDefault.load(key: UserDefaultKey.alarm_breakfast) != ""){
             breakfast_time.text = UserDefault.load(key: UserDefaultKey.alarm_breakfast)
         }
@@ -523,4 +912,87 @@ class alarm_drug : UIViewController, XMLParserDelegate{
         if(UserDefault.load(key: UserDefaultKey.alarm_dinner) != ""){
             dinner_time.text = UserDefault.load(key: UserDefaultKey.alarm_dinner)
         }
-    }}
+    
+        if(UserDefault.load(key: UserDefaultKey.alarm_getup) == "on"){
+            getup_sw.isOn = true
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+            alarmTrigger(startDate: start_day.text!, time: getup_time.text!, id: "gw", count: countDate(), ba: "a")
+            }
+        }else{
+            getup_sw.isOn = false
+        }
+        
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_bed) == "on"){
+            bed_sw.isOn = true
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+                alarmTrigger(startDate: start_day.text!, time: bed_time.text!, id: "bw", count: countDate(), ba: "b")
+            }
+
+        }else{
+            bed_sw.isOn = false
+        }
+
+
+        if(UserDefault.load(key: UserDefaultKey.alarm_befor_breakfast) == "on"){
+            before_break_sw.isOn = true
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+            alarmTrigger(startDate: start_day.text!, time: breakfast_time.text!, id: "bb", count: countDate(), ba: "b")
+            }
+        }else{
+            before_break_sw.isOn = false
+        }
+
+
+        if(UserDefault.load(key: UserDefaultKey.alarm_after_breakfast) == "on"){
+            after_break_sw.isOn = true
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+            alarmTrigger(startDate: start_day.text!, time: breakfast_time.text!, id: "ab", count: countDate(), ba: "a")
+            }
+        }else{
+            after_break_sw.isOn = false
+        }
+
+
+        if(UserDefault.load(key: UserDefaultKey.alarm_befor_lunch) == "on"){
+            before_lunch_sw.isOn = true
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+            alarmTrigger(startDate: start_day.text!, time: lunch_time.text!, id: "bl", count: countDate(), ba: "b")
+            }
+        }else{
+            before_lunch_sw.isOn = false
+        }
+
+
+        if(UserDefault.load(key: UserDefaultKey.alarm_after_lunch) == "on"){
+            after_lunch_sw.isOn = true
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+            alarmTrigger(startDate: start_day.text!, time: lunch_time.text!, id: "al", count: countDate(), ba: "a")
+            }
+        }else{
+            after_lunch_sw.isOn = false
+        }
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_befor_dinner) == "on"){
+            before_dinner_sw.isOn = true
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+            alarmTrigger(startDate: start_day.text!, time: dinner_time.text!, id: "bd", count: countDate(), ba: "b")
+            }
+
+        }else{
+            before_dinner_sw.isOn = false
+        }
+        
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_after_dinner) == "on"){
+            after_dinner_sw.isOn = true
+            if(UserDefault.load(key: UserDefaultKey.alarm_onoff) == "on"){
+            alarmTrigger(startDate: start_day.text!, time: dinner_time.text!, id: "ad", count: countDate(), ba: "a")
+            }
+
+        }else{
+            after_lunch_sw.isOn = false
+        }
+    }
+    
+}

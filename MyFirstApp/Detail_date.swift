@@ -165,7 +165,6 @@ class Detail_date : UIViewController, FSCalendarDelegate, FSCalendarDataSource, 
                 } else{
                     print("parse failure!")
                 }
-                
             }
         }else{
             timelist = Array<timeList>()///시간 배열 초기화

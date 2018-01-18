@@ -19,13 +19,15 @@ class MobileCard: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+
         ptntNumLabel.text = "환자번호  \(UserDefault.load(key: UserDefaultKey.UD_Ptntno))"
         img.contentMode = .scaleAspectFit
         let image = Barcode.fromString(string: UserDefault.load(key: UserDefaultKey.UD_Ptntno))
         img.image = image
-        
+            
         img.transform = img.transform.rotated(by: CGFloat(M_PI_2))
         ptntNumLabel.transform = ptntNumLabel.transform.rotated(by: CGFloat(M_PI_2))
+
         
         // Do any additional setup after loading the view, typically from a nib.
        

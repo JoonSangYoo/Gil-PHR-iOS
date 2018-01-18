@@ -240,7 +240,16 @@ class MedicalExam: UIViewController, XMLParserDelegate, UITableViewDataSource, U
         performSegue(withIdentifier: "segExam", sender: self)
     }
     
-   
+    @IBAction func callButton(_ sender: Any) {
+        if let url = URL(string: "tel://15772299"), UIApplication.shared.canOpenURL(url) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
+    }
+    
     
     
     func weekdayForm(dateString: String) -> String {

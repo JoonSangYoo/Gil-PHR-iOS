@@ -7,8 +7,10 @@
 //
 
 import Foundation
+import SafariServices
 
-class LoginWebView: UIViewController {
+
+class LoginWebView: UIViewController, UIWebViewDelegate {
     
     
     
@@ -16,11 +18,14 @@ class LoginWebView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let testUrl = URL(string: UserDefault.load(key: UserDefaultKey.UD_LoginURL))	// 접속할 링크 주소
-        let urq = URLRequest(url: testUrl!)
-        // 커맨드+시프트+4(스크린샷)
-        //webView.stringByEvaluatingJavaScript(from: <#T##String#>)		// 페이지가 안뜰시 자바스크립트 관련 메소드 (관련설명 링크: http://gorakgarak.tistory.com/805)
-        webView.loadRequest(urq)
+        let testUrl = URL(string: UserDefault.load(key: UserDefaultKey.UD_LoginURL))    // 접속할 링크 주소
+//        let urq = URLRequest(url: testUrl!)
+//        // 커맨드+시프트+4(스크린샷)
+//        //webView.stringByEvaluatingJavaScript(from: <#T##String#>)        // 페이지가 안뜰시 자바스크립트 관련 메소드 (관련설명 링크: http://gorakgarak.tistory.com/805)
+//        webView.loadRequest(urq)
+        
+        UIApplication.shared.open(testUrl!, options: [:], completionHandler: nil)
+
         
         navigationController?.navigationBar.tintColor = UIColor.white
 

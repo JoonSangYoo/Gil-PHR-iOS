@@ -39,7 +39,7 @@ class PsnChange: UIViewController {
     }
     
     func checkAction(sender : UITapGestureRecognizer) {
-        performSegue(withIdentifier: "gilHome", sender: self)
+        UIApplication.shared.open(URL(string: "https://www.gilhospital.com")!, options: [:], completionHandler: nil)
     }
     
 }

@@ -77,7 +77,7 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         if(request_code == "deptlist_search"){
             postString = xmlWriter(prtc: "reendept").xmlString()
         }
-        else if(request_code == "lastopd_search"){
+        if(request_code == "lastopd_search"){
             plag_mobileres=1
             postString = xmlWriter(prtc: "lastopd").xmlString()
         }
@@ -305,7 +305,11 @@ class mobile_reserve : UIViewController, XMLParserDelegate, UITableViewDataSourc
         
         if(reserve_index == 0){
             cell?.selectionStyle = .none
-            if(lastdeptnm != ""){
+            if(lastdate == ""){
+                let alert = UIAlertController(title: "최근진료 없음", message: "최근 진료내역이 없으므로\n아래 진료과 중 선택해주세요.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "닫기", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else{
                 performSegue(withIdentifier: "Recent_date" , sender: self)
             }
         }

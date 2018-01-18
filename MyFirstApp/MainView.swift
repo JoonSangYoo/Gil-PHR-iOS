@@ -163,42 +163,39 @@ class MainView : UIViewController, XMLParserDelegate{
         }
                 
         if(positionValue == "로그아웃"){
+            UserDefault.save(key: UserDefaultKey.UD_ClinicFlag, value: "0")
             UserDefault.save(key: UserDefaultKey.UD_Ptntno, value: "0")
+            lastdeptcd = ""  //진료과코드
+            lastdeptnm = ""   //진료과명
+            lastdate = ""     //진료일
+            lastdocno = ""    //의사코드
+            lastdocnm = ""        //의사명
+            lastesp = ""      // 특진 구분
+            lastmain = ""        //진료분야
             dismiss(animated: true, completion: nil)
 
-        }else if(positionValue != nil){
-            let screenSize: CGRect = UIScreen.main.bounds
+        } else if(positionValue == "원내전화"){
+            UserDefault.save(key: UserDefaultKey.UD_ClinicFlag, value: "0")
 
-            frameView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-64))
-            frameView.tag = 84
-            
-            let textView = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            
-            textView.contentMode = .scaleAspectFit
-            textView.text = positionValue
-            textView.textColor = UIColor.white
-            textView.font = UIFont.boldSystemFont(ofSize: 20.0)
-            navigationItem.titleView = textView
-            
-            print(screenSize.height)
-            print(navigationController?.navigationBar.frame.height)
-            view.addSubview(frameView)
-            
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-
-            if UserDefault.load(key: UserDefaultKey.UD_Staffyn) != "Y"{
-                if positionValue == "원내전화"{
-                    UserDefault.save(key: UserDefaultKey.UD_Ptntno, value: "0")
-                    dismiss(animated: true, completion: nil)
-                }else{
-                    performSegue(withIdentifier: positionValue!, sender: nil)
-                }
+            if UserDefault.load(key: UserDefaultKey.UD_Staffyn) == "Y"{
+                UIApplication.shared.open(URL(string: "http://www.gilhospital.com/phr/phonebook.html")!, options: [:], completionHandler: nil)
             }else{
-                performSegue(withIdentifier: positionValue!, sender: nil)
-
+                UserDefault.save(key: UserDefaultKey.UD_ClinicFlag, value: "0")
+                UserDefault.save(key: UserDefaultKey.UD_Ptntno, value: "0")
+                lastdeptcd = ""  //진료과코드
+                lastdeptnm = ""   //진료과명
+                lastdate = ""     //진료일
+                lastdocno = ""    //의사코드
+                lastdocnm = ""        //의사명
+                lastesp = ""      // 특진 구분
+                lastmain = ""        //진료분야
+                dismiss(animated: true, completion: nil)
             }
+      
             
+        } else if(positionValue != nil){
+            UserDefault.save(key: UserDefaultKey.UD_ClinicFlag, value: "0")
+            frameCreate(menu: positionValue!)
         }
         
         else{
@@ -217,166 +214,44 @@ class MainView : UIViewController, XMLParserDelegate{
         
         switch tag {
         case 1:
-            let screenSize: CGRect = UIScreen.main.bounds
-            
-            frameView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-64))
-            frameView.tag = 84
-            
-            let textView = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            
-            textView.contentMode = .scaleAspectFit
-            textView.text = "진료기록"
-            textView.textColor = UIColor.white
-            textView.font = UIFont.boldSystemFont(ofSize: 20.0)
-            navigationItem.titleView = textView
-            
-            print(screenSize.height)
-            print(navigationController?.navigationBar.frame.height)
-            view.addSubview(frameView)
-            
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.white
+            if UserDefault.load(key: UserDefaultKey.UD_Ptntno) == "\n  " || UserDefault.load(key: UserDefaultKey.UD_Ptntno) == ""
+            {
+                let alert = UIAlertController(title: "환자번호 없음", message: "개인정보 메뉴에서 병원등록번호를 찾으신 후 이용해주세요.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
 
-            performSegue(withIdentifier: "진료기록", sender: nil)
+            }else{
+                frameCreate(menu: "진료기록")
+            }
         case 2:
-            //------------------------------------------------------------------//navibgation control
-            let screenSize: CGRect = UIScreen.main.bounds
-            
-            frameView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-64))
-            frameView.tag = 84
-            
-            let textView = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            
-            textView.contentMode = .scaleAspectFit
-            textView.text = "진료예약"
-            textView.textColor = UIColor.white
-            textView.font = UIFont.boldSystemFont(ofSize: 20.0)
-            navigationItem.titleView = textView
-            
-            print(screenSize.height)
-            print(navigationController?.navigationBar.frame.height)
-            view.addSubview(frameView)
-            
-            
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-            //------------------------------------------------------------------//navibgation control
-            
-            performSegue(withIdentifier: "진료예약", sender: nil)
+            if UserDefault.load(key: UserDefaultKey.UD_Ptntno) == "\n  " || UserDefault.load(key: UserDefaultKey.UD_Ptntno) == ""
+            {
+                let alert = UIAlertController(title: "환자번호 없음", message: "개인정보 메뉴에서 병원등록번호를 찾으신 후 이용해주세요.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
+            }else{
+            frameCreate(menu: "진료예약")
+            }
         case 3:
-            let screenSize: CGRect = UIScreen.main.bounds
-            
-            frameView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-64))
-            frameView.tag = 84
-            
-            let textView = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            
-            textView.contentMode = .scaleAspectFit
-            textView.text = "복약알림"
-            textView.textColor = UIColor.white
-            textView.font = UIFont.boldSystemFont(ofSize: 20.0)
-            navigationItem.titleView = textView
-            
-            print(screenSize.height)
-            print(navigationController?.navigationBar.frame.height)
-            view.addSubview(frameView)
-            
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-
-            performSegue(withIdentifier: "복약알림", sender: nil)
+            frameCreate(menu: "복약알림")
         case 4:
-            let screenSize: CGRect = UIScreen.main.bounds
-            
-            frameView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-64))
-            frameView.tag = 84
-            
-            let textView = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            
-            textView.contentMode = .scaleAspectFit
-            textView.text = "건강검진"
-            textView.textColor = UIColor.white
-            textView.font = UIFont.boldSystemFont(ofSize: 20.0)
-            navigationItem.titleView = textView
-            
-            print(screenSize.height)
-            print(navigationController?.navigationBar.frame.height)
-            view.addSubview(frameView)
-            
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-
-
-            performSegue(withIdentifier: "건강검진", sender: nil)
+            frameCreate(menu: "건강검진")
         case 5:
-            let screenSize: CGRect = UIScreen.main.bounds
-            
-            frameView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-64))
-            frameView.tag = 84
-            
-            let textView = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            
-            textView.contentMode = .scaleAspectFit
-            textView.text = "개인정보"
-            textView.textColor = UIColor.white
-            textView.font = UIFont.boldSystemFont(ofSize: 20.0)
-            navigationItem.titleView = textView
-            
-            print(screenSize.height)
-            print(navigationController?.navigationBar.frame.height)
-            view.addSubview(frameView)
-            
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-
-            performSegue(withIdentifier: "개인정보", sender: nil)
+            frameCreate(menu: "개인정보")
         case 6:
-            let screenSize: CGRect = UIScreen.main.bounds
-            
-            frameView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-64))
-            frameView.tag = 84
-            
-            let textView = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            
-            textView.contentMode = .scaleAspectFit
-            textView.text = "오늘진료"
-            textView.textColor = UIColor.white
-            textView.font = UIFont.boldSystemFont(ofSize: 20.0)
-            navigationItem.titleView = textView
-            
-            print(screenSize.height)
-            print(navigationController?.navigationBar.frame.height)
-            view.addSubview(frameView)
-            
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-
-
-            performSegue(withIdentifier: "오늘진료", sender: nil)
+            frameCreate(menu: "오늘진료")
         case 7:
-            let screenSize: CGRect = UIScreen.main.bounds
-            
-            frameView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-64))
-            frameView.tag = 84
-            
-            
-            let textView = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            
-            textView.contentMode = .scaleAspectFit
-            textView.text = "진료카드"
-            textView.textColor = UIColor.white
-            textView.font = UIFont.boldSystemFont(ofSize: 20.0)
-            navigationItem.titleView = textView
-            
-            print(screenSize.height)
-            print(navigationController?.navigationBar.frame.height)
-           // view.addSubview(frameView)
-            UIView.transition(with: self.view, duration: 0.8, options: UIViewAnimationOptions.curveEaseOut, animations: {self.view.addSubview(self.frameView)}, completion: nil)
-            
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-
-            performSegue(withIdentifier: "진료카드", sender: nil)
+            if UserDefault.load(key: UserDefaultKey.UD_Ptntno) == "\n  " || UserDefault.load(key: UserDefaultKey.UD_Ptntno) == ""
+            {
+                let alert = UIAlertController(title: "환자번호 없음", message: "개인정보 메뉴에서 병원등록번호를 찾으신 후 이용해주세요.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
+            }else{
+            frameCreate(menu: "진료카드")
+            }
+           
         default:
             print("default")
         }
@@ -384,9 +259,40 @@ class MainView : UIViewController, XMLParserDelegate{
 
         
     }
+    func frameCreate(menu: String) -> Void {
+        let screenSize: CGRect = UIScreen.main.bounds
+        
+        frameView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height-64))
+        frameView.tag = 84
+        
+        
+        let textView = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        
+        textView.contentMode = .scaleAspectFit
+        textView.text = menu
+        textView.textColor = UIColor.white
+        textView.font = UIFont.boldSystemFont(ofSize: 20.0)
+        navigationItem.titleView = textView
+        
+        print(screenSize.height)
+        print(navigationController?.navigationBar.frame.height)
+        // view.addSubview(frameView)
+        UIView.transition(with: self.view, duration: 0.8, options: UIViewAnimationOptions.curveEaseOut, animations: {self.view.addSubview(self.frameView)}, completion: nil)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named:"SideHome"), style: .plain, target: self, action: #selector(infoButtonTapped(sender:)))
+        navigationItem.rightBarButtonItem?.tintColor = UIColor.white
+        
+        performSegue(withIdentifier: menu, sender: nil)
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if(UserDefault.load(key: UserDefaultKey.alarm_onoff)=="on"){
+            alarmCorner.isHidden = false
+        }else{
+            alarmCorner.isHidden = true
+        }
         
         let postString = xmlWriter(prtc: "count").xmlString()
         _ = HttpClient.requestXML(Xml: postString){ responseString in
@@ -399,7 +305,8 @@ class MainView : UIViewController, XMLParserDelegate{
             let success:Bool = self.parser.parse()
             if success {
                 print("parse success!")
-                
+                print(self.st)
+
                 if self.st == "100"{        // 리스폰스 스테이터스가 100(성공)일때
                     // DispatchQueue.main.async -> ui가 대기상태에서 특정 조건에서 화면전환시 멈추는 현상을 없애기 위한 명령어(비동기제어)
                     DispatchQueue.main.async{
@@ -416,16 +323,33 @@ class MainView : UIViewController, XMLParserDelegate{
                             } else {
                             self.todayCorner.isHidden = true
                         }
-                        
                     }
                 }else {         // 리스폰스 스테이터스 100이 아닐때 (ex: 200번(실패) 3~500번 등등 추가조건 구현가능)
                     DispatchQueue.main.async{
-                        
+                        if self.st == ""{
+                            let alert = UIAlertController(title: "세션종료", message: "접속세션이 만료되어 다시 로그인이 필요합니다.", preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "다시 로그인", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in                             UserDefault.save(key: UserDefaultKey.UD_ClinicFlag, value: "0")
+                                UserDefault.save(key: UserDefaultKey.UD_Ptntno, value: "0")
+                                lastdeptcd = ""  //진료과코드
+                                lastdeptnm = ""   //진료과명
+                                lastdate = ""     //진료일
+                                lastdocno = ""    //의사코드
+                                lastdocnm = ""        //의사명
+                                lastesp = ""      // 특진 구분
+                                lastmain = ""        //진료분야
+                                self.dismiss(animated: true, completion: nil)
+                                
+                            }))
+                            self.present(alert, animated: true, completion: nil)
+                        }else{
+                            
+                        }
                     }
                 }
             } else{
                 print("parse failure!")
             }
+            self.st = String()
         }
         
         
@@ -437,6 +361,8 @@ class MainView : UIViewController, XMLParserDelegate{
     func infoButtonTapped(sender: UIBarButtonItem) {
         
         if let viewWithTag = self.view.viewWithTag(84) {
+            UserDefault.save(key: UserDefaultKey.UD_ClinicFlag, value: "0")
+
             viewWithTag.removeFromSuperview()
             
             let supportView = UIView(frame: CGRect(x: 0, y: 0, width: 152, height: 32))
@@ -453,7 +379,7 @@ class MainView : UIViewController, XMLParserDelegate{
             viewWillAppear(true)
             
         }else{
-            performSegue(withIdentifier: "segInfo", sender: nil)
+            UIApplication.shared.open(URL(string: "http://www.gilhospital.com/phr/guide.html?id=" + UserDefault.load(key: UserDefaultKey.UD_id))!, options: [:], completionHandler: nil)
         }
         
     }

@@ -112,6 +112,16 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         self.navigationController?.navigationBar.isTranslucent = false
     }
+    @IBAction func reserveButton(_ sender: Any) {
+        if(UserDefault.load(key: UserDefaultKey.UD_ClinicFlag) == "0"){
+            let alert = UIAlertController(title: "선택확인", message: "예약할 진료과 및 의사를 선택해주세요.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "확인", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            performSegue(withIdentifier: "OPtoR", sender: self)
+
+        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -180,7 +190,7 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
         case "esp":
             esp = esp + string
         case "main":
-            esp = esp + string
+            main = main + string
 
 
         default:break
@@ -236,9 +246,20 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
         return UITableViewCell()
     }
     
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-   
+        let listItem = listItems[indexPath.row]
+
+        UserDefault.save(key: UserDefaultKey.UD_ClinicIo, value: "20")
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDeptcd, value: listItem.deptCD.replacingOccurrences(of: "\n      ", with: ""))
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDeptnm, value: listItem.deptNM.replacingOccurrences(of: "\n      ", with: ""))
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDocno, value: listItem.docNO.replacingOccurrences(of: "\n      ", with: ""))
+        UserDefault.save(key: UserDefaultKey.UD_ClinicMain, value: listItem.main)
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDate, value: listItem.opdDate)
+        UserDefault.save(key: UserDefaultKey.UD_ClinicEsp, value: listItem.esp)
+        UserDefault.save(key: UserDefaultKey.UD_ClinicDocnm, value: listItem.docNM.replacingOccurrences(of: "\n      ", with: ""))
+        UserDefault.save(key: UserDefaultKey.UD_ClinicFlag, value: "1")
         print("라디오버튼 이벤트: \(indexPath.row)")
    
     }
@@ -254,7 +275,9 @@ class OutPatient: UIViewController, XMLParserDelegate, UITableViewDataSource, UI
         UserDefault.save(key: UserDefaultKey.UD_ClinicDeptcd, value: listItem.deptCD)
         UserDefault.save(key: UserDefaultKey.UD_ClinicDeptnm, value: listItem.deptNM.replacingOccurrences(of: "\n      ", with: " ") + listItem.docNM)
         UserDefault.save(key: UserDefaultKey.UD_ClinicDocno, value: listItem.docNO)
+        UserDefault.save(key: UserDefaultKey.UD_ClinicMain, value: listItem.main)
         UserDefault.save(key: UserDefaultKey.UD_ClinicDate, value: listItem.opdDate)
+  
         self.performSegue(withIdentifier: "OPtoD", sender: self)
 
     }
